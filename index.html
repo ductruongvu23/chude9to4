@@ -309,18 +309,23 @@
             Trang web đơn giản, nhã nhặn, dễ sử dụng phục vụ nhu cầu phòng ngừa lừa đảo:<br>
             • <strong>Tra cứu SĐT & Email:</strong> Kiểm tra mức độ uy tín, phát hiện hòm thư miễn phí (@gmail) giả danh phòng đào tạo.<br>
             • <strong>Tiếp nhận phản ánh:</strong> Điền thông tin vụ việc, tự động sinh mã hồ sơ tiếp nhận (Ticket ID: HS-TDHT-XXXX).<br>
-            • Đã bỏ bớt các nút thử nghiệm rườm rà và lược bỏ mô phỏng Deepfake.
+            • <strong>Cơ sở dữ liệu SQL:</strong> Tích hợp file <code>scam_phone_database.sql</code> lưu trữ 18 số lừa đảo (Thư Viện Pháp Luật), 8 số công an nêu đích danh (BV Lê Văn Thịnh) và các đầu số/đuôi số lừa đảo (Thế Giới Di Động).
           </p>
           <div class="product-tags">
             <span class="tag-sm">Tra cứu SĐT & Email</span>
             <span class="tag-sm">Tiếp nhận báo cáo</span>
             <span class="tag-sm">Sinh mã hồ sơ</span>
-            <span class="tag-sm">Giao diện sạch sẽ</span>
+            <span class="tag-sm">File SQL Đối Soát</span>
           </div>
         </div>
-        <a href="app/index.html" class="btn-action">
-          ⚡ Mở Cổng Tra Cứu & Tiếp Nhận
-        </a>
+        <div style="display: flex; gap: 10px; margin-top: 14px;">
+          <a href="app/index.html" class="btn-action" style="flex: 2;">
+            ⚡ Mở Cổng Tra Cứu & Tiếp Nhận
+          </a>
+          <a href="scam_phone_database.sql" download="scam_phone_database.sql" class="btn-action" style="flex: 1; background-color: #0f766e; text-align: center;">
+            💾 Tải File SQL
+          </a>
+        </div>
       </div>
 
     </div>
@@ -329,6 +334,7 @@
     <div class="drawer-references">
       <span class="drawer-title">📁 Hồ sơ & Tài liệu đính kèm (Nằm ở phía sau):</span>
       <div class="drawer-links">
+        <a href="scam_phone_database.sql" download="scam_phone_database.sql">💾 File CSDL SQL (scam_phone_database.sql)</a>
         <a href="docs/KICH_BAN_THUYET_TRINH_VA_BAN_GIAY.md" target="_blank">📄 Kịch bản bản giấy & Phản biện Q&A</a>
         <a href="docs/TIEU_LUAN_PHAN_TICH_HE_THONG.md" target="_blank">📚 Báo cáo tiểu luận học thuật đầy đủ</a>
       </div>

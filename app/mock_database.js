@@ -5,6 +5,21 @@
 
 // CƠ SỞ DỮ LIỆU SỐ ĐIỆN THOẠI
 const PHONE_DATABASE = {
+  "02366888766": {
+    number: "0236.688.8766",
+    carrier: "Cố định Đà Nẵng / VoIP ảo",
+    location: "Khu vực Đà Nẵng (VoIP giả mạo)",
+    riskScore: 98,
+    status: "DANGEROUS",
+    statusText: "BÁO ĐỘNG ĐỎ: MẠO DANH NGÂN HÀNG VIETCOMBANK",
+    reportsCount: 420,
+    threatType: "Thông báo tài khoản có dấu hiệu bất thường để chiếm đoạt OTP",
+    tags: ["Mạo danh ngân hàng", "Yêu cầu mã OTP", "Dọa khóa tài khoản"],
+    verifiedBy: ["Thư Viện Pháp Luật", "Bệnh Viện Lê Văn Thịnh", "Công an"],
+    history: [
+      { date: "Mới nhất", note: "Báo cáo: Tự xưng nhân viên Vietcombank thông báo tài khoản có dấu hiệu bất thường" }
+    ]
+  },
   "0981234567": {
     number: "0981234567",
     carrier: "Viettel (Đầu số nghi vấn bị chiếm dụng)",
