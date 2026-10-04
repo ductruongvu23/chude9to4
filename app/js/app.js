@@ -3,8 +3,18 @@
 // Hỗ trợ Quản lý Theme Sáng / Tối & Điều hướng Giao diện
 // ===================================================================
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   initTheme();
+  
+  // Khởi tạo Firebase Service (Anonymous Auth + Realtime listeners)
+  if (typeof FirebaseService !== 'undefined' && typeof FirebaseService.init === 'function') {
+    try {
+      await FirebaseService.init();
+    } catch (e) {
+      console.error("[App] Lỗi khởi tạo FirebaseService:", e);
+    }
+  }
+
   initIntakeView();
   if (typeof initAnalyzerView === 'function') {
     initAnalyzerView();

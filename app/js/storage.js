@@ -20,7 +20,6 @@ const PHONE_DATABASE = {
     riskScore: 98,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: SỐ ĐIỆN THOẠI MẠO DANH NGÂN HÀNG VIETCOMBANK",
-    reportsCount: 420,
     threatType: "Đối tượng tự xưng nhân viên ngân hàng Vietcombank gọi điện thông báo tài khoản có dấu hiệu bất thường, bị khóa hoặc liên quan đường dây rửa tiền; yêu cầu cung cấp mã OTP, thông tin thẻ hoặc tải ứng dụng giả mạo để chiếm đoạt tiền.",
     sourceName: "Báo điện tử Thư Viện Pháp Luật & Cổng TT Bệnh Viện Lê Văn Thịnh",
     sourceUrl: "https://thuvienphapluat.vn/banan/tin-tuc/danh-sach-18-so-dien-thoai-lua-dao-ma-nguoi-dan-can-biet-huong-dan-kiem-tra-so-dien-thoai-lua-dao-19077.html"
@@ -31,7 +30,6 @@ const PHONE_DATABASE = {
     riskScore: 98,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: MẠO DANH TỔNG ĐÀI HỖ TRỢ VIETCOMBANK",
-    reportsCount: 365,
     threatType: "Mạo danh tổng đài ngân hàng thông báo tài khoản bị đăng nhập trái phép, yêu cầu bấm vào liên kết để hủy giao dịch nhằm chiếm quyền tài khoản Internet Banking.",
     sourceName: "Báo điện tử Thư Viện Pháp Luật & Cổng TT Bệnh Viện Lê Văn Thịnh",
     sourceUrl: "https://thuvienphapluat.vn/banan/tin-tuc/danh-sach-18-so-dien-thoai-lua-dao-ma-nguoi-dan-can-biet-huong-dan-kiem-tra-so-dien-thoai-lua-dao-19077.html"
@@ -42,7 +40,6 @@ const PHONE_DATABASE = {
     riskScore: 97,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: MẠO DANH NHÂN VIÊN GIAO DỊCH VIETCOMBANK",
-    reportsCount: 298,
     threatType: "Gọi điện yêu cầu xác thực khuôn mặt / sinh trắc học qua link ngoài để chiếm quyền ví điện tử và tài khoản ngân hàng.",
     sourceName: "Báo điện tử Thư Viện Pháp Luật & Cổng TT Bệnh Viện Lê Văn Thịnh",
     sourceUrl: "https://thuvienphapluat.vn/banan/tin-tuc/danh-sach-18-so-dien-thoai-lua-dao-ma-nguoi-dan-can-biet-huong-dan-kiem-tra-so-dien-thoai-lua-dao-19077.html"
@@ -53,7 +50,6 @@ const PHONE_DATABASE = {
     riskScore: 95,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: TỔNG ĐÀI GIẢ MẠO NGÂN HÀNG LỪA TIỀN CƯỚC & TÀI KHOẢN",
-    reportsCount: 312,
     threatType: "Tổng đài giả mạo ngân hàng câu giờ tính cước viễn thông giá cao đồng thời hướng dẫn chuyển tiền vào 'tài khoản an toàn' của cơ quan chức năng.",
     sourceName: "Báo điện tử Thư Viện Pháp Luật & Cổng TT Bệnh Viện Lê Văn Thịnh",
     sourceUrl: "https://thuvienphapluat.vn/banan/tin-tuc/danh-sach-18-so-dien-thoai-lua-dao-ma-nguoi-dan-can-biet-huong-dan-kiem-tra-so-dien-thoai-lua-dao-19077.html"
@@ -64,7 +60,6 @@ const PHONE_DATABASE = {
     riskScore: 96,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: THOẠI TỰ ĐỘNG BẪY PHÁT HÀNH THẺ TÍN DỤNG ẢO",
-    reportsCount: 280,
     threatType: "Cuộc gọi ghi âm sẵn: 'Chúc mừng quý khách đã đủ điều kiện phát hành thẻ tín dụng tại ngân hàng... nhấn phím 1 hoặc 0'. Sau đó đối tượng đòi phí bảo lãnh và đọc mã OTP.",
     sourceName: "Cổng Thông tin Bệnh Viện Lê Văn Thịnh (benhvienlevanthinh.vn)",
     sourceUrl: "https://benhvienlevanthinh.vn/2025/05/cong-an-neu-dich-danh-8-so-dien-thoai-lua-dao-nguoi-dan-khong-nen-nghe-goi-lai/"
@@ -77,7 +72,6 @@ const PHONE_DATABASE = {
     riskScore: 99,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: MẠO DANH CÁN BỘ CÔNG AN / ĐIỀU TRA VIÊN",
-    reportsCount: 610,
     threatType: "Mạo danh điều tra viên gọi điện báo nạn nhân dính líu đến đường dây ma túy / rửa tiền, dọa lệnh bắt tạm giam, cấm báo người thân và ép chuyển tiền bảo lãnh vào tài khoản giám sát tư pháp.",
     sourceName: "Báo điện tử Thư Viện Pháp Luật (thuvienphapluat.vn)",
     sourceUrl: "https://thuvienphapluat.vn/banan/tin-tuc/danh-sach-18-so-dien-thoai-lua-dao-ma-nguoi-dan-can-biet-huong-dan-kiem-tra-so-dien-thoai-lua-dao-19077.html"
@@ -88,7 +82,6 @@ const PHONE_DATABASE = {
     riskScore: 99,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: MẠO DANH CÁN BỘ VIỆN KIỂM SÁT / CÔNG AN",
-    reportsCount: 540,
     threatType: "Gửi lệnh bắt giả mạo qua Zalo, dọa phong tỏa tài khoản ngân hàng và ép sinh viên chuyển toàn bộ tiền tiết kiệm để chứng minh trong sạch.",
     sourceName: "Báo điện tử Thư Viện Pháp Luật (thuvienphapluat.vn)",
     sourceUrl: "https://thuvienphapluat.vn/banan/tin-tuc/danh-sach-18-so-dien-thoai-lua-dao-ma-nguoi-dan-can-biet-huong-dan-kiem-tra-so-dien-thoai-lua-dao-19077.html"
@@ -99,7 +92,6 @@ const PHONE_DATABASE = {
     riskScore: 98,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: TỔNG ĐÀI MẠO DANH BỘ CÔNG AN DỌA ÁN",
-    reportsCount: 520,
     threatType: "Tự xưng Ban chuyên án điều tra kinh tế gọi điện dọa phạt tù sinh viên vì mở tài khoản ngân hàng tiếp tay tội phạm rửa tiền xuyên quốc gia.",
     sourceName: "Báo Điện tử Chính phủ (baochinhphu.vn) - Chiến dịch Nhận diện lừa đảo",
     sourceUrl: "https://baochinhphu.vn/chien-dich-nhan-dien-lua-dao-truc-tuyen-102240717152259919.htm"
@@ -112,7 +104,6 @@ const PHONE_DATABASE = {
     riskScore: 98,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: MẠO DANH CÁN BỘ CHI CỤC THUẾ LỪA CÀI APP ĐỘC",
-    reportsCount: 470,
     threatType: "Tự xưng cán bộ cơ quan thuế yêu cầu sinh viên / hộ kinh doanh cập nhật mã số thuế cá nhân, gửi đường link tải app eTax Mobile giả mạo chứa mã độc chiếm quyền điện thoại.",
     sourceName: "Báo Điện tử Chính phủ & Tổng cục Thuế Việt Nam",
     sourceUrl: "https://baochinhphu.vn/chien-dich-nhan-dien-lua-dao-truc-tuyen-102240717152259919.htm"
@@ -123,7 +114,6 @@ const PHONE_DATABASE = {
     riskScore: 99,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: MẠO DANH CÔNG AN HƯỚNG DẪN KÍCH HOẠT VNeID",
-    reportsCount: 530,
     threatType: "Mạo danh công an khu vực gọi điện báo tài khoản VNeID mức 2 bị lỗi thông tin CCCD, hướng dẫn truy cập trang web lạ để tải file APK giả mạo chứa mã độc kiểm soát tin nhắn OTP ngân hàng.",
     sourceName: "Cổng Thông tin Cục An toàn thông tin (ais.gov.vn)",
     sourceUrl: "https://ais.gov.vn"
@@ -134,7 +124,6 @@ const PHONE_DATABASE = {
     riskScore: 99,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: BẪY LỪA 'CON ĐANG CẤP CỨU Ở BỆNH VIỆN'",
-    reportsCount: 650,
     threatType: "Kẻ lừa đảo giả danh giáo viên hoặc nhân viên y tế gọi phụ huynh sinh viên báo con bị tai nạn nguy kịch đang cấp cứu tại bệnh viện Chợ Rẫy / Bạch Mai, yêu cầu chuyển gấp 30-50 triệu viện phí.",
     sourceName: "Báo Tuổi Trẻ Online (tuoitre.vn) - Cảnh báo thủ đoạn nhắm vào phụ huynh & học sinh",
     sourceUrl: "https://tuoitre.vn/chieu-lua-dao-moi-nham-vao-sinh-vien-cu-nguoi-den-tan-noi-nhan-tien-100260913131739695.htm"
@@ -145,7 +134,6 @@ const PHONE_DATABASE = {
     riskScore: 95,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: DỌA KHÓA SIM SAU 2 GIỜ DO THIẾU SINH TRẮC HỌC",
-    reportsCount: 380,
     threatType: "Cuộc gọi tự động xưng Cục Viễn thông thông báo thuê bao sẽ bị khóa 2 chiều sau 2 giờ vì chưa chuẩn hóa dữ liệu, yêu cầu làm theo hướng dẫn phím số để gặp kẻ lừa đảo.",
     sourceName: "Báo VietnamNet (vietnamnet.vn) - Cảnh báo lừa đảo khóa thuê bao",
     sourceUrl: "https://vietnamnet.vn"
@@ -156,7 +144,6 @@ const PHONE_DATABASE = {
     riskScore: 97,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: MẠO DANH NGÂN HÀNG HỖ TRỢ SINH TRẮC HỌC",
-    reportsCount: 340,
     threatType: "Mạo danh nhân viên ngân hàng Agribank gọi hỗ trợ cài đặt sinh trắc học khuôn mặt từ xa qua cuộc gọi video, sau đó yêu cầu đọc mã OTP để chiếm quyền tài khoản.",
     sourceName: "Cổng Thông tin Cục An toàn thông tin (ais.gov.vn)",
     sourceUrl: "https://ais.gov.vn"
@@ -167,7 +154,6 @@ const PHONE_DATABASE = {
     riskScore: 96,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: MẠO DANH THÔNG BÁO DƯ NỢ THẺ TÍN DỤNG ẢO",
-    reportsCount: 290,
     threatType: "Mạo danh ngân hàng gửi thông báo phát sinh dư nợ thẻ tín dụng quá hạn 45 triệu, dọa đưa vào danh sách nợ xấu CIC nếu không thanh toán gấp vào số tài khoản chỉ định.",
     sourceName: "Báo Lao Động (laodong.vn)",
     sourceUrl: "https://laodong.vn"
@@ -178,7 +164,6 @@ const PHONE_DATABASE = {
     riskScore: 94,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: BẪY TRÚNG THƯỞNG TRI ÂN SÀN SHOPEE/TIKTOK",
-    reportsCount: 310,
     threatType: "Thông báo sinh viên trúng thưởng quạt điện, nồi chiên không dầu miễn phí trong chương trình tri ân, nhưng ép chuyển trước phí bảo hiểm kiện hàng 200k - 500k.",
     sourceName: "Báo Tiền Phong (tienphong.vn)",
     sourceUrl: "https://tienphong.vn"
@@ -189,7 +174,6 @@ const PHONE_DATABASE = {
     riskScore: 95,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: BẪY BÌNH CHỌN CUỘC THI ẢNH ĐÁNH CẮP TÀI KHOẢN",
-    reportsCount: 260,
     threatType: "Gửi tin nhắn nhờ sinh viên bình chọn cuộc thi ảnh đại sứ sinh viên, dẫn link vào trang đăng nhập Facebook/Zalo giả mạo để chiếm đoạt tài khoản rồi nhắn tin vay tiền bạn bè.",
     sourceName: "Báo Thanh Niên (thanhnien.vn)",
     sourceUrl: "https://thanhnien.vn"
@@ -202,7 +186,6 @@ const PHONE_DATABASE = {
     riskScore: 97,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: MẠO DANH NHÂN VIÊN ĐIỆN LỰC EVN",
-    reportsCount: 389,
     threatType: "Thông báo nợ tiền điện, dọa cắt điện trong 2 giờ và ép cài app thanh toán tiền điện chứa mã độc chiếm đoạt tài khoản ngân hàng.",
     sourceName: "Báo điện tử Thư Viện Pháp Luật (thuvienphapluat.vn)",
     sourceUrl: "https://thuvienphapluat.vn/banan/tin-tuc/danh-sach-18-so-dien-thoai-lua-dao-ma-nguoi-dan-can-biet-huong-dan-kiem-tra-so-dien-thoai-lua-dao-19077.html"
@@ -213,7 +196,6 @@ const PHONE_DATABASE = {
     riskScore: 96,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: MẠO DANH NHÂN VIÊN CHĂM SÓC KHÁCH HÀNG EVN",
-    reportsCount: 215,
     threatType: "Gọi điện thông báo hoàn tiền hóa đơn tiền điện đóng dư, dụ quét mã QR hoặc truy cập web giả mạo để chiếm đoạt thông tin thẻ.",
     sourceName: "Báo điện tử Thư Viện Pháp Luật (thuvienphapluat.vn)",
     sourceUrl: "https://thuvienphapluat.vn/banan/tin-tuc/danh-sach-18-so-dien-thoai-lua-dao-ma-nguoi-dan-can-biet-huong-dan-kiem-tra-so-dien-thoai-lua-dao-19077.html"
@@ -224,7 +206,6 @@ const PHONE_DATABASE = {
     riskScore: 95,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: MẠO DANH ĐIỆN LỰC DỌA CẮT ĐIỆN",
-    reportsCount: 190,
     threatType: "Đe dọa khóa đồng hồ điện do sai thông tin hợp đồng sinh trắc học, yêu cầu làm việc trực tuyến qua Zalo để lừa đảo.",
     sourceName: "Báo điện tử Thư Viện Pháp Luật (thuvienphapluat.vn)",
     sourceUrl: "https://thuvienphapluat.vn/banan/tin-tuc/danh-sach-18-so-dien-thoai-lua-dao-ma-nguoi-dan-can-biet-huong-dan-kiem-tra-so-dien-thoai-lua-dao-19077.html"
@@ -235,7 +216,6 @@ const PHONE_DATABASE = {
     riskScore: 95,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: MẠO DANH KỸ THUẬT VIÊN ĐIỆN LỰC",
-    reportsCount: 175,
     threatType: "Yêu cầu nộp tiền phạt vi phạm sử dụng điện vào tài khoản cá nhân.",
     sourceName: "Báo điện tử Thư Viện Pháp Luật (thuvienphapluat.vn)",
     sourceUrl: "https://thuvienphapluat.vn/banan/tin-tuc/danh-sach-18-so-dien-thoai-lua-dao-ma-nguoi-dan-can-biet-huong-dan-kiem-tra-so-dien-thoai-lua-dao-19077.html"
@@ -246,7 +226,6 @@ const PHONE_DATABASE = {
     riskScore: 94,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: MẠO DANH CƠ QUAN ĐIỆN LỰC DỌA CHUYỂN CÔNG AN",
-    reportsCount: 160,
     threatType: "Thông báo vi phạm hợp đồng điện lực, dọa chuyển hồ sơ sang cơ quan công an nếu không nộp phạt gấp.",
     sourceName: "Báo điện tử Thư Viện Pháp Luật (thuvienphapluat.vn)",
     sourceUrl: "https://thuvienphapluat.vn/banan/tin-tuc/danh-sach-18-so-dien-thoai-lua-dao-ma-nguoi-dan-can-biet-huong-dan-kiem-tra-so-dien-thoai-lua-dao-19077.html"
@@ -259,7 +238,6 @@ const PHONE_DATABASE = {
     riskScore: 95,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: SHIPPER GIẢ MẠO LỪA CHUYỂN KHOẢN ĐƠN HÀNG ẢO",
-    reportsCount: 230,
     threatType: "Báo có đơn hàng giao đến nhưng khách vắng nhà, yêu cầu chuyển khoản tiền đơn hàng trước rồi mới gửi lại chỗ bảo vệ.",
     sourceName: "Báo điện tử Thư Viện Pháp Luật (thuvienphapluat.vn)",
     sourceUrl: "https://thuvienphapluat.vn/banan/tin-tuc/danh-sach-18-so-dien-thoai-lua-dao-ma-nguoi-dan-can-biet-huong-dan-kiem-tra-so-dien-thoai-lua-dao-19077.html"
@@ -270,7 +248,6 @@ const PHONE_DATABASE = {
     riskScore: 94,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: MẠO DANH NHÂN VIÊN SHIPPER BÁO GỬI NHẦM HÀNG",
-    reportsCount: 195,
     threatType: "Báo gửi nhầm gói hàng giá trị cao hoặc chuyển nhầm tiền COD, gửi link Zalo yêu cầu bấm vào để hoàn tiền nhằm đánh cắp OTP.",
     sourceName: "Báo điện tử Thư Viện Pháp Luật (thuvienphapluat.vn)",
     sourceUrl: "https://thuvienphapluat.vn/banan/tin-tuc/danh-sach-18-so-dien-thoai-lua-dao-ma-nguoi-dan-can-biet-huong-dan-kiem-tra-so-dien-thoai-lua-dao-19077.html"
@@ -281,7 +258,6 @@ const PHONE_DATABASE = {
     riskScore: 94,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: SHIPPER LỪA THU HỘ TIỀN COD HÀNG RỖNG",
-    reportsCount: 182,
     threatType: "Giao kiện hàng ảo rỗng ruột cho người thân sinh viên ở quê gửi lên, thu tiền COD vài trăm nghìn đồng.",
     sourceName: "Báo điện tử Thư Viện Pháp Luật (thuvienphapluat.vn)",
     sourceUrl: "https://thuvienphapluat.vn/banan/tin-tuc/danh-sach-18-so-dien-thoai-lua-dao-ma-nguoi-dan-can-biet-huong-dan-kiem-tra-so-dien-thoai-lua-dao-19077.html"
@@ -292,7 +268,6 @@ const PHONE_DATABASE = {
     riskScore: 93,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: MẠO DANH GIAO QUÀ TRÚNG THƯỞNG THU PHÍ",
-    reportsCount: 164,
     threatType: "Giao gói quà trúng thưởng miễn phí nhưng yêu cầu trả phí vận chuyển 50k - 100k, bên trong là đồ vô giá trị.",
     sourceName: "Báo điện tử Thư Viện Pháp Luật (thuvienphapluat.vn)",
     sourceUrl: "https://thuvienphapluat.vn/banan/tin-tuc/danh-sach-18-so-dien-thoai-lua-dao-ma-nguoi-dan-can-biet-huong-dan-kiem-tra-so-dien-thoai-lua-dao-19077.html"
@@ -303,7 +278,6 @@ const PHONE_DATABASE = {
     riskScore: 93,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: SHIPPER DỌA BƯU PHẨM HÀNG CẤM",
-    reportsCount: 150,
     threatType: "Chiêu trò gửi bưu phẩm chứa ma túy / hàng cấm dọa nạt nạn nhân nộp tiền hòa giải.",
     sourceName: "Báo điện tử Thư Viện Pháp Luật (thuvienphapluat.vn)",
     sourceUrl: "https://thuvienphapluat.vn/banan/tin-tuc/danh-sach-18-so-dien-thoai-lua-dao-ma-nguoi-dan-can-biet-huong-dan-kiem-tra-so-dien-thoai-lua-dao-19077.html"
@@ -314,7 +288,6 @@ const PHONE_DATABASE = {
     riskScore: 93,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: SHIPPER YÊU CẦU CHUYỂN TIỀN ĐẶT CỌC GIỮ HÀNG",
-    reportsCount: 142,
     threatType: "Yêu cầu chuyển tiền đặt cọc giữ hàng tại kho trung chuyển bưu điện.",
     sourceName: "Báo điện tử Thư Viện Pháp Luật (thuvienphapluat.vn)",
     sourceUrl: "https://thuvienphapluat.vn/banan/tin-tuc/danh-sach-18-so-dien-thoai-lua-dao-ma-nguoi-dan-can-biet-huong-dan-kiem-tra-so-dien-thoai-lua-dao-19077.html"
@@ -329,7 +302,6 @@ const PHONE_DATABASE = {
     riskScore: 99,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: SỐ QUỐC TẾ LỪA ĐẢO NHÁY MÁY WANGIRI",
-    reportsCount: 580,
     threatType: "Nháy máy 1 hồi chuông vào đêm muộn hoặc sáng sớm để nạn nhân gọi lại; cước quốc tế bị trừ từ 50.000đ - 150.000đ/phút.",
     sourceName: "Cổng Thông tin Bệnh Viện Lê Văn Thịnh & Thế Giới Di Động",
     sourceUrl: "https://benhvienlevanthinh.vn/2025/05/cong-an-neu-dich-danh-8-so-dien-thoai-lua-dao-nguoi-dan-khong-nen-nghe-goi-lai/"
@@ -340,7 +312,6 @@ const PHONE_DATABASE = {
     riskScore: 99,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: SỐ QUỐC TẾ BẪY CƯỚC VIỄN THÔNG WANGIRI",
-    reportsCount: 490,
     threatType: "Bẫy gọi lại trừ cước viễn thông quốc tế giá cao.",
     sourceName: "Cổng Thông tin Bệnh Viện Lê Văn Thịnh & Thế Giới Di Động",
     sourceUrl: "https://benhvienlevanthinh.vn/2025/05/cong-an-neu-dich-danh-8-so-dien-thoai-lua-dao-nguoi-dan-khong-nen-nghe-goi-lai/"
@@ -351,7 +322,6 @@ const PHONE_DATABASE = {
     riskScore: 97,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: SỐ QUỐC TẾ MA GIẢ MẠO TỔNG ĐÀI TRONG NƯỚC",
-    reportsCount: 310,
     threatType: "Cố tình chèn mã quốc tế để giả làm đầu số dịch vụ trong nước.",
     sourceName: "Cổng Thông tin Bệnh Viện Lê Văn Thịnh (benhvienlevanthinh.vn)",
     sourceUrl: "https://benhvienlevanthinh.vn/2025/05/cong-an-neu-dich-danh-8-so-dien-thoai-lua-dao-nguoi-dan-khong-nen-nghe-goi-lai/"
@@ -362,7 +332,6 @@ const PHONE_DATABASE = {
     riskScore: 98,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: TỔNG ĐÀI NHÁY MÁY TỰ ĐỘNG QUỐC TẾ",
-    reportsCount: 380,
     threatType: "Nháy máy tự động phát sinh cước quốc tế.",
     sourceName: "Cổng Thông tin Bệnh Viện Lê Văn Thịnh (benhvienlevanthinh.vn)",
     sourceUrl: "https://benhvienlevanthinh.vn/2025/05/cong-an-neu-dich-danh-8-so-dien-thoai-lua-dao-nguoi-dan-khong-nen-nghe-goi-lai/"
@@ -373,7 +342,6 @@ const PHONE_DATABASE = {
     riskScore: 96,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: CUỘC GỌI QUỐC TẾ LỪA PHÍ HẢI QUAN / QUÀ TẶNG",
-    reportsCount: 275,
     threatType: "Giả mạo số điện thoại từ Anh Quốc thông báo có kiện hàng quà tặng hải quan cần nộp tiền giải cứu.",
     sourceName: "Cổng Thông tin Bệnh Viện Lê Văn Thịnh (benhvienlevanthinh.vn)",
     sourceUrl: "https://benhvienlevanthinh.vn/2025/05/cong-an-neu-dich-danh-8-so-dien-thoai-lua-dao-nguoi-dan-khong-nen-nghe-goi-lai/"
@@ -388,7 +356,6 @@ const PHONE_DATABASE = {
     riskScore: 99,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: MẠO DANH PHÒNG ĐÀO TẠO THU HỌC PHÍ",
-    reportsCount: 245,
     threatType: "Gửi SMS dọa xóa tên khỏi danh sách thi nếu không nộp 3.250.000đ học phí vào STK cá nhân Techcombank trước 17h.",
     sourceName: "Báo Điện tử Chính phủ (baochinhphu.vn) - Bài viết 'Lừa đảo sinh viên nộp học phí'",
     sourceUrl: "https://baochinhphu.vn/lua-dao-sinh-vien-chuyen-tien-dang-ky-cho-o-ky-tuc-xa-10224081107491905.htm"
@@ -399,7 +366,6 @@ const PHONE_DATABASE = {
     riskScore: 94,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: BẪY TUYỂN DỤNG CTV 'VIỆC NHẸ LƯƠNG CAO'",
-    reportsCount: 430,
     threatType: "Mời chào xem video TikTok, giật đơn Shopee nhận hoa hồng 300k - 500k/ngày, sau đó ép nạp tiền cọc nâng hạn mức.",
     sourceName: "Báo Tuổi Trẻ Online (tuoitre.vn) - Bài viết 'Chiêu lừa đảo mới nhắm vào sinh viên'",
     sourceUrl: "https://tuoitre.vn/chieu-lua-dao-moi-nham-vao-sinh-vien-cu-nguoi-den-tan-noi-nhan-tien-100260913131739695.htm"
@@ -410,7 +376,6 @@ const PHONE_DATABASE = {
     riskScore: 98,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: ĐÃ BỊ CÔNG AN & CỔNG TTĐT CẢNH BÁO LỪA ĐẢO",
-    reportsCount: 412,
     threatType: "Giả danh cơ quan điện lực / thông báo nợ cước dọa khóa SIM và phong tỏa tài sản.",
     sourceName: "Cổng Thông tin Điện tử Xã Quảng Châu, Tỉnh Nghệ An (quangchau.nghean.gov.vn)",
     sourceUrl: "https://quangchau.nghean.gov.vn/tin-noi-bat/50-so-dien-thoai-tuyet-doi-khong-nen-nghe-chan-ngay-khi-nhan-duoc-cuoc-goi-950942?pageindex=0"
@@ -421,7 +386,6 @@ const PHONE_DATABASE = {
     riskScore: 96,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: NẰM TRONG DANH SÁCH 50 SỐ ĐIỆN THOẠI CẦN CHẶN NGAY",
-    reportsCount: 356,
     threatType: "Tự xưng cơ quan tư pháp gọi điện dọa trát hầu tòa ép chuyển tiền vào tài khoản tạm giữ.",
     sourceName: "Cổng Thông tin Điện tử Xã Quảng Châu, Tỉnh Nghệ An (quangchau.nghean.gov.vn)",
     sourceUrl: "https://quangchau.nghean.gov.vn/tin-noi-bat/50-so-dien-thoai-tuyet-doi-khong-nen-nghe-chan-ngay-khi-nhan-duoc-cuoc-goi-950942?pageindex=0"
@@ -432,7 +396,6 @@ const PHONE_DATABASE = {
     riskScore: 97,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: SỐ TỔNG ĐÀI LỪA ĐẢO TỰ ĐỘNG (SPAM CALL)",
-    reportsCount: 528,
     threatType: "Cuộc gọi ghi âm sẵn thông báo bưu phẩm cấm / dọa án phạt nguội nhằm đánh cắp CCCD và OTP.",
     sourceName: "Cổng Thông tin Điện tử Xã Quảng Châu, Tỉnh Nghệ An (quangchau.nghean.gov.vn)",
     sourceUrl: "https://quangchau.nghean.gov.vn/tin-noi-bat/50-so-dien-thoai-tuyet-doi-khong-nen-nghe-chan-ngay-khi-nhan-duoc-cuoc-goi-950942?pageindex=0"
@@ -443,7 +406,6 @@ const PHONE_DATABASE = {
     riskScore: 95,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: ĐÃ BỊ LIỆT KÊ TRONG DANH SÁCH ĐEN CHẶN CUỘC GỌI",
-    reportsCount: 290,
     threatType: "Giả mạo nhân viên hỗ trợ nâng cấp hạn mức tài khoản ngân hàng để chiếm đoạt mã OTP.",
     sourceName: "Cổng Thông tin Điện tử Xã Quảng Châu, Tỉnh Nghệ An (quangchau.nghean.gov.vn)",
     sourceUrl: "https://quangchau.nghean.gov.vn/tin-noi-bat/50-so-dien-thoai-tuyet-doi-khong-nen-nghe-chan-ngay-khi-nhan-duoc-cuoc-goi-950942?pageindex=0"
@@ -454,7 +416,6 @@ const PHONE_DATABASE = {
     riskScore: 92,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: BẪY NHÁY MÁY GỌI LẠI TRỪ TIỀN CƯỚC VIỄN THÔNG",
-    reportsCount: 184,
     threatType: "Nháy máy 1 hồi chuông để nạn nhân tò mò gọi lại, bị trừ cước phí hàng chục nghìn đồng/phút.",
     sourceName: "Cổng Thông tin Điện tử Xã Quảng Châu, Tỉnh Nghệ An (quangchau.nghean.gov.vn)",
     sourceUrl: "https://quangchau.nghean.gov.vn/tin-noi-bat/50-so-dien-thoai-tuyet-doi-khong-nen-nghe-chan-ngay-khi-nhan-duoc-cuoc-goi-950942?pageindex=0"
@@ -465,7 +426,6 @@ const PHONE_DATABASE = {
     riskScore: 96,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: THUỘC DANH MỤC 50 SỐ CỐ ĐỊNH CẦN CHẶN NGAY",
-    reportsCount: 310,
     threatType: "Phát tán cuộc gọi tự động đe dọa nợ cước viễn thông dọa khóa tài khoản.",
     sourceName: "Cổng Thông tin Điện tử Xã Quảng Châu, Tỉnh Nghệ An (quangchau.nghean.gov.vn)",
     sourceUrl: "https://quangchau.nghean.gov.vn/tin-noi-bat/50-so-dien-thoai-tuyet-doi-khong-nen-nghe-chan-ngay-khi-nhan-duoc-cuoc-goi-950942?pageindex=0"
@@ -476,7 +436,6 @@ const PHONE_DATABASE = {
     riskScore: 96,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: THUỘC DANH MỤC 50 SỐ CỐ ĐỊNH CẦN CHẶN NGAY",
-    reportsCount: 295,
     threatType: "Cuộc gọi rác tự động quấy rối và dọa trát hầu tòa.",
     sourceName: "Cổng Thông tin Điện tử Xã Quảng Châu, Tỉnh Nghệ An (quangchau.nghean.gov.vn)",
     sourceUrl: "https://quangchau.nghean.gov.vn/tin-noi-bat/50-so-dien-thoai-tuyet-doi-khong-nen-nghe-chan-ngay-khi-nhan-duoc-cuoc-goi-950942?pageindex=0"
@@ -487,7 +446,6 @@ const PHONE_DATABASE = {
     riskScore: 96,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: THUỘC DANH MỤC 50 SỐ CỐ ĐỊNH CẦN CHẶN NGAY",
-    reportsCount: 280,
     threatType: "Cuộc gọi rác dọa án phạt và chiếm đoạt OTP.",
     sourceName: "Cổng Thông tin Điện tử Xã Quảng Châu, Tỉnh Nghệ An (quangchau.nghean.gov.vn)",
     sourceUrl: "https://quangchau.nghean.gov.vn/tin-noi-bat/50-so-dien-thoai-tuyet-doi-khong-nen-nghe-chan-ngay-khi-nhan-duoc-cuoc-goi-950942?pageindex=0"
@@ -498,7 +456,6 @@ const PHONE_DATABASE = {
     riskScore: 96,
     status: "DANGEROUS",
     statusText: "BÁO ĐỘNG ĐỎ: THUỘC DANH MỤC 50 SỐ CỐ ĐỊNH CẦN CHẶN NGAY",
-    reportsCount: 275,
     threatType: "Tự xưng cơ quan chức năng dọa khóa tài khoản cá nhân.",
     sourceName: "Cổng Thông tin Điện tử Xã Quảng Châu, Tỉnh Nghệ An (quangchau.nghean.gov.vn)",
     sourceUrl: "https://quangchau.nghean.gov.vn/tin-noi-bat/50-so-dien-thoai-tuyet-doi-khong-nen-nghe-chan-ngay-khi-nhan-duoc-cuoc-goi-950942?pageindex=0"
@@ -513,7 +470,6 @@ const PHONE_DATABASE = {
     riskScore: 0,
     status: "SAFE",
     statusText: "AN TOÀN TUYỆT ĐỐI: ĐƯỜNG DÂY NÓNG CHÍNH THỨC CỦA BỘ TT&TT",
-    reportsCount: 0,
     threatType: "Kênh tiếp nhận chính thống miễn phí cước gọi. Nhắn tin: LD [SĐT] [Nội dung] gửi 156.",
     sourceName: "Báo Điện tử Chính phủ (baochinhphu.vn) - Chiến dịch Nhận diện lừa đảo",
     sourceUrl: "https://baochinhphu.vn/chien-dich-nhan-dien-lua-dao-truc-tuyen-102240717152259919.htm"
@@ -524,7 +480,6 @@ const PHONE_DATABASE = {
     riskScore: 0,
     status: "SAFE",
     statusText: "AN TOÀN TUYỆT ĐỐI: ĐẦU SỐ PHẢN ÁNH TIN NHẮN RÁC & LỪA ĐẢO",
-    reportsCount: 0,
     threatType: "Đầu số tiếp nhận tin nhắn phản ánh miễn phí của Bộ Thông tin & Truyền thông.",
     sourceName: "Cổng Thông tin Cục An toàn thông tin (ais.gov.vn)",
     sourceUrl: "https://ais.gov.vn"
@@ -535,7 +490,6 @@ const PHONE_DATABASE = {
     riskScore: 0,
     status: "SAFE",
     statusText: "AN TOÀN: ĐƯỜNG DÂY NÓNG ĐÀO TẠO ĐẠI HỌC CHÍNH THỐNG",
-    reportsCount: 0,
     threatType: "Không có nguy cơ - Số xác thực trên cổng thông tin trường",
     sourceName: "Cổng Thông tin Đại học Quốc gia Hà Nội (vnu.edu.vn)",
     sourceUrl: "https://vnu.edu.vn"
@@ -639,25 +593,4 @@ const EMAIL_DATABASE = {
   }
 };
 
-const DEFAULT_REPORTS = [
-  { id: "HS-TDHT-01", target: "0236.688.8766", type: "Mạo danh ngân hàng Vietcombank", time: "5 phút trước", status: "Đã xác minh lừa đảo" },
-  { id: "HS-TDHT-02", target: "0398.243.689", type: "Mạo danh cơ quan thuế cài app độc", time: "12 phút trước", status: "Đã xác minh lừa đảo" },
-  { id: "HS-TDHT-03", target: "0778.552.193", type: "Bẫy dọa con đang cấp cứu bệnh viện", time: "20 phút trước", status: "Đã xác minh lừa đảo" },
-  { id: "HS-TDHT-04", target: "0981234567", type: "Mạo danh thu học phí bổ sung", time: "35 phút trước", status: "Đã xác minh lừa đảo" },
-  { id: "HS-TDHT-05", target: "0889.050.231", type: "Mạo danh nhân viên điện lực EVN", time: "50 phút trước", status: "Đã xác minh lừa đảo" },
-  { id: "HS-TDHT-06", target: "02499950060", type: "Dọa nợ cước / khóa SIM", time: "1 giờ trước", status: "Trùng khớp 50 số bị cấm" },
-  { id: "HS-TDHT-07", target: "daotao.dhqg.edu.vn@gmail.com", type: "Email mạo danh trường ĐH", time: "2 giờ trước", status: "Đã chặn cảnh báo" }
-];
-
-// LocalStorage helpers
-function getIntakeReports() {
-  const data = localStorage.getItem('to4_intake_reports');
-  return data ? JSON.parse(data) : DEFAULT_REPORTS;
-}
-
-function saveIntakeReport(report) {
-  const list = getIntakeReports();
-  list.unshift(report);
-  localStorage.setItem('to4_intake_reports', JSON.stringify(list));
-  return list;
-}
+// Quản lý hồ sơ phản ánh được chuyển giao hoàn toàn cho FirebaseService (Cloud Firestore)

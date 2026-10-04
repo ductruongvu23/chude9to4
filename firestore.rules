@@ -1,0 +1,53 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===================================================================
+    // QUY TẮC BẢO MẬT FIRESTORE (STUDENT CYBERGUARD - TỔ 4)
+    // 1. Cho phép đọc công khai để toàn thể sinh viên tra cứu cảnh báo.
+    // 2. Chỉ cho phép tạo mới nếu đã xác thực (Anonymous Auth hợp lệ).
+    // 3. Ràng buộc chặt chẽ schema, kiểu dữ liệu và độ dài chuỗi ký tự.
+    // 4. Nghiêm cấm hoàn toàn hành động SỬA (update) hoặc XÓA (delete).
+    // ===================================================================
+
+    match /reports/{reportId} {
+      // 1. Cho phép tất cả mọi người đọc danh sách báo cáo
+      allow read: if true;
+
+      // 2. Chỉ cho phép tạo mới khi có Auth token (Anonymous Auth)
+      allow create: if request.auth != null
+        // Ràng buộc tất cả các trường bắt buộc
+        && request.resource.data.keys().hasAll(['id', 'target', 'scamType', 'content', 'status', 'createdAt'])
+        
+        // Mã hồ sơ (ví dụ: HS-TDHT-XXXX hoặc TK-2026-XXXX)
+        && request.resource.data.id is string
+        && request.resource.data.id.size() >= 5
+        && request.resource.data.id.size() <= 35
+        
+        // SĐT hoặc Email nghi vấn
+        && request.resource.data.target is string
+        && request.resource.data.target.size() >= 3
+        && request.resource.data.target.size() <= 100
+        
+        // Loại thủ đoạn lừa đảo
+        && request.resource.data.scamType is string
+        && request.resource.data.scamType.size() >= 2
+        && request.resource.data.scamType.size() <= 120
+        
+        // Nội dung chi tiết / mô tả vụ việc (ngăn chặn payload injection)
+        && request.resource.data.content is string
+        && request.resource.data.content.size() >= 2
+        && request.resource.data.content.size() <= 1500
+        
+        // Trạng thái hồ sơ hợp lệ
+        && request.resource.data.status in ['Đang xác minh', 'Đã xác minh', 'Cảnh báo cao']
+        
+        // Thời gian tạo phải trùng với server timestamp
+        && request.resource.data.createdAt == request.time;
+
+      // 3. Tuyệt đối không cho phép client cập nhật hoặc xóa dữ liệu
+      allow update, delete: if false;
+    }
+  }
+}

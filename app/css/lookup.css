@@ -321,6 +321,76 @@
   color: var(--primary-hover);
 }
 
+/* Analysis Section Blocks (Phân định Heuristic vs Firebase Community) */
+.analysis-section-block {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+}
+
+.analysis-section-title {
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+}
+
+.heuristic-alert-box {
+  background: rgba(220, 38, 38, 0.08);
+  border-left: 3px solid var(--accent-danger);
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.84rem;
+  color: var(--text-main);
+}
+
+.heuristic-alert-box strong {
+  color: var(--accent-danger);
+}
+
+.heuristic-safe-box {
+  background: rgba(16, 185, 129, 0.08);
+  border-left: 3px solid #10b981;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.community-stat-positive {
+  background: rgba(2, 132, 199, 0.08);
+  border-left: 3px solid var(--accent-primary);
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+.community-stat-count {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+}
+
+.community-stat-zero {
+  background: var(--bg-card);
+  border: 1px dashed var(--border-color);
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.community-recent-list {
+  margin: 6px 0 0 16px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
 /* Clean Unlisted Action Block */
 .empty-data-action {
   background-color: var(--bg-surface);

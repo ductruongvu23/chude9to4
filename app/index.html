@@ -24,6 +24,11 @@
   <link rel="stylesheet" href="css/lookup.css">
   <link rel="stylesheet" href="css/intake.css">
   <link rel="stylesheet" href="css/analyzer.css">
+
+  <!-- Firebase App & Services (Compat CDN - Hỗ trợ thuần Vanilla JS không cần Bundler) -->
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -40,9 +45,9 @@
         </button>
       </div>
       <div class="header-actions">
-        <a href="../scam_phone_database.sql" download="scam_phone_database.sql" class="btn-header-link" style="background: #0f766e; color: #fff; border-color: #0f766e;">
-          💾 Tải File SQL Đối Soát
-        </a>
+        <div id="cloudStatusBadge" class="btn-header-badge" title="Trạng thái kết nối cơ sở dữ liệu thời gian thực">
+          🟢 Firebase Realtime Active
+        </div>
         <a href="../slides/index.html" class="btn-header-link" target="_blank">
           📊 Xem Slide Thuyết Trình
         </a>
@@ -343,23 +348,23 @@ Yêu cầu phân tích:
           </div>
         </div>
 
-        <!-- SQL Database Overview Card -->
+        <!-- Cloud Firestore Realtime Architecture Card -->
         <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 20px; margin-top: 16px; font-size: 0.88rem; line-height: 1.7;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
-            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-main);">
-              💾 Cơ Sở Dữ Liệu SQL Đối Soát Lừa Đảo (scam_phone_database.sql)
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
+              ⚡ Kiến Trúc Đám Mây Firebase Firestore & Bảo Mật Ẩn Danh (100% Anonymous)
             </h3>
-            <a href="../scam_phone_database.sql" download="scam_phone_database.sql" class="btn-action" style="padding: 6px 14px; font-size: 0.82rem; background-color: #0f766e; color: #fff; text-decoration: none; border-radius: 6px; font-weight: 600;">
-              📥 Tải File SQL Về Máy
-            </a>
+            <span style="padding: 4px 10px; font-size: 0.78rem; background-color: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 4px; font-weight: 700;">
+              Zero-PII Compliance
+            </span>
           </div>
-          <p>Dữ liệu đối soát đã được Tổ 4 chuẩn hóa và lưu trữ dạng file SQL (<code>scam_phone_database.sql</code>), tương thích hoàn toàn với MySQL, PostgreSQL, SQLite và MariaDB. Cấu trúc gồm 5 bảng chính:</p>
+          <p>Hệ thống đã nâng cấp toàn diện từ file SQL tĩnh sang <strong>Google Cloud Firestore Database</strong> nhằm hỗ trợ cập nhật thời gian thực không độ trễ, tuân thủ các nguyên tắc bảo mật và quyền riêng tư nghiêm ngặt nhất:</p>
           <ul style="margin: 10px 0 10px 22px;">
-            <li><strong>scam_sources:</strong> Lưu trữ danh mục các nguồn tin chính thống có thật (Thư Viện Pháp Luật, Bệnh Viện Lê Văn Thịnh, Thế Giới Di Động, UBND Xã Quảng Châu, Báo Chính Phủ, Tuổi Trẻ, Cục An toàn thông tin).</li>
-            <li><strong>scam_phones:</strong> Danh sách chi tiết các số điện thoại lừa đảo đã xác thực (18 số mạo danh Vietcombank, EVN, Shipper, Công an từ Thư Viện Pháp Luật; 8 số công an nêu đích danh; số mạo danh thuế, VNeID, cấp cứu bệnh viện).</li>
-            <li><strong>scam_patterns:</strong> Nhận diện <em>đầu số quốc tế</em> Wangiri (+224, +231, +232...), <em>đầu số cố định VoIP</em> (024999, 028999, 02856...), <em>đầu số SMS</em> trừ tiền ngầm (6781, 8781, 7777...) và <em>đuôi số bot tự động</em> (%9999, %8888, %0000).</li>
-            <li><strong>scam_emails:</strong> Quản lý danh mục email giả danh nhà trường có đuôi công cộng (@gmail.com).</li>
-            <li><strong>scam_reports:</strong> Sổ tiếp nhận hồ sơ phản ánh lừa đảo trực tuyến từ cộng đồng sinh viên.</li>
+            <li><strong>Collection <code>reports</code> Thời Gian Thực:</strong> Lưu trữ trực tiếp các phản ánh cộng đồng gồm <code>{ id, target, scamType, content, status, createdAt }</code>. Lắng nghe liên tục qua <code>onSnapshot()</code>, giúp sổ tiếp nhận tự động nhảy dòng mới tức thì trên mọi thiết bị mà không cần F5.</li>
+            <li><strong>Xác Thực Ẩn Danh (Firebase Anonymous Auth):</strong> Tự động kích hoạt <code>signInAnonymously()</code> trong nền để cấp Auth Token bảo vệ chống spam API, không yêu cầu người dùng đăng nhập tài khoản.</li>
+            <li><strong>Cam Kết Bảo Mật Tuyệt Đối (Zero PII):</strong> Hệ thống không bao giờ thu thập, lưu trữ họ tên, email cá nhân, số điện thoại người gửi, địa chỉ IP hay cookies thiết bị.</li>
+            <li><strong>Rate Limiting & Chống Tấn Công Injection:</strong> Khóa nút gửi phản ánh (Cooldown 30 giây) sau mỗi lần nộp. Dữ liệu được kiểm duyệt độ dài chuỗi ký tự nghiêm ngặt trước khi ghi nhận.</li>
+            <li><strong>Firestore Security Rules Chuẩn Mực:</strong> Thiết lập chính sách bảo vệ dữ liệu đám mây: <code>allow read: if true;</code>, <code>allow create: if request.auth != null;</code> và nghiêm cấm tuyệt đối client chỉnh sửa hoặc xóa dữ liệu (<code>allow update, delete: if false;</code>).</li>
           </ul>
         </div>
       </div>
@@ -373,6 +378,7 @@ Yêu cầu phân tích:
 
   <!-- Modular Scripts -->
   <script src="js/storage.js"></script>
+  <script src="js/firebase-service.js"></script>
   <script src="js/lookup.js"></script>
   <script src="js/intake.js"></script>
   <script src="js/analyzer.js"></script>
