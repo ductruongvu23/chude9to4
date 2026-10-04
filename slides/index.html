@@ -62,7 +62,13 @@
         </div>
       </div>
       <button class="btn-ctrl" onclick="openPrintModal()" title="In trực tiếp từ trình duyệt">
-        🖨️ In Trình Duyệt
+        🖨️ In
+      </button>
+      <button class="btn-ctrl" id="btnFullBleed" onclick="toggleFullBleed()" title="Bật/Tắt chế độ Full viền tràn màn hình (Phím tắt: F)">
+        🔲 Full Viền
+      </button>
+      <button class="btn-ctrl" id="btnEditMode" onclick="toggleEditMode()" title="Bật/Tắt chế độ chỉnh sửa trực tiếp nội dung slide (Phím tắt: E)">
+        ✏️ Chỉnh Sửa
       </button>
       <a href="../app/index.html" target="_blank" class="btn-ctrl btn-highlight">
         🚀 Cổng Tra Cứu
@@ -244,10 +250,10 @@
           </div>
 
           <div class="diagram-split-container">
-            <!-- CỘT TRÁI: HÌNH ẢNH SƠ ĐỒ PHÂN HỆ TRỰC QUAN -->
-            <div class="diagram-img-frame">
+            <!-- CỘT TRÁI: HÌNH ẢNH SƠ ĐỒ PHÂN HỆ TRỰC QUAN (PHÓNG TO & ZOOM) -->
+            <div class="diagram-img-frame" onclick="openLightbox('assets/so_do_phan_he_lua_dao.png', 'Sơ đồ phân hệ hệ thống đường dây lừa đảo trực tuyến (3 phân hệ & 4 tác động cốt lõi)')" title="🔍 Bấm để phóng to xem toàn màn hình">
               <img src="assets/so_do_phan_he_lua_dao.png" alt="Sơ đồ phân hệ hệ thống đường dây lừa đảo trực tuyến">
-              <div class="caption">📌 Sơ đồ phân hệ: 3 Phân hệ vận hành &amp; Kết quả tác động của đường dây lừa đảo</div>
+              <div class="caption">🔍 Sơ đồ phân hệ: 3 Phân hệ &amp; 4 Tác động cốt lõi (Bấm để phóng to)</div>
             </div>
 
             <!-- CỘT PHẢI: BÓC TÁCH CHI TIẾT 3 PHÂN HỆ & 4 TÁC ĐỘNG -->
@@ -398,10 +404,10 @@
           </div>
 
           <div class="diagram-split-container">
-            <!-- CỘT TRÁI: HÌNH ẢNH SƠ ĐỒ HỆ THỐNG PHÒNG VỆ 6 TÁC NHÂN -->
-            <div class="diagram-img-frame">
+            <!-- CỘT TRÁI: HÌNH ẢNH SƠ ĐỒ HỆ THỐNG PHÒNG VỆ 6 TÁC NHÂN (PHÓNG TO & ZOOM) -->
+            <div class="diagram-img-frame" onclick="openLightbox('assets/so_do_phong_ve_diem_yeu.png', 'Sơ đồ hệ thống phòng vệ 6 tác nhân & 3 điểm yếu liên kết trọng yếu')" title="🔍 Bấm để phóng to xem toàn màn hình">
               <img src="assets/so_do_phong_ve_diem_yeu.png" alt="Sơ đồ hệ thống phòng vệ và điểm yếu liên kết">
-              <div class="caption">📌 Sơ đồ 6 tác nhân phòng vệ &amp; 3 điểm yếu liên kết trọng yếu</div>
+              <div class="caption">🔍 Sơ đồ 6 tác nhân phòng vệ &amp; 3 điểm yếu liên kết (Bấm để phóng to)</div>
             </div>
 
             <!-- CỘT PHẢI: CHI TIẾT 3 ĐIỂM YẾU & KẾT LUẬN TÍNH NHẤT THỂ -->
@@ -1046,6 +1052,15 @@
       <div id="notesBody">Đang tải ghi chú...</div>
     </div>
   </aside>
+
+  <!-- Lightbox Modal for Zooming Diagrams -->
+  <div id="imageLightbox" class="lightbox-modal" onclick="closeLightbox()">
+    <div class="lightbox-img-wrapper" onclick="event.stopPropagation()">
+      <button class="lightbox-close-btn" onclick="closeLightbox()" title="Đóng (Escape)">✕</button>
+      <img id="lightboxImg" src="" alt="Zoomed diagram">
+      <div id="lightboxCaption" style="margin-top: 10px; color: #E2E8F0; font-size: 0.95rem; font-weight: 700; text-align: center;"></div>
+    </div>
+  </div>
 
   <!-- Modular Presentation Script -->
   <script src="js/presentation.js"></script>

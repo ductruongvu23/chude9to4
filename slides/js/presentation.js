@@ -14,6 +14,23 @@ function getTotalSlides() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Restore full-bleed preference
+  if (localStorage.getItem('to4_full_bleed') === 'true') {
+    document.body.classList.add('full-bleed');
+    const btn = document.getElementById('btnFullBleed');
+    if (btn) {
+      btn.innerHTML = '⏹️ Thu Viền';
+      btn.classList.add('btn-highlight');
+    }
+  }
+
+  // Restore saved slide edits if any
+  const savedEdits = localStorage.getItem('to4_saved_slides_' + (document.body.getAttribute('data-theme') || 'default'));
+  if (savedEdits) {
+    const container = document.getElementById('slidesContainer');
+    if (container) container.innerHTML = savedEdits;
+  }
+
   totalSlides = getTotalSlides();
   const totalEl = document.getElementById('totalSlidesNum');
   if (totalEl) totalEl.textContent = totalSlides;
@@ -22,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Keyboard navigation
   document.addEventListener('keydown', (e) => {
-    if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') return;
+    if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT' || e.target.isContentEditable) return;
 
     if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
       e.preventDefault();
@@ -32,6 +49,13 @@ document.addEventListener('DOMContentLoaded', () => {
       prevSlide();
     } else if (e.key === 'p' || e.key === 'P') {
       togglePresenterMode();
+    } else if (e.key === 'f' || e.key === 'F') {
+      toggleFullBleed();
+    } else if (e.key === 'e' || e.key === 'E') {
+      toggleEditMode();
+    } else if (e.key === 'Escape') {
+      closeLightbox();
+      if (document.body.classList.contains('edit-mode-active')) toggleEditMode();
     }
   });
 
@@ -199,4 +223,101 @@ document.addEventListener('click', (e) => {
     menu.style.display = 'none';
   }
 });
+
+// ===================================================================
+// CHẾ ĐỘ FULL VIỀN (BORDERLESS / EDGE-TO-EDGE)
+// ===================================================================
+function toggleFullBleed() {
+  document.body.classList.toggle('full-bleed');
+  const isFull = document.body.classList.contains('full-bleed');
+  localStorage.setItem('to4_full_bleed', isFull ? 'true' : 'false');
+  const btn = document.getElementById('btnFullBleed');
+  if (btn) {
+    btn.innerHTML = isFull ? '⏹️ Thu Viền' : '🔲 Full Viền';
+    btn.classList.toggle('btn-highlight', isFull);
+  }
+}
+
+// ===================================================================
+// CHẾ ĐỘ CHỈNH SỬA TRỰC TIẾP (LIVE INLINE EDIT MODE)
+// ===================================================================
+function toggleEditMode() {
+  document.body.classList.toggle('edit-mode-active');
+  const isEdit = document.body.classList.contains('edit-mode-active');
+  const btn = document.getElementById('btnEditMode');
+  if (btn) {
+    btn.innerHTML = isEdit ? '✅ Đang Sửa' : '✏️ Chỉnh Sửa';
+    btn.classList.toggle('btn-highlight', isEdit);
+  }
+
+  const editableSelectors = '.slide-title, .hero-title, .hero-subtitle, .slide-desc, .section-tag, .tag-pill, .stat-card h3, .stat-card p, .point-card h4, .point-card p, .diagram-step-title, .diagram-step-desc, .mindmap-branch-card p, .spec-box h4, .spec-box p, .actor-card-title, .actor-card p, .crisis-step-title, .crisis-card p, .risk-card-item p, .system-goal-banner, .diagram-img-frame .caption, .slide-source-caption, p, h1, h2, h3, h4';
+
+  document.querySelectorAll(editableSelectors).forEach(el => {
+    if (!el.closest('.presentation-header') && !el.closest('.presentation-footer') && !el.closest('.presenter-drawer') && !el.closest('.lightbox-modal')) {
+      if (isEdit) {
+        el.setAttribute('contenteditable', 'true');
+        el.setAttribute('spellcheck', 'false');
+      } else {
+        el.removeAttribute('contenteditable');
+      }
+    }
+  });
+
+  let bar = document.getElementById('editFloatingBar');
+  if (isEdit) {
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.id = 'editFloatingBar';
+      bar.className = 'edit-floating-bar';
+      bar.innerHTML = `
+        <div class="edit-title">✏️ Chế độ chỉnh sửa đang BẬT</div>
+        <button class="edit-btn primary" onclick="saveEdits()">💾 Lưu thay đổi</button>
+        <button class="edit-btn" onclick="resetEdits()">↺ Khôi phục gốc</button>
+        <button class="edit-btn" onclick="toggleEditMode()">✖️ Đóng</button>
+      `;
+      document.body.appendChild(bar);
+    } else {
+      bar.style.display = 'flex';
+    }
+  } else if (bar) {
+    bar.style.display = 'none';
+  }
+}
+
+function saveEdits() {
+  const container = document.getElementById('slidesContainer');
+  if (container) {
+    const theme = document.body.getAttribute('data-theme') || 'default';
+    localStorage.setItem('to4_saved_slides_' + theme, container.innerHTML);
+    alert('✅ Đã lưu toàn bộ nội dung chỉnh sửa vào trình duyệt của bạn!');
+  }
+}
+
+function resetEdits() {
+  if (confirm('Bạn có chắc chắn muốn xóa các nội dung đã sửa và khôi phục lại mặc định?')) {
+    const theme = document.body.getAttribute('data-theme') || 'default';
+    localStorage.removeItem('to4_saved_slides_' + theme);
+    window.location.reload();
+  }
+}
+
+// ===================================================================
+// LIGHTBOX MODAL PHÓNG TO SƠ ĐỒ CHI TIẾT
+// ===================================================================
+function openLightbox(src, caption) {
+  const modal = document.getElementById('imageLightbox');
+  const img = document.getElementById('lightboxImg');
+  const cap = document.getElementById('lightboxCaption');
+  if (modal && img) {
+    img.src = src;
+    if (cap) cap.textContent = caption || '';
+    modal.classList.add('active');
+  }
+}
+
+function closeLightbox() {
+  const modal = document.getElementById('imageLightbox');
+  if (modal) modal.classList.remove('active');
+}
+
 
