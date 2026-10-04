@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
@@ -22,12 +22,13 @@
     </div>
 
     <div class="header-controls">
-      <!-- 3 Theme Switcher -->
+      <!-- 4 Theme Switcher -->
       <div class="theme-selector-wrap">
         <select id="themeSelect" onchange="changeTheme(this.value)">
           <option value="swiss" selected>Bản 1: Minimalist Swiss (Sáng tối giản)</option>
           <option value="dark">Bản 2: Minimal Dark (Tối giản thanh lịch)</option>
           <option value="academic">Bản 3: Academic Editorial (Học thuật trang nhã)</option>
+          <option value="cyber">Bản 4: Modern Cyber Defense (Phong cách Canva Tech)</option>
         </select>
       </div>
 
@@ -35,18 +36,21 @@
         🎙️ Ghi chú
       </button>
       <div class="download-dropdown-wrap" style="position: relative; display: inline-block;">
-        <button class="btn-ctrl" onclick="toggleDownloadMenu()" title="Tải về file PDF của 3 kiểu thiết kế">
-          📥 Tải PDF (3 Kiểu) ▼
+        <button class="btn-ctrl" onclick="toggleDownloadMenu()" title="Tải về file PDF của 4 kiểu thiết kế">
+          📥 Tải PDF (4 Kiểu) ▼
         </button>
-        <div id="downloadMenu" style="display: none; position: absolute; top: 100%; right: 0; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); box-shadow: var(--shadow-lg); min-width: 260px; z-index: 1000; margin-top: 4px; padding: 4px 0;">
+        <div id="downloadMenu" style="display: none; position: absolute; top: 100%; right: 0; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); box-shadow: var(--shadow-lg); min-width: 270px; z-index: 1000; margin-top: 4px; padding: 4px 0;">
           <a href="Slide_To4_ThietKe1_Swiss_Tech.pdf" download="Slide_To4_ThietKe1_Swiss_Tech.pdf" style="display: block; padding: 8px 14px; font-size: 0.8rem; color: var(--text-main); text-decoration: none; border-bottom: 1px solid var(--border-color); font-weight: 600;">
             📄 Bản 1: Swiss Tech (Sáng tối giản)
           </a>
           <a href="Slide_To4_ThietKe2_Minimal_Dark.pdf" download="Slide_To4_ThietKe2_Minimal_Dark.pdf" style="display: block; padding: 8px 14px; font-size: 0.8rem; color: var(--text-main); text-decoration: none; border-bottom: 1px solid var(--border-color); font-weight: 600;">
             📄 Bản 2: Minimal Dark (Tối giản thanh lịch)
           </a>
-          <a href="Slide_To4_ThietKe3_Academic_Editorial.pdf" download="Slide_To4_ThietKe3_Academic_Editorial.pdf" style="display: block; padding: 8px 14px; font-size: 0.8rem; color: var(--text-main); text-decoration: none; font-weight: 600;">
+          <a href="Slide_To4_ThietKe3_Academic_Editorial.pdf" download="Slide_To4_ThietKe3_Academic_Editorial.pdf" style="display: block; padding: 8px 14px; font-size: 0.8rem; color: var(--text-main); text-decoration: none; border-bottom: 1px solid var(--border-color); font-weight: 600;">
             📄 Bản 3: Academic Editorial (Học thuật)
+          </a>
+          <a href="Slide_To4_ThietKe4_Cyber_Defense.pdf" download="Slide_To4_ThietKe4_Cyber_Defense.pdf" style="display: block; padding: 8px 14px; font-size: 0.8rem; color: var(--text-main); text-decoration: none; font-weight: 600;">
+            📄 Bản 4: Modern Cyber Defense (Canva Tech)
           </a>
         </div>
       </div>

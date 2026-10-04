@@ -12,10 +12,11 @@ Dự án nghiên cứu, slide trình chiếu và cổng dịch vụ tra cứu & 
 1. **Bộ Slide Trình Chiếu Chuyên Nghiệp (16 Slides Hệ Thống Chuẩn Hóa)**:
    - Thư mục: [`slides/`](slides/) (Mở trực tiếp [`slides/index.html`](slides/index.html))
    - **Tải về file PDF 16 trang hoàn chỉnh**: [`Slide_To4_DeTai9.pdf`](Slide_To4_DeTai9.pdf) hoặc [`slides/Slide_To4_DeTai9.pdf`](slides/Slide_To4_DeTai9.pdf)
-   - Xuất bản đồng bộ 3 phong cách thiết kế:
+   - Xuất bản đồng bộ 4 phong cách thiết kế:
      - Bản 1: *Minimalist Swiss (Sáng tối giản)* — [`Slide_To4_ThietKe1_Swiss_Tech.pdf`](Slide_To4_ThietKe1_Swiss_Tech.pdf)
      - Bản 2: *Minimal Dark (Tối giản thanh lịch)* — [`Slide_To4_ThietKe2_Minimal_Dark.pdf`](Slide_To4_ThietKe2_Minimal_Dark.pdf)
      - Bản 3: *Academic Editorial (Học thuật trang nhã)* — [`Slide_To4_ThietKe3_Academic_Editorial.pdf`](Slide_To4_ThietKe3_Academic_Editorial.pdf)
+     - Bản 4: *Modern Cyber Defense (Phong cách Canva Tech Pitch Deck)* — [`Slide_To4_ThietKe4_Cyber_Defense.pdf`](Slide_To4_ThietKe4_Cyber_Defense.pdf) (Mở trực tiếp [`slides/theme_cyber.html`](slides/theme_cyber.html)) — Thiết kế chuyên nghiệp lấy cảm hứng từ mẫu Pitch Deck Cyber Security của Canva: Nền xanh đen công nghệ, đường nét kim loại bạc và viền sáng Cyan neon.
    - **Phân tích có hệ thống đầy đủ 5 trụ cột**: Mục tiêu hệ thống, Phân hệ đối kháng/phòng vệ, Tính nhất thể (Wholeness & Emergent Properties), Yêu cầu chức năng/phi chức năng (FR1-FR5 & NFR1-NFR5), Ma trận 5 Rủi ro hệ thống & Kiểm soát.
    - **Tích hợp Mã QR truy cập tức thì**: Quét mã QR tại Slide 14 và Slide 16 để mở ứng dụng web trực tiếp trên điện thoại.
    - **Kịch bản xử lý khủng hoảng "Giờ Vàng" 15-30 phút đầu** (Slide 15): Khóa thẻ khẩn cấp, ngắt app độc hại, bảo toàn chứng cứ số và trình báo Công an/156.

@@ -75,3 +75,133 @@ body[data-theme="academic"] {
   --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.08);
   --font-heading: var(--font-serif);
 }
+
+/* ===================================================================
+   BẢN 4: MODERN CYBER DEFENSE (Canva Cyber Security Pitch Deck)
+   Lấy cảm hứng trực tiếp từ mẫu Canva: Nền xanh đen sâu thẳm,
+   chi tiết kim loại bạc, viền sáng neon Cyan công nghệ cao
+   =================================================================== */
+body[data-theme="cyber"] {
+  --bg-page: #030814;
+  --bg-canvas: #061329;
+  --bg-card: rgba(10, 25, 54, 0.85);
+  --bg-card-hover: rgba(16, 38, 80, 0.95);
+  --border-color: rgba(56, 189, 248, 0.25);
+
+  --text-main: #ffffff;
+  --text-muted: #cbd5e1;
+  --text-dim: #94a3b8;
+
+  --accent-primary: #00b4d8;
+  --accent-light: rgba(0, 180, 216, 0.16);
+  --accent-danger: #fb7185;
+
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 25px 60px rgba(0, 0, 0, 0.85);
+  --font-heading: var(--font-sans);
+}
+
+/* Hiệu ứng nền & Phong cách Canva Cyber Security */
+body[data-theme="cyber"] .slide-viewport {
+  background: radial-gradient(circle at 80% 20%, rgba(0, 180, 216, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 20% 80%, rgba(14, 165, 233, 0.12) 0%, transparent 45%),
+              linear-gradient(135deg, #050d1d 0%, #020611 100%);
+}
+
+body[data-theme="cyber"] .slide-item {
+  background: radial-gradient(circle at 85% 15%, rgba(0, 180, 216, 0.12) 0%, transparent 45%),
+              linear-gradient(135deg, #07152b 0%, #050d1a 100%) !important;
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+}
+
+/* Slide 1 Cover: Giao diện Pitch Deck công nghệ chuẩn Canva */
+body[data-theme="cyber"] .slide-item[data-slide="1"] {
+  background: linear-gradient(105deg, rgba(5, 13, 26, 0.94) 0%, rgba(7, 21, 43, 0.90) 50%, rgba(6, 18, 38, 0.72) 100%),
+              url('../assets/canva_cyber_bg.jpg') no-repeat right center / cover !important;
+}
+
+body[data-theme="cyber"] .slide-title {
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  font-weight: 800;
+  text-shadow: 0 0 20px rgba(0, 180, 216, 0.3);
+}
+
+body[data-theme="cyber"] .section-tag {
+  background: linear-gradient(90deg, rgba(0, 180, 216, 0.3), rgba(56, 189, 248, 0.15));
+  border: 1px solid #00b4d8;
+  color: #38bdf8;
+  box-shadow: 0 0 12px rgba(0, 180, 216, 0.3);
+  font-weight: 800;
+}
+
+body[data-theme="cyber"] .slide-desc {
+  color: #94a3b8;
+  border-bottom: 2px solid;
+  border-image: linear-gradient(90deg, #38bdf8 0%, rgba(148, 163, 184, 0.4) 60%, transparent 100%) 1;
+  padding-bottom: 6px;
+}
+
+body[data-theme="cyber"] .stat-card,
+body[data-theme="cyber"] .point-card,
+body[data-theme="cyber"] .spec-box,
+body[data-theme="cyber"] .feature-pill-card,
+body[data-theme="cyber"] .actor-card,
+body[data-theme="cyber"] .silo-item,
+body[data-theme="cyber"] .crisis-card,
+body[data-theme="cyber"] .risk-card-item {
+  background: rgba(10, 25, 54, 0.82) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(56, 189, 248, 0.22) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+body[data-theme="cyber"] .stat-card:hover,
+body[data-theme="cyber"] .point-card:hover,
+body[data-theme="cyber"] .risk-card-item:hover {
+  border-color: #38bdf8 !important;
+  box-shadow: 0 8px 24px rgba(0, 180, 216, 0.25) !important;
+  transform: translateY(-2px);
+}
+
+body[data-theme="cyber"] .point-card.danger,
+body[data-theme="cyber"] .mindmap-branch-card.danger {
+  border-color: rgba(251, 113, 133, 0.45) !important;
+  border-left: 4px solid #fb7185 !important;
+  background: rgba(35, 12, 24, 0.6) !important;
+}
+
+body[data-theme="cyber"] .system-goal-banner {
+  background: linear-gradient(90deg, rgba(0, 180, 216, 0.22), rgba(6, 18, 38, 0.7));
+  border: 1px solid rgba(0, 180, 216, 0.45);
+  border-left: 4px solid #00b4d8;
+  box-shadow: 0 0 15px rgba(0, 180, 216, 0.2);
+}
+
+body[data-theme="cyber"] .system-goal-banner.danger {
+  background: linear-gradient(90deg, rgba(244, 63, 94, 0.22), rgba(6, 18, 38, 0.7));
+  border-color: rgba(244, 63, 94, 0.45);
+  border-left-color: #fb7185;
+}
+
+body[data-theme="cyber"] .qr-access-box {
+  background: rgba(8, 28, 62, 0.95);
+  border: 1px dashed #00b4d8;
+  box-shadow: 0 0 20px rgba(0, 180, 216, 0.25);
+}
+
+body[data-theme="cyber"] .presentation-header,
+body[data-theme="cyber"] .presentation-footer {
+  background: rgba(3, 10, 22, 0.96);
+  border-color: rgba(56, 189, 248, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+body[data-theme="cyber"] .nav-btn.primary {
+  background: linear-gradient(135deg, #00b4d8, #0284c7);
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(0, 180, 216, 0.4);
+}
+

@@ -37,6 +37,12 @@ def main():
             'html': 'theme_academic.html',
             'pdf_name': 'Slide_To4_ThietKe3_Academic_Editorial.pdf',
             'title': 'Bản 3: Academic Editorial (Học thuật trang nhã)'
+        },
+        {
+            'name': 'cyber',
+            'html': 'theme_cyber.html',
+            'pdf_name': 'Slide_To4_ThietKe4_Cyber_Defense.pdf',
+            'title': 'Bản 4: Modern Cyber Defense (Phong cách Canva Tech Pitch Deck)'
         }
     ]
 
@@ -54,7 +60,7 @@ def main():
         print(f"Generated clean UTF-8 HTML: {config['html']} ({len(content)} characters)")
 
     # Verify no mojibake in generated files
-    mojibake_tokens = ['Ã¡', 'Ã ', 'Ã¢', 'Ã©', 'Ã¨', 'Ãª', 'Ã³', 'Ã²', 'Ã´', 'Ãº', 'Ã¹', 'Ä‘', 'Ä ', 'áº', 'á»', 'â€¢', 'ðŸ']
+    mojibake_tokens = ['Ã¡', 'Ã¢', 'Ã©', 'Ã¨', 'Ãª', 'Ã³', 'Ã²', 'Ã´', 'Ãº', 'Ã¹', 'Ä‘', 'Ä ', 'áº', 'á»', 'â€¢', 'ðŸ']
     for config in theme_configs:
         out_file = os.path.join(slides_dir, config['html'])
         with open(out_file, 'r', encoding='utf-8') as f_check:
