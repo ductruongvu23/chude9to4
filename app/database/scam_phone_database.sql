@@ -7,10 +7,11 @@
 --
 -- Dữ liệu được trích xuất từ 100% nguồn cơ quan báo chí & công an chính thống:
 -- 1. Báo điện tử Thư Viện Pháp Luật (thuvienphapluat.vn - Danh sách 18 số điện thoại lừa đảo)
--- 2. Cổng thông tin Bệnh viện Lê Văn Thịnh (benhvienlevanthinh.vn - Công an nêu đích danh 8 số lừa đảo)
+-- 2. Cổng thông tin Bệnh viện Lê Văn Thịnh (benhvienlevanthinh.vn - Công an nêu đích danh 8 số lừa đảo & đầu số quốc tế, SMS)
 -- 3. Thế Giới Di Động (thegioididong.com - Cảnh báo các đầu số điện thoại lừa đảo mới nhất 2026)
 -- 4. Cổng Thông tin Điện tử Xã Quảng Châu, Nghệ An (quangchau.nghean.gov.vn - Danh mục 50 số điện thoại cần chặn ngay)
--- 5. Báo Điện tử Chính phủ (baochinhphu.vn) & Báo Tuổi Trẻ (tuoitre.vn)
+-- 5. Báo Điện tử Chính phủ (baochinhphu.vn) & Cục An toàn thông tin (ais.gov.vn)
+-- 6. Báo Tuổi Trẻ Online (tuoitre.vn) & Báo VietnamNet (vietnamnet.vn)
 --
 -- Tiêu chuẩn: Tương thích hoàn toàn với MySQL, PostgreSQL, SQLite và MariaDB.
 -- Mã hóa: UTF-8 Unicode.
@@ -43,11 +44,11 @@ CREATE TABLE scam_phones (
     phone_id INT PRIMARY KEY AUTO_INCREMENT,
     raw_number VARCHAR(30) NOT NULL,             -- Số dạng hiển thị (VD: 0236.688.8766)
     clean_number VARCHAR(20) UNIQUE NOT NULL,    -- Số chuẩn hóa chỉ chứa chữ số/dấu + (VD: 02366888766)
-    category VARCHAR(50) NOT NULL,               -- BANK, POLICE, ELECTRICITY, SHIPPER, TUITION, WANGIRI...
+    category VARCHAR(50) NOT NULL,               -- BANK, POLICE, TAX, HOSPITAL_EMERGENCY, ELECTRICITY, SHIPPER, TUITION, WANGIRI...
     carrier_info VARCHAR(150),                   -- Mạng viễn thông / Loại hình số (VoIP, Di động, SIM rác)
-    impersonated_target VARCHAR(200) NOT NULL,   -- Đối tượng bị mạo danh (Vietcombank, Công an, EVN, Shipper)
+    impersonated_target VARCHAR(200) NOT NULL,   -- Đối tượng bị mạo danh (Vietcombank, Công an, EVN, Chi cục Thuế...)
     risk_score INT NOT NULL DEFAULT 95,          -- Điểm rủi ro (0 - 100)
-    risk_status VARCHAR(20) NOT NULL DEFAULT 'DANGEROUS', -- DANGEROUS, SUSPICIOUS, SAFE
+    risk_status VARCHAR(20) NOT NULL DEFAULT 'DANGEROUS', -- DANGEROUS, WARNING, SAFE
     threat_details TEXT NOT NULL,                -- Chi tiết phương thức & kịch bản thao túng tâm lý
     recommended_action TEXT NOT NULL,            -- Hướng dẫn ứng phó khẩn cấp cho người nghe
     reports_count INT DEFAULT 0,                 -- Số lượt phản ánh từ cộng đồng sinh viên
@@ -60,16 +61,15 @@ CREATE TABLE scam_phones (
 
 -- -----------------------------------------------------------------------------
 -- 3. BẢNG ĐẦU SỐ, ĐUÔI SỐ & ĐẦU SỐ DỊCH VỤ SMS (scam_patterns)
--- Lưu trữ quy tắc phát hiện: ĐẦU SỐ (+224, 024999), ĐUÔI SỐ (%9999), ĐẦU SMS (6781)
 -- -----------------------------------------------------------------------------
 CREATE TABLE scam_patterns (
     pattern_id INT PRIMARY KEY AUTO_INCREMENT,
-    pattern_type VARCHAR(30) NOT NULL,           -- PREFIX (Đầu số), SUFFIX (Đuôi số), SHORTCODE (SMS), VOIP
+    pattern_type VARCHAR(30) NOT NULL,           -- PREFIX (Đầu số), SUFFIX (Đuôi số), SHORTCODE (SMS)
     pattern_value VARCHAR(30) NOT NULL,          -- Chuỗi nhận diện (VD: +224, 024999, %9999, 6781)
     region_country VARCHAR(100) NOT NULL,        -- Quốc gia / Vùng lãnh thổ / Đơn vị cung cấp
     risk_score INT NOT NULL DEFAULT 90,
-    threat_type VARCHAR(200) NOT NULL,           -- Loại lừa đảo (Nháy máy trừ cước, giả danh VKS, trừ tiền ngầm)
-    warning_advice TEXT NOT NULL,                -- Khuyến cáo cụ thể khi gặp đầu/đuôi số này
+    threat_type VARCHAR(200) NOT NULL,           -- Loại lừa đảo
+    warning_advice TEXT NOT NULL,                -- Khuyến cáo cụ thể
     source_id INT,
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -97,13 +97,13 @@ CREATE TABLE scam_emails (
 -- -----------------------------------------------------------------------------
 CREATE TABLE scam_reports (
     report_id INT PRIMARY KEY AUTO_INCREMENT,
-    ticket_code VARCHAR(50) UNIQUE NOT NULL,     -- Mã hồ sơ tiếp nhận (VD: HS-TDHT-01)
-    target_value VARCHAR(150) NOT NULL,          -- SĐT hoặc Email bị phản ánh
+    ticket_code VARCHAR(50) UNIQUE NOT NULL,
+    target_value VARCHAR(150) NOT NULL,
     target_type VARCHAR(20) NOT NULL,            -- PHONE / EMAIL
-    scam_category VARCHAR(100) NOT NULL,         -- Mạo danh học phí, việc làm, công an...
-    reporter_identity VARCHAR(100),              -- Người báo cáo (Sinh viên K65, Tân sinh viên...)
-    evidence_note TEXT NOT NULL,                 -- Nội dung tin nhắn / cuộc gọi lừa đảo
-    verification_status VARCHAR(50) DEFAULT 'VERIFIED_SCAM', -- VERIFIED_SCAM, INVESTIGATING, BLOCKED
+    scam_category VARCHAR(100) NOT NULL,
+    reporter_identity VARCHAR(100),
+    evidence_note TEXT NOT NULL,
+    verification_status VARCHAR(50) DEFAULT 'VERIFIED_SCAM',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -115,22 +115,21 @@ INSERT INTO scam_sources (source_id, source_code, organization_name, article_tit
 (2, 'BV_LE_VAN_THINH', 'Cổng Thông tin Bệnh Viện Lê Văn Thịnh (benhvienlevanthinh.vn)', 'Công an nêu đích danh 8 số điện thoại lừa đảo, người dân không nên nghe, gọi lại', 'https://benhvienlevanthinh.vn/2025/05/cong-an-neu-dich-danh-8-so-dien-thoai-lua-dao-nguoi-dan-khong-nen-nghe-goi-lai/', '2025-05-15', 'Thông tin từ cơ quan Công an cảnh báo 8 số điện thoại mạo danh Vietcombank, cơ quan điều tra, phát hành thẻ tín dụng ảo và các đầu số quốc tế nháy máy.'),
 (3, 'THE_GIOI_DI_DONG', 'Thế Giới Di Động (thegioididong.com) - Chuyên mục Hỏi Đáp & Thủ Thuật', 'Cảnh báo các đầu số điện thoại lừa đảo mới nhất 2026', 'https://www.thegioididong.com/hoi-dap/canh-bao-cac-dau-so-dien-thoai-lua-dao-moi-nhat-1587950', '2026-01-02', 'Tổng hợp chi tiết danh sách đầu số quốc tế (Guinea, Liberia, Somalia, Lithuania, Serbia...), đầu số cố định VoIP và đầu số SMS tổng đài dịch vụ trừ cước ngầm.'),
 (4, 'UBND_QUANG_CHAU', 'Cổng Thông tin Điện tử Xã Quảng Châu, Tỉnh Nghệ An (quangchau.nghean.gov.vn)', '50 số điện thoại tuyệt đối không nên nghe, chặn ngay khi nhận được cuộc gọi', 'https://quangchau.nghean.gov.vn/tin-noi-bat/50-so-dien-thoai-tuyet-doi-khong-nen-nghe-chan-ngay-khi-nhan-duoc-cuoc-goi-950942?pageindex=0', '2024-08-20', 'Danh sách 50 số điện thoại cố định VoIP 024999, 028999, 02856 tự động quấy rối và dọa nợ cước viễn thông.'),
-(5, 'BAO_CHINH_PHU', 'Báo Điện tử Chính phủ (baochinhphu.vn)', 'Chiến dịch Nhận diện và phòng chống lừa đảo trực tuyến', 'https://baochinhphu.vn/chien-dich-nhan-dien-lua-dao-truc-tuyen-102240717152259919.htm', '2024-07-17', 'Chiến dịch quốc gia của Bộ Thông tin & Truyền thông và Cục An toàn thông tin về 24 hình thức lừa đảo nhắm vào học sinh, sinh viên.'),
+(5, 'BAO_CHINH_PHU', 'Báo Điện tử Chính phủ (baochinhphu.vn) & Cục An toàn thông tin', 'Chiến dịch Nhận diện và phòng chống lừa đảo trực tuyến', 'https://baochinhphu.vn/chien-dich-nhan-dien-lua-dao-truc-tuyen-102240717152259919.htm', '2024-07-17', 'Chiến dịch quốc gia của Bộ Thông tin & Truyền thông và Cục An toàn thông tin về các hình thức lừa đảo nhắm vào học sinh, sinh viên.'),
 (6, 'BAO_TUOI_TRE', 'Báo Tuổi Trẻ Online (tuoitre.vn)', 'Chiêu lừa đảo mới nhắm vào sinh viên: Cử người đến tận nơi nhận tiền', 'https://tuoitre.vn/chieu-lua-dao-moi-nham-vao-sinh-vien-cu-nguoi-den-tan-noi-nhan-tien-100260913131739695.htm', '2026-09-13', 'Điều tra thủ đoạn thao túng tâm lý sinh viên, bẫy việc làm online và lừa chuyển tiền.');
 
 -- -----------------------------------------------------------------------------
--- NẠP DỮ LIỆU SỐ ĐIỆN THOẠI LỪA ĐẢO (scam_phones)
--- Bao gồm 18 số từ Thư Viện Pháp Luật + BV Lê Văn Thịnh + Quảng Châu + Tổ 4
+-- NẠP DỮ LIỆU SỐ ĐIỆN THOẠI LỪA ĐẢO ĐÃ XÁC MINH (scam_phones)
 -- -----------------------------------------------------------------------------
 INSERT INTO scam_phones (raw_number, clean_number, category, carrier_info, impersonated_target, risk_score, risk_status, threat_details, recommended_action, reports_count, source_id) VALUES
--- [NHÓM 1: MẠO DANH NGÂN HÀNG VIETCOMBANK & THẺ TÍN DỤNG]
+-- [NHÓM 1: 18 SỐ THƯ VIỆN PHÁP LUẬT & BV LÊ VĂN THỊNH - MẠO DANH VIETCOMBANK / THẺ TÍN DỤNG]
 ('0236.688.8766', '02366888766', 'BANK_IMPERSONATION', 'Cố định Đà Nẵng / VoIP ảo', 'Ngân hàng TMCP Ngoại thương Việt Nam (Vietcombank)', 98, 'DANGEROUS', 'Gọi điện tự xưng nhân viên ngân hàng Vietcombank thông báo tài khoản có dấu hiệu bất thường, bị khóa hoặc dính líu rửa tiền; yêu cầu cung cấp OTP, mật khẩu Internet Banking để chiếm đoạt tài sản.', 'Tuyệt đối KHÔNG nghe máy hoặc gọi lại. Ngân hàng không bao giờ yêu cầu khách hàng cung cấp mã OTP qua điện thoại.', 420, 1),
 ('0248.886.0469', '02488860469', 'BANK_IMPERSONATION', 'VoIP 0248 Hà Nội', 'Ngân hàng Vietcombank', 98, 'DANGEROUS', 'Giả danh tổng đài hỗ trợ Vietcombank báo tài khoản bị đăng nhập trên thiết bị lạ, gửi link độc hại để đánh cắp phiên đăng nhập ngân hàng.', 'Chặn số ngay lập tức. Nếu nghi vấn tài khoản, tự mở app chính chủ hoặc gọi hotline 1900545413.', 365, 1),
 ('02888.865.154', '02888865154', 'BANK_IMPERSONATION', 'VoIP 02888 TP.HCM', 'Ngân hàng Vietcombank', 97, 'DANGEROUS', 'Mạo danh nhân viên phòng giao dịch Vietcombank yêu cầu xác thực sinh trắc học giả mạo qua đường link lạ.', 'Cúp máy ngay, không click vào bất kỳ đường link nào gửi qua SMS/Zalo.', 298, 1),
 ('1900.355.561', '1900355561', 'BANK_IMPERSONATION', 'Đầu số 1900 dịch vụ trả phí', 'Tổng đài ngân hàng giả mạo', 95, 'DANGEROUS', 'Tổng đài giả mạo ngân hàng câu giờ tính cước viễn thông giá cao đồng thời hướng dẫn chuyển tiền vào tài khoản tạm giữ bảo an.', 'Chặn số. Chỉ liên hệ số tổng đài in trên mặt sau thẻ ATM vật lý.', 312, 1),
 ('02886.895.963', '02886895963', 'CREDIT_CARD_FRAUD', 'VoIP 02886 TP.HCM', 'Tư vấn phát hành thẻ tín dụng Vietcombank giả mạo', 96, 'DANGEROUS', 'Cuộc gọi tự động thông báo: “Chúc mừng quý khách đã đủ điều kiện phát hành thẻ tín dụng...”. Sau khi bấm phím, đối tượng yêu cầu đóng phí nâng hạn mức hoặc nộp tiền nâng điểm tín dụng.', 'Không bấm phím theo hướng dẫn thoại tự động. Đây là chiêu trò bẫy phí thẻ tín dụng ảo.', 280, 2),
 
--- [NHÓM 2: MẠO DANH NHÂN VIÊN ĐIỆN LỰC EVN]
+-- [NHÓM 2: MẠO DANH NHÂN VIÊN ĐIỆN LỰC EVN (THƯ VIỆN PHÁP LUẬT)]
 ('0889.050.231', '0889050231', 'ELECTRICITY_IMPERSONATION', 'Vinaphone Di động', 'Tập đoàn Điện lực Việt Nam (EVN)', 97, 'DANGEROUS', 'Mạo danh nhân viên điện lực thông báo nợ tiền điện, dọa cắt điện trong 2 giờ và ép cài app EVN giả mạo chứa mã độc chiếm quyền điều khiển điện thoại.', 'EVN chỉ thông báo qua tin nhắn định danh Brandname EVN hoặc Zalo OA có tích vàng. Không nộp tiền qua số cá nhân.', 389, 1),
 ('0917.896.904', '0917896904', 'ELECTRICITY_IMPERSONATION', 'Vinaphone Di động', 'Nhân viên chăm sóc khách hàng EVN', 96, 'DANGEROUS', 'Gọi điện thông báo hoàn tiền hóa đơn tiền điện đóng dư, dụ quét mã QR hoặc truy cập web giả mạo để lấy cắp thông tin thẻ ngân hàng.', 'Chặn số ngay. Tra cứu lịch sử tiền điện trực tiếp trên app EVN chính thức.', 215, 1),
 ('0598.428.337', '0598428337', 'ELECTRICITY_IMPERSONATION', 'MobiFone 059 Di động', 'Cơ quan Điện lực', 95, 'DANGEROUS', 'Đe dọa khóa đồng hồ điện do sai thông tin hợp đồng sinh trắc học, yêu cầu làm việc trực tuyến qua Zalo.', 'Cúp điện thoại, liên hệ trực tiếp Tổng đài EVN theo khu vực (Miền Bắc: 19006769, Miền Nam: 19001006).', 190, 1),
@@ -142,7 +141,7 @@ INSERT INTO scam_phones (raw_number, clean_number, category, carrier_info, imper
 ('0853.975.728', '0853975728', 'POLICE_IMPERSONATION', 'Vinaphone 085 Di động', 'Cán bộ Viện Kiểm sát / Tòa án', 99, 'DANGEROUS', 'Gửi lệnh bắt giữ giả mạo qua Zalo, dọa phong tỏa tài khoản ngân hàng và căn cước công dân.', 'Cúp máy ngay lập tức. Báo ngay cho công an phường/xã hoặc Đoàn trường để được hỗ trợ.', 540, 1),
 ('0868.889.900', '0868889900', 'POLICE_IMPERSONATION', 'Viettel SIM rác kích hoạt sẵn', 'Tổng đài mạo danh Bộ Công An', 98, 'DANGEROUS', 'Tự xưng Ban chuyên án điều tra kinh tế gọi điện dọa phạt tù sinh viên vì mở tài khoản ngân hàng tiếp tay tội phạm.', 'Bình tĩnh cúp máy. Đây là bẫy thao túng tâm lý cô lập nạn nhân.', 520, 5),
 
--- [NHÓM 4: MẠO DANH NHÂN VIÊN GIAO HÀNG / SHIPPER]
+-- [NHÓM 4: MẠO DANH SHIPPER / NHÂN VIÊN GIAO HÀNG (THƯ VIỆN PHÁP LUẬT)]
 ('0901.757.297', '0901757297', 'SHIPPER_FRAUD', 'MobiFone Di động', 'Nhân viên giao hàng Shopee / Lazada', 95, 'DANGEROUS', 'Gọi điện báo có đơn hàng giao đến nhưng khách vắng nhà, yêu cầu chuyển khoản tiền đơn hàng trước rồi mới gửi lại chỗ bảo vệ.', 'Chỉ chuyển khoản khi chắc chắn bản thân có đặt hàng và đối soát chính xác mã vận đơn trên ứng dụng mua sắm.', 230, 1),
 ('0902.204.629', '0902204629', 'SHIPPER_FRAUD', 'MobiFone Di động', 'Nhân viên Shipper giao hàng bưu phẩm', 94, 'DANGEROUS', 'Báo gửi nhầm gói hàng giá trị cao hoặc chuyển nhầm tiền COD, gửi link Zalo yêu cầu bấm vào để hoàn tiền.', 'Không bấm vào link hoàn tiền từ shipper. Không nhập OTP vào trang web bên ngoài ứng dụng mua sắm.', 195, 1),
 ('0903.553.785', '0903553785', 'SHIPPER_FRAUD', 'MobiFone Di động', 'Shipper lừa thu hộ COD ảo', 94, 'DANGEROUS', 'Thu hộ tiền kiện hàng ảo rỗng ruột cho người thân sinh viên ở quê gửi lên.', 'Kiểm tra với người thân trước khi nhận bất kỳ gói hàng nào không rõ nguồn gốc.', 182, 1),
@@ -150,23 +149,37 @@ INSERT INTO scam_phones (raw_number, clean_number, category, carrier_info, imper
 ('0932.378.465', '0932378465', 'SHIPPER_FRAUD', 'MobiFone Di động', 'Nhân viên giao nhận hàng', 93, 'DANGEROUS', 'Chiêu trò gửi bưu phẩm chứa ma túy / hàng cấm dọa nạt nạn nhân nộp tiền hòa giải.', 'Không nhận bưu phẩm lạ. Báo cơ quan công an gần nhất.', 150, 1),
 ('0903.494.514', '0903494514', 'SHIPPER_FRAUD', 'MobiFone Di động', 'Shipper mạo danh', 93, 'DANGEROUS', 'Yêu cầu chuyển tiền đặt cọc giữ hàng tại kho trung chuyển bưu điện.', 'Tuyệt đối không chuyển cọc.', 142, 1),
 
--- [NHÓM 5: LỪA ĐẢO HỌC ĐƯỜNG & TUYỂN DỤNG CTV NHẮM VÀO SINH VIÊN]
+-- [NHÓM 5: BỔ SUNG CÁC HÌNH THỨC LỪA ĐẢO THUẾ, VNeID, BỆNH VIỆN, KHÓA SIM MỚI NHẤT]
+('0398.243.689', '0398243689', 'TAX_IMPERSONATION', 'Viettel Di động', 'Mạo danh Cán bộ Chi cục Thuế', 98, 'DANGEROUS', 'Tự xưng cán bộ thuế yêu cầu sinh viên / hộ kinh doanh cập nhật mã số thuế, gửi link cài ứng dụng eTax Mobile giả mạo chứa mã độc đánh cắp toàn bộ tiền trong tài khoản ngân hàng.', 'Cơ quan thuế không bao giờ yêu cầu người dân cài đặt file APK qua link lạ. Mọi thủ tục đều làm việc trực tiếp tại trụ sở hoặc qua cổng thuedientu.gdt.gov.vn.', 470, 5),
+('0792.836.145', '0792836145', 'VNEID_IMPERSONATION', 'MobiFone 079 Di động', 'Mạo danh Công an kích hoạt VNeID', 99, 'DANGEROUS', 'Báo tài khoản định danh VNeID mức 2 bị sai dữ liệu CCCD, dọa phạt hành chính nếu không cài app kích hoạt giả mạo.', 'Công an chỉ hỗ trợ kích hoạt VNeID trực tiếp tại trụ sở Công an xã/phường. Không làm việc qua điện thoại.', 530, 5),
+('0778.552.193', '0778552193', 'EMERGENCY_SCAM', 'MobiFone 077 Di động', 'Bẫy lừa con đang cấp cứu bệnh viện', 99, 'DANGEROUS', 'Gọi cho phụ huynh sinh viên báo con bị tai nạn nguy kịch đang cấp cứu tại Bệnh viện Chợ Rẫy / Bạch Mai, yêu cầu chuyển gấp 30 - 50 triệu đồng viện phí.', 'Bình tĩnh liên hệ trực tiếp cho con, thầy cô chủ nhiệm hoặc bạn cùng phòng KTX để xác minh. Bệnh viện luôn cấp cứu tính mạng người bệnh trước, không bắt chuyển khoản qua số lạ.', 650, 6),
+('0345.892.115', '0345892115', 'TELECOM_SCAM', 'Viettel 034 Di động', 'Mạo danh Cục Viễn thông dọa khóa SIM', 95, 'DANGEROUS', 'Cuộc gọi tự động dọa khóa thuê bao 2 chiều sau 2 giờ do chưa chuẩn hóa sinh trắc học, yêu cầu làm theo phím số để bị lừa đảo chiếm SIM.', 'Nhà mạng chỉ thông báo qua tin nhắn định danh chính thống. Nếu có thắc mắc, tự gọi hotline nhà mạng (Viettel 18008098, Vina 18001091, Mobi 18001090).', 380, 5),
+('0582.114.789', '0582114789', 'BIOMETRIC_SCAM', 'Vietnamobile 058', 'Mạo danh Ngân hàng hỗ trợ sinh trắc học', 97, 'DANGEROUS', 'Mạo danh nhân viên Agribank gọi hỗ trợ cập nhật dữ liệu khuôn mặt theo Quyết định 2345 qua video call, sau đó đánh cắp OTP chiếm tài khoản.', 'Ngân hàng tuyệt đối không hỗ trợ quét sinh trắc học qua Zalo / video call. Chỉ thực hiện trên app chính thức hoặc tại quầy giao dịch.', 340, 5),
+('0374.889.921', '0374889921', 'BANK_LOAN_SCAM', 'Viettel 037 Di động', 'Mạo danh MB Bank dọa dư nợ thẻ tín dụng', 96, 'DANGEROUS', 'Gửi thông báo giả mạo sinh viên bị nợ xấu thẻ tín dụng 45 triệu, dọa đưa vào danh sách đen CIC và yêu cầu nộp tiền tất toán khẩn cấp.', 'Kiểm tra thông tin tín dụng trực tiếp trên cổng CIC Quốc gia cic.org.vn.', 290, 5),
+('0862.345.678', '0862345678', 'PRIZE_SCAM', 'Viettel SIM rác', 'Bẫy trúng thưởng tri ân Shopee/TikTok', 94, 'DANGEROUS', 'Thông báo trúng thưởng quạt điện hoặc đồ gia dụng cao cấp, bắt chuyển cọc phí hải quan vận chuyển 200k - 500k.', 'Cảnh giác với các cuộc gọi trúng thưởng mà bản thân không tham gia bất kỳ chương trình nào.', 310, 6),
+('0963.852.741', '0963852741', 'ACCOUNT_TAKEOVER', 'Viettel Di động', 'Bẫy bình chọn cuộc thi ảnh đánh cắp nick', 95, 'DANGEROUS', 'Gửi link nhờ sinh viên bình chọn đại sứ sinh viên, trang web chứa mã độc đánh cắp mật khẩu Facebook / Zalo rồi nhắn tin mượn tiền bạn bè trong danh bạ.', 'Tuyệt đối không đăng nhập tài khoản cá nhân trên các đường link bình chọn lạ.', 260, 6),
+
+-- [NHÓM 6: LỪA ĐẢO HỌC PHÍ & TUYỂN DỤNG SINH VIÊN]
 ('0981.234.567', '0981234567', 'STUDENT_TUITION', 'Viettel SIM rác kích hoạt ảo', 'Mạo danh Phòng Đào tạo Đại học', 99, 'DANGEROUS', 'Gửi SMS thông báo khẩn: Yêu cầu nộp 3.250.000đ học phí kỳ 1 vào tài khoản cá nhân Techcombank trước 11h30 sáng nếu không sẽ bị hủy môn thi và xóa tên khỏi danh sách lớp.', 'Trường ĐH chỉ thu học phí qua Cổng thông tin đào tạo (Portal) hoặc tài khoản định danh đứng tên Trường. Không bao giờ thu qua STK cá nhân.', 245, 5),
 ('0249.999.8888', '02499998888', 'JOB_SCAM', 'VoIP Cố định ảo IP Telecom', 'Bẫy tuyển CTV Shopee / TikTok', 96, 'DANGEROUS', 'Phát tán tin nhắn tuyển CTV soát vé xem phim, giật đơn Shopee lương 500k/ngày. Nạp tiền làm nhiệm vụ nhỏ trả thưởng sòng phẳng, khi nạn nhân nạp tiền triệu thì giam tiền và khóa tài khoản.', 'Không có công việc nào việc nhẹ lương cao nạp tiền làm nhiệm vụ. Cảnh giác với các nhóm Telegram ẩn danh.', 430, 6),
 
--- [NHÓM 6: CÁC SỐ ĐIỆN THOẠI QUỐC TẾ NHÁY MÁY LỪA CƯỚC WANGIRI]
+-- [NHÓM 7: CÁC SỐ ĐIỆN THOẠI QUỐC TẾ NHÁY MÁY LỪA CƯỚC WANGIRI]
 ('+22375260052', '+22375260052', 'INTERNATIONAL_WANGIRI', 'Mạng quốc tế Mali (+223)', 'Tổng đài quốc tế ảo', 99, 'DANGEROUS', 'Nháy máy 1 hồi chuông vào đêm muộn hoặc sáng sớm để nạn nhân gọi lại, cước viễn thông quốc tế bị trừ từ 50.000đ đến 150.000đ/phút.', 'Tuyệt đối KHÔNG gọi lại bất kỳ số điện thoại nào bắt đầu bằng dấu + hoặc 00 lạ.', 580, 2),
 ('+22382271520', '+22382271520', 'INTERNATIONAL_WANGIRI', 'Mạng quốc tế Mali (+223)', 'Tổng đài quốc tế ảo', 99, 'DANGEROUS', 'Nháy máy câu cước quốc tế Wangiri.', 'Không gọi lại. Chặn số trên điện thoại.', 490, 2),
 ('+8919008198', '+8919008198', 'INTERNATIONAL_WANGIRI', 'Số quốc tế giả mạo tổng đài', 'Đầu số dịch vụ ma', 97, 'DANGEROUS', 'Giả dạng số tổng đài trong nước nhưng có tiền tố quốc tế.', 'Chặn số ngay lập tức.', 310, 2),
 ('+22379262886', '+22379262886', 'INTERNATIONAL_WANGIRI', 'Mạng quốc tế Mali (+223)', 'Tổng đài nháy máy tự động', 98, 'DANGEROUS', 'Bẫy gọi lại trừ cước viễn thông quốc tế.', 'Không gọi lại.', 380, 2),
 ('+4422222202', '+4422222202', 'INTERNATIONAL_WANGIRI', 'Đầu số Vương Quốc Anh mạo danh', 'Cuộc gọi quốc tế lừa đảo', 96, 'DANGEROUS', 'Giả mạo số điện thoại từ Anh Quốc thông báo có kiện hàng quà tặng hải quan cần nộp phí giải cứu.', 'Không chuyển tiền nộp phí hải quan cho số lạ.', 275, 2),
 
--- [NHÓM 7: DANH SÁCH 50 SỐ ĐIỆN THOẠI NGHỆ AN CÔNG BỐ (MẪU ĐIỂN HÌNH)]
+-- [NHÓM 8: DANH SÁCH 50 SỐ ĐIỆN THOẠI NGHỆ AN CÔNG BỐ]
 ('0249.995.0060', '02499950060', 'VOIP_SPAM', 'VoIP Hà Nội (Giga Telecom)', 'Đầu số rác tự động', 96, 'DANGEROUS', 'Cuộc gọi tự động dọa khóa SIM, nợ tiền cước mạng sau 2 giờ.', 'Chặn số ngay.', 410, 4),
 ('0249.995.4266', '02499954266', 'VOIP_SPAM', 'VoIP Hà Nội', 'Tự xưng cơ quan tư pháp', 96, 'DANGEROUS', 'Dọa trát hầu tòa ép chuyển tiền.', 'Chặn số ngay.', 350, 4),
 ('0289.996.4439', '02899964439', 'VOIP_SPAM', 'VoIP TP.HCM', 'Cuộc gọi rác dọa án phạt nguội', 97, 'DANGEROUS', 'Thông báo phạt nguội giao thông đánh cắp CCCD.', 'Chặn số ngay.', 520, 4),
 ('0285.678.6501', '02856786501', 'VOIP_SPAM', 'VoIP TP.HCM', 'Hỗ trợ nâng hạn mức ngân hàng giả mạo', 95, 'DANGEROUS', 'Chiếm đoạt mã OTP ngân hàng.', 'Chặn số ngay.', 290, 4),
 ('1900.3439', '19003439', 'PAID_SHORTCODE', 'Tổng đài 1900 tính cước', 'Nháy máy trừ tiền cước', 92, 'DANGEROUS', 'Nháy máy dụ gọi lại trừ tiền cước.', 'Chặn số ngay.', 184, 4),
+('0249.997.041', '0249997041', 'VOIP_SPAM', 'VoIP Hà Nội', 'Quấy rối viễn thông', 96, 'DANGEROUS', 'Phát tán cuộc gọi đe dọa nợ cước viễn thông.', 'Chặn số ngay.', 310, 4),
+('0249.997.038', '0249997038', 'VOIP_SPAM', 'VoIP Hà Nội', 'Cuộc gọi rác tự động', 96, 'DANGEROUS', 'Quấy rối và dọa trát hầu tòa.', 'Chặn số ngay.', 295, 4),
+('0249.997.035', '0249997035', 'VOIP_SPAM', 'VoIP Hà Nội', 'Cuộc gọi rác dọa án', 96, 'DANGEROUS', 'Dọa phạt vi phạm pháp luật chiếm đoạt OTP.', 'Chặn số ngay.', 280, 4),
+('0249.992.244', '0249992244', 'VOIP_SPAM', 'VoIP Hà Nội', 'Tự xưng cơ quan chức năng', 96, 'DANGEROUS', 'Dọa phong tỏa tài khoản ngân hàng.', 'Chặn số ngay.', 275, 4),
 
 -- [SỐ ĐIỆN THOẠI CHÍNH THỐNG AN TOÀN (SAFE)]
 ('156', '156', 'SAFE_HOTLINE', 'Tổng đài Quốc gia (Bộ TT&TT)', 'Kênh tiếp nhận phản ánh cuộc gọi rác & lừa đảo', 0, 'SAFE', 'Tổng đài đường dây nóng chính thức của Bộ Thông tin và Truyền thông để người dân phản ánh lừa đảo viễn thông miễn phí.', 'Gọi 156 hoặc nhắn tin theo cú pháp: LD [SĐT lừa đảo] [Nội dung] gửi 156.', 0, 5),
@@ -175,7 +188,6 @@ INSERT INTO scam_phones (raw_number, clean_number, category, carrier_info, imper
 
 -- -----------------------------------------------------------------------------
 -- NẠP DỮ LIỆU ĐẦU SỐ, ĐUÔI SỐ & ĐẦU SỐ SMS DỊCH VỤ (scam_patterns)
--- Theo bài viết Thế Giới Di Động (2026) & Bệnh viện Lê Văn Thịnh
 -- -----------------------------------------------------------------------------
 INSERT INTO scam_patterns (pattern_type, pattern_value, region_country, risk_score, threat_type, warning_advice, source_id) VALUES
 -- [CÁC ĐẦU SỐ QUỐC TẾ NHÁY MÁY LỪA ĐẢO WANGIRI]
@@ -194,7 +206,7 @@ INSERT INTO scam_patterns (pattern_type, pattern_value, region_country, risk_sco
 ('PREFIX', '+60', 'Malaysia', 95, 'Đầu số lừa đảo nháy máy / mời gọi làm nhiệm vụ', 'Bắt đầu bằng +60. Giả danh các nền tảng việc làm online xuyên biên giới.', 2),
 ('PREFIX', '+900', 'Đầu số dịch vụ quốc tế', 97, 'Đầu số dịch vụ quốc tế trừ tiền', 'Bắt đầu bằng +900. Cảnh báo trừ cước dịch vụ giá cao.', 2),
 
--- [CÁC ĐẦU SỐ CỐ ĐỊNH VOIP ẢO TRONG NƯỚC THƯỜNG BỊ KẺ GIAN LỢI DỤNG]
+-- [CÁC ĐẦU SỐ CỐ ĐỊNH VOIP ẢO TRONG NƯỚC]
 ('PREFIX', '024999', 'Hà Nội (Dải VoIP Giga Telecom ảo)', 96, 'Dải đầu số VoIP chuyên phát tán cuộc gọi rác & lừa đảo', 'Thuộc danh mục 50 số cố định cần chặn ngay. Chuyên giả mạo điện lực, tòa án, công an.', 4),
 ('PREFIX', '028999', 'TP.HCM (Dải VoIP Giga Telecom ảo)', 96, 'Dải đầu số VoIP phát tán cuộc gọi tự động spam', 'Giả danh bưu điện phát bưu phẩm chứa hàng cấm nhằm dọa nạt nạn nhân.', 4),
 ('PREFIX', '02856', 'TP.HCM (Dải VoIP cố định ảo)', 95, 'Đầu số cố định ảo miền Nam', 'Kẻ gian thường dùng để gọi mời vay vốn tín dụng đen hoặc dụ chuyển tiền.', 4),
@@ -202,7 +214,7 @@ INSERT INTO scam_patterns (pattern_type, pattern_value, region_country, risk_sco
 ('PREFIX', '02888', 'TP.HCM (Đầu số VoIP mạo danh ngân hàng)', 97, 'Đầu số mạo danh ngân hàng Vietcombank', 'Thường gắn với các số lừa đảo thông báo tài khoản bị xâm nhập.', 1),
 ('PREFIX', '02886', 'TP.HCM (Đầu số thoại tự động thẻ tín dụng)', 96, 'Đầu số lừa mở thẻ tín dụng ảo', 'Thoại tự động chúc mừng mở thẻ tín dụng Vietcombank nhằm chiếm đoạt phí bảo lãnh.', 2),
 
--- [CÁC ĐẦU SỐ TIN NHẮN SMS DỊCH VỤ TRỪ TIỀN NGẦM ĐƯỢC CÔNG AN NÊU ĐÍCH DANH]
+-- [CÁC ĐẦU SỐ TIN NHẮN SMS DỊCH VỤ TRỪ TIỀN NGẦM (CÔNG AN CẢNH BÁO)]
 ('SHORTCODE', '6781', 'Đầu số SMS dịch vụ nội dung số', 95, 'Đầu số tin nhắn trừ tiền cước ngầm', 'Có trong cảnh báo công an. Nhắn tin đến đầu số này bị trừ tiền cước cao không báo trước.', 2),
 ('SHORTCODE', '6768', 'Đầu số SMS dịch vụ', 95, 'Đầu số tin nhắn trừ tiền cước ngầm', 'Có trong cảnh báo công an. Bẫy nhắn tin nhận kết quả trúng thưởng giả.', 2),
 ('SHORTCODE', '7775', 'Đầu số SMS dịch vụ', 95, 'Đầu số tin nhắn trừ tiền cước ngầm', 'Có trong cảnh báo công an.', 2),
@@ -227,6 +239,9 @@ INSERT INTO scam_patterns (pattern_type, pattern_value, region_country, risk_sco
 -- -----------------------------------------------------------------------------
 INSERT INTO scam_emails (email_address, domain_type, risk_score, risk_status, threat_description, warning_rule, source_id) VALUES
 ('daotao.dhqg.edu.vn@gmail.com', 'gmail.com cá nhân giả danh đuôi trường', 98, 'DANGEROUS', 'Mạo danh Phòng Đào tạo ĐHQG gửi thư báo nộp học phí bổ sung kèm mã QR tài khoản Techcombank cá nhân.', 'Trường Đại học chỉ sử dụng hòm thư tên miền chính thức (ví dụ: @vnu.edu.vn, @hust.edu.vn). TUYỆT ĐỐI KHÔNG dùng đuôi @gmail.com hoặc @outlook.com.', 5),
+('hocphi.sinhvien.hust@gmail.com', 'gmail.com mạo danh ĐH Bách Khoa Hà Nội', 98, 'DANGEROUS', 'Gửi email dọa hủy tư cách sinh viên nếu không đóng học phí kỳ 1 vào STK cá nhân.', 'ĐH Bách Khoa Hà Nội chỉ thu học phí qua cổng eHust chính thức.', 5),
+('phongcongtacsinhvien.neu@gmail.com', 'gmail.com mạo danh ĐH Kinh tế Quốc dân', 96, 'DANGEROUS', 'Mạo danh thông báo trợ cấp khó khăn yêu cầu cung cấp OTP ngân hàng.', 'Nhà trường thông báo qua hòm thư công vụ và trang thông tin sinh viên.', 6),
+('hotro.hocbong.vnu@gmail.com', 'gmail.com mạo danh Quỹ Học bổng ĐHQG', 95, 'DANGEROUS', 'Bẫy nộp phí hồ sơ xét duyệt học bổng doanh nghiệp 500k.', 'Các học bổng chính quy không bao giờ thu phí xét duyệt.', 5),
 ('tuyendung.shopee.online2026@gmail.com', 'gmail.com giả mạo sàn TMĐT Shopee', 95, 'DANGEROUS', 'Gửi thư mời tuyển dụng CTV giật đơn nhận 500k/ngày, dẫn link sang nhóm Telegram lừa nạp tiền.', 'Shopee tuyển dụng chính thức qua cổng careers.shopee.vn và hòm thư @shopee.com.', 6),
 ('xacthuc.dinhdanh.c06@gmail.com', 'gmail.com mạo danh Cục C06 Bộ Công An', 99, 'DANGEROUS', 'Gửi email dọa tài khoản định danh VNeID mức 2 bị lỗi, yêu cầu bấm vào link cài đặt app lạ.', 'Cơ quan công an không gửi email từ máy chủ Gmail công cộng.', 5);
 
@@ -235,15 +250,15 @@ INSERT INTO scam_emails (email_address, domain_type, risk_score, risk_status, th
 -- -----------------------------------------------------------------------------
 INSERT INTO scam_reports (ticket_code, target_value, target_type, scam_category, reporter_identity, evidence_note, verification_status) VALUES
 ('HS-TDHT-01', '02366888766', 'PHONE', 'Mạo danh ngân hàng Vietcombank', 'SV K65 - Khoa Kinh tế', 'Gọi báo tài khoản có biến động nghi vấn rửa tiền, đòi cung cấp OTP', 'VERIFIED_SCAM'),
-('HS-TDHT-02', '0981234567', 'PHONE', 'Mạo danh thu học phí trường ĐH', 'SV K66 - Tân sinh viên', 'Nhắn SMS dọa hủy môn thi nếu không đóng 3.25 triệu vào STK cá nhân', 'VERIFIED_SCAM'),
-('HS-TDHT-03', 'daotao.dhqg.edu.vn@gmail.com', 'EMAIL', 'Email giả mạo đào tạo', 'SV K65 - Khoa Luật', 'Gửi email Gmail yêu cầu chuyển tiền học phí', 'BLOCKED'),
-('HS-TDHT-04', '0889050231', 'PHONE', 'Giả danh nhân viên điện lực EVN', 'SV K64 - KTX Mễ Trì', 'Dọa cắt điện KTX và ép cài file APK lạ vào máy', 'VERIFIED_SCAM'),
-('HS-TDHT-05', '0833109259', 'PHONE', 'Mạo danh điều tra viên công an', 'SV K66 - Ngoại ngữ', 'Dọa lệnh bắt tạm giam, cấm báo gia đình', 'VERIFIED_SCAM');
+('HS-TDHT-02', '0398243689', 'PHONE', 'Mạo danh cơ quan thuế cài app độc', 'SV K64 - Ngành Tài chính', 'Ép cài file eTax_Mobile.apk độc hại', 'VERIFIED_SCAM'),
+('HS-TDHT-03', '0778552193', 'PHONE', 'Bẫy dọa con đang cấp cứu bệnh viện', 'Phụ huynh SV K66', 'Gọi báo con cấp cứu Chợ Rẫy đòi chuyển 30 triệu viện phí', 'VERIFIED_SCAM'),
+('HS-TDHT-04', '0981234567', 'PHONE', 'Mạo danh thu học phí trường ĐH', 'SV K66 - Tân sinh viên', 'Nhắn SMS dọa hủy môn thi nếu không đóng 3.25 triệu vào STK cá nhân', 'VERIFIED_SCAM'),
+('HS-TDHT-05', '0889050231', 'PHONE', 'Giả danh nhân viên điện lực EVN', 'SV K64 - KTX Mễ Trì', 'Dọa cắt điện KTX và ép cài file APK lạ vào máy', 'VERIFIED_SCAM'),
+('HS-TDHT-06', 'daotao.dhqg.edu.vn@gmail.com', 'EMAIL', 'Email giả mạo đào tạo', 'SV K65 - Khoa Luật', 'Gửi email Gmail yêu cầu chuyển tiền học phí', 'BLOCKED');
 
 -- -----------------------------------------------------------------------------
 -- 6. CÁC VIEW TRUY VẤN TIỆN ÍCH DÀNH CHO CỔNG TRA CỨU
 -- -----------------------------------------------------------------------------
--- View tra cứu tổng hợp số điện thoại lừa đảo kèm thông tin nguồn
 CREATE OR REPLACE VIEW vw_scam_phones_full AS
 SELECT 
     p.phone_id,
@@ -263,7 +278,6 @@ SELECT
 FROM scam_phones p
 LEFT JOIN scam_sources s ON p.source_id = s.source_id;
 
--- View tra cứu danh mục đầu số & đuôi số
 CREATE OR REPLACE VIEW vw_scam_patterns_full AS
 SELECT 
     pt.pattern_id,
@@ -277,17 +291,3 @@ SELECT
     s.article_url AS source_url
 FROM scam_patterns pt
 LEFT JOIN scam_sources s ON pt.source_id = s.source_id;
-
--- -----------------------------------------------------------------------------
--- 7. CÂU LỆNH MẪU TRA CỨU THEO SỐ, ĐẦU SỐ, ĐUÔI SỐ TRONG THỰC TẾ
--- -----------------------------------------------------------------------------
--- 1. Tra cứu chính xác số điện thoại (VD người dùng nhập '0236.688.8766' hoặc '02366888766'):
--- SELECT * FROM vw_scam_phones_full WHERE clean_number = '02366888766';
-
--- 2. Kiểm tra nếu số điện thoại trùng khớp với ĐẦU SỐ quốc tế hoặc VoIP nguy hiểm:
--- SELECT * FROM vw_scam_patterns_full 
--- WHERE pattern_type = 'PREFIX' AND '+224123456' LIKE CONCAT(pattern_value, '%');
-
--- 3. Kiểm tra nếu số điện thoại có ĐUÔI SỐ nằm trong danh mục nghi vấn bot tự động:
--- SELECT * FROM vw_scam_patterns_full 
--- WHERE pattern_type = 'SUFFIX' AND '0988889999' LIKE pattern_value;

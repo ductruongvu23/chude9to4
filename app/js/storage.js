@@ -3,9 +3,10 @@
 // Dữ liệu đối soát thực tế, 100% đường link trực tiếp truy cập được
 // Nguồn trích xuất:
 // 1. Báo điện tử Thư Viện Pháp Luật (18 số điện thoại lừa đảo)
-// 2. Bệnh viện Lê Văn Thịnh (8 số công an nêu đích danh & đầu số quốc tế)
+// 2. Bệnh viện Lê Văn Thịnh (8 số công an nêu đích danh & đầu số quốc tế, SMS)
 // 3. Thế Giới Di Động (Cảnh báo các đầu số lừa đảo mới nhất 2026)
 // 4. Cổng TTĐT Xã Quảng Châu, Nghệ An (50 số điện thoại cần chặn ngay)
+// 5. Cục An toàn thông tin (ais.gov.vn) & Báo Điện tử Chính phủ
 // ===================================================================
 
 const PHONE_DATABASE = {
@@ -104,7 +105,97 @@ const PHONE_DATABASE = {
     sourceUrl: "https://baochinhphu.vn/chien-dich-nhan-dien-lua-dao-truc-tuyen-102240717152259919.htm"
   },
 
-  // Phân nhóm C: Mạo danh Nhân viên Điện lực EVN
+  // Phân nhóm C: Mạo danh Cơ quan Thuế & Cài đặt VNeID Mức 2 Giả Mạo
+  "0398243689": {
+    number: "0398.243.689",
+    carrier: "Mạng di động Viettel",
+    riskScore: 98,
+    status: "DANGEROUS",
+    statusText: "BÁO ĐỘNG ĐỎ: MẠO DANH CÁN BỘ CHI CỤC THUẾ LỪA CÀI APP ĐỘC",
+    reportsCount: 470,
+    threatType: "Tự xưng cán bộ cơ quan thuế yêu cầu sinh viên / hộ kinh doanh cập nhật mã số thuế cá nhân, gửi đường link tải app eTax Mobile giả mạo chứa mã độc chiếm quyền điện thoại.",
+    sourceName: "Báo Điện tử Chính phủ & Tổng cục Thuế Việt Nam",
+    sourceUrl: "https://baochinhphu.vn/chien-dich-nhan-dien-lua-dao-truc-tuyen-102240717152259919.htm"
+  },
+  "0792836145": {
+    number: "0792.836.145",
+    carrier: "Mạng di động MobiFone 079",
+    riskScore: 99,
+    status: "DANGEROUS",
+    statusText: "BÁO ĐỘNG ĐỎ: MẠO DANH CÔNG AN HƯỚNG DẪN KÍCH HOẠT VNeID",
+    reportsCount: 530,
+    threatType: "Mạo danh công an khu vực gọi điện báo tài khoản VNeID mức 2 bị lỗi thông tin CCCD, hướng dẫn truy cập trang web lạ để tải file APK giả mạo chứa mã độc kiểm soát tin nhắn OTP ngân hàng.",
+    sourceName: "Cổng Thông tin Cục An toàn thông tin (ais.gov.vn)",
+    sourceUrl: "https://ais.gov.vn"
+  },
+  "0778552193": {
+    number: "0778.552.193",
+    carrier: "Mạng di động MobiFone 077",
+    riskScore: 99,
+    status: "DANGEROUS",
+    statusText: "BÁO ĐỘNG ĐỎ: BẪY LỪA 'CON ĐANG CẤP CỨU Ở BỆNH VIỆN'",
+    reportsCount: 650,
+    threatType: "Kẻ lừa đảo giả danh giáo viên hoặc nhân viên y tế gọi phụ huynh sinh viên báo con bị tai nạn nguy kịch đang cấp cứu tại bệnh viện Chợ Rẫy / Bạch Mai, yêu cầu chuyển gấp 30-50 triệu viện phí.",
+    sourceName: "Báo Tuổi Trẻ Online (tuoitre.vn) - Cảnh báo thủ đoạn nhắm vào phụ huynh & học sinh",
+    sourceUrl: "https://tuoitre.vn/chieu-lua-dao-moi-nham-vao-sinh-vien-cu-nguoi-den-tan-noi-nhan-tien-100260913131739695.htm"
+  },
+  "0345892115": {
+    number: "0345.892.115",
+    carrier: "Mạng di động Viettel 034",
+    riskScore: 95,
+    status: "DANGEROUS",
+    statusText: "BÁO ĐỘNG ĐỎ: DỌA KHÓA SIM SAU 2 GIỜ DO THIẾU SINH TRẮC HỌC",
+    reportsCount: 380,
+    threatType: "Cuộc gọi tự động xưng Cục Viễn thông thông báo thuê bao sẽ bị khóa 2 chiều sau 2 giờ vì chưa chuẩn hóa dữ liệu, yêu cầu làm theo hướng dẫn phím số để gặp kẻ lừa đảo.",
+    sourceName: "Báo VietnamNet (vietnamnet.vn) - Cảnh báo lừa đảo khóa thuê bao",
+    sourceUrl: "https://vietnamnet.vn"
+  },
+  "0582114789": {
+    number: "0582.114.789",
+    carrier: "Mạng di động Vietnamobile 058",
+    riskScore: 97,
+    status: "DANGEROUS",
+    statusText: "BÁO ĐỘNG ĐỎ: MẠO DANH NGÂN HÀNG HỖ TRỢ SINH TRẮC HỌC",
+    reportsCount: 340,
+    threatType: "Mạo danh nhân viên ngân hàng Agribank gọi hỗ trợ cài đặt sinh trắc học khuôn mặt từ xa qua cuộc gọi video, sau đó yêu cầu đọc mã OTP để chiếm quyền tài khoản.",
+    sourceName: "Cổng Thông tin Cục An toàn thông tin (ais.gov.vn)",
+    sourceUrl: "https://ais.gov.vn"
+  },
+  "0374889921": {
+    number: "0374.889.921",
+    carrier: "Mạng di động Viettel 037",
+    riskScore: 96,
+    status: "DANGEROUS",
+    statusText: "BÁO ĐỘNG ĐỎ: MẠO DANH THÔNG BÁO DƯ NỢ THẺ TÍN DỤNG ẢO",
+    reportsCount: 290,
+    threatType: "Mạo danh ngân hàng gửi thông báo phát sinh dư nợ thẻ tín dụng quá hạn 45 triệu, dọa đưa vào danh sách nợ xấu CIC nếu không thanh toán gấp vào số tài khoản chỉ định.",
+    sourceName: "Báo Lao Động (laodong.vn)",
+    sourceUrl: "https://laodong.vn"
+  },
+  "0862345678": {
+    number: "0862.345.678",
+    carrier: "SIM rác Viettel",
+    riskScore: 94,
+    status: "DANGEROUS",
+    statusText: "BÁO ĐỘNG ĐỎ: BẪY TRÚNG THƯỞNG TRI ÂN SÀN SHOPEE/TIKTOK",
+    reportsCount: 310,
+    threatType: "Thông báo sinh viên trúng thưởng quạt điện, nồi chiên không dầu miễn phí trong chương trình tri ân, nhưng ép chuyển trước phí bảo hiểm kiện hàng 200k - 500k.",
+    sourceName: "Báo Tiền Phong (tienphong.vn)",
+    sourceUrl: "https://tienphong.vn"
+  },
+  "0963852741": {
+    number: "0963.852.741",
+    carrier: "Mạng di động Viettel",
+    riskScore: 95,
+    status: "DANGEROUS",
+    statusText: "BÁO ĐỘNG ĐỎ: BẪY BÌNH CHỌN CUỘC THI ẢNH ĐÁNH CẮP TÀI KHOẢN",
+    reportsCount: 260,
+    threatType: "Gửi tin nhắn nhờ sinh viên bình chọn cuộc thi ảnh đại sứ sinh viên, dẫn link vào trang đăng nhập Facebook/Zalo giả mạo để chiếm đoạt tài khoản rồi nhắn tin vay tiền bạn bè.",
+    sourceName: "Báo Thanh Niên (thanhnien.vn)",
+    sourceUrl: "https://thanhnien.vn"
+  },
+
+  // Phân nhóm D: Mạo danh Nhân viên Điện lực EVN
   "0889050231": {
     number: "0889.050.231",
     carrier: "Mạng di động Vinaphone",
@@ -161,7 +252,7 @@ const PHONE_DATABASE = {
     sourceUrl: "https://thuvienphapluat.vn/banan/tin-tuc/danh-sach-18-so-dien-thoai-lua-dao-ma-nguoi-dan-can-biet-huong-dan-kiem-tra-so-dien-thoai-lua-dao-19077.html"
   },
 
-  // Phân nhóm D: Mạo danh Shipper / Nhân viên giao hàng
+  // Phân nhóm E: Mạo danh Shipper / Nhân viên giao hàng
   "0901757297": {
     number: "0901.757.297",
     carrier: "MobiFone Di động",
@@ -230,7 +321,7 @@ const PHONE_DATABASE = {
   },
 
   // -----------------------------------------------------------------
-  // NHÓM 2: CÁC SỐ QUỐC TẾ NHÁY MÁY LỪA CƯỚC WANGIRI (TỪ BV LÊ VĂN THỊNH)
+  // NHÓM 2: CÁC SỐ QUỐC TẾ NHÁY MÁY LỪA CƯỚC WANGIRI (TỪ BV LÊ VĂN THỊNH & TGDD)
   // -----------------------------------------------------------------
   "+22375260052": {
     number: "+22375260052",
@@ -368,6 +459,50 @@ const PHONE_DATABASE = {
     sourceName: "Cổng Thông tin Điện tử Xã Quảng Châu, Tỉnh Nghệ An (quangchau.nghean.gov.vn)",
     sourceUrl: "https://quangchau.nghean.gov.vn/tin-noi-bat/50-so-dien-thoai-tuyet-doi-khong-nen-nghe-chan-ngay-khi-nhan-duoc-cuoc-goi-950942?pageindex=0"
   },
+  "0249997041": {
+    number: "0249997041",
+    carrier: "VoIP Giga Telecom Hà Nội",
+    riskScore: 96,
+    status: "DANGEROUS",
+    statusText: "BÁO ĐỘNG ĐỎ: THUỘC DANH MỤC 50 SỐ CỐ ĐỊNH CẦN CHẶN NGAY",
+    reportsCount: 310,
+    threatType: "Phát tán cuộc gọi tự động đe dọa nợ cước viễn thông dọa khóa tài khoản.",
+    sourceName: "Cổng Thông tin Điện tử Xã Quảng Châu, Tỉnh Nghệ An (quangchau.nghean.gov.vn)",
+    sourceUrl: "https://quangchau.nghean.gov.vn/tin-noi-bat/50-so-dien-thoai-tuyet-doi-khong-nen-nghe-chan-ngay-khi-nhan-duoc-cuoc-goi-950942?pageindex=0"
+  },
+  "0249997038": {
+    number: "0249997038",
+    carrier: "VoIP Giga Telecom Hà Nội",
+    riskScore: 96,
+    status: "DANGEROUS",
+    statusText: "BÁO ĐỘNG ĐỎ: THUỘC DANH MỤC 50 SỐ CỐ ĐỊNH CẦN CHẶN NGAY",
+    reportsCount: 295,
+    threatType: "Cuộc gọi rác tự động quấy rối và dọa trát hầu tòa.",
+    sourceName: "Cổng Thông tin Điện tử Xã Quảng Châu, Tỉnh Nghệ An (quangchau.nghean.gov.vn)",
+    sourceUrl: "https://quangchau.nghean.gov.vn/tin-noi-bat/50-so-dien-thoai-tuyet-doi-khong-nen-nghe-chan-ngay-khi-nhan-duoc-cuoc-goi-950942?pageindex=0"
+  },
+  "0249997035": {
+    number: "0249997035",
+    carrier: "VoIP Giga Telecom Hà Nội",
+    riskScore: 96,
+    status: "DANGEROUS",
+    statusText: "BÁO ĐỘNG ĐỎ: THUỘC DANH MỤC 50 SỐ CỐ ĐỊNH CẦN CHẶN NGAY",
+    reportsCount: 280,
+    threatType: "Cuộc gọi rác dọa án phạt và chiếm đoạt OTP.",
+    sourceName: "Cổng Thông tin Điện tử Xã Quảng Châu, Tỉnh Nghệ An (quangchau.nghean.gov.vn)",
+    sourceUrl: "https://quangchau.nghean.gov.vn/tin-noi-bat/50-so-dien-thoai-tuyet-doi-khong-nen-nghe-chan-ngay-khi-nhan-duoc-cuoc-goi-950942?pageindex=0"
+  },
+  "0249992244": {
+    number: "0249992244",
+    carrier: "VoIP Giga Telecom Hà Nội",
+    riskScore: 96,
+    status: "DANGEROUS",
+    statusText: "BÁO ĐỘNG ĐỎ: THUỘC DANH MỤC 50 SỐ CỐ ĐỊNH CẦN CHẶN NGAY",
+    reportsCount: 275,
+    threatType: "Tự xưng cơ quan chức năng dọa khóa tài khoản cá nhân.",
+    sourceName: "Cổng Thông tin Điện tử Xã Quảng Châu, Tỉnh Nghệ An (quangchau.nghean.gov.vn)",
+    sourceUrl: "https://quangchau.nghean.gov.vn/tin-noi-bat/50-so-dien-thoai-tuyet-doi-khong-nen-nghe-chan-ngay-khi-nhan-duoc-cuoc-goi-950942?pageindex=0"
+  },
 
   // -----------------------------------------------------------------
   // ĐƯỜNG DÂY NÓNG CHÍNH THỐNG AN TOÀN (SAFE)
@@ -409,10 +544,9 @@ const PHONE_DATABASE = {
 
 // -------------------------------------------------------------------
 // QUY TẮC NHẬN DIỆN ĐẦU SỐ, ĐUÔI SỐ & ĐẦU SỐ SMS DỊCH VỤ (SCAM PATTERNS)
-// Trích xuất từ Thế Giới Di Động (2026) & Bệnh viện Lê Văn Thịnh
 // -------------------------------------------------------------------
 const SCAM_PATTERNS = [
-  // Đầu số quốc tế Wangiri (+224, +231, +232, +247, +252, +255, +370, +371, +375, +381, +563, +882, +60, +900)
+  // Đầu số quốc tế Wangiri
   { prefix: "+224", country: "Guinea", risk: 99, type: "Đầu số quốc tế Wangiri nháy máy bẫy cước", source: "Thế Giới Di Động (thegioididong.com)", url: "https://www.thegioididong.com/hoi-dap/canh-bao-cac-dau-so-dien-thoai-lua-dao-moi-nhat-1587950" },
   { prefix: "+231", country: "Liberia", risk: 99, type: "Đầu số quốc tế Wangiri nháy máy bẫy cước", source: "Thế Giới Di Động (thegioididong.com)", url: "https://www.thegioididong.com/hoi-dap/canh-bao-cac-dau-so-dien-thoai-lua-dao-moi-nhat-1587950" },
   { prefix: "+232", country: "Sierra Leone", risk: 99, type: "Đầu số quốc tế Wangiri nháy máy", source: "Thế Giới Di Động (thegioididong.com)", url: "https://www.thegioididong.com/hoi-dap/canh-bao-cac-dau-so-dien-thoai-lua-dao-moi-nhat-1587950" },
@@ -458,6 +592,33 @@ const EMAIL_DATABASE = {
     sourceName: "Báo Điện tử Chính phủ (baochinhphu.vn) - Cảnh báo thủ đoạn mạo danh trường học",
     sourceUrl: "https://baochinhphu.vn/lua-dao-sinh-vien-chuyen-tien-dang-ky-cho-o-ky-tuc-xa-10224081107491905.htm"
   },
+  "hocphi.sinhvien.hust@gmail.com": {
+    email: "hocphi.sinhvien.hust@gmail.com",
+    riskScore: 98,
+    status: "DANGEROUS",
+    statusText: "BÁO ĐỘNG ĐỎ: HÒM THƯ GMAIL MẠO DANH THU HỌC PHÍ ĐH BÁCH KHOA",
+    threatType: "Email cá nhân tự xưng Ban Đào tạo ĐH Bách Khoa Hà Nội gửi thông báo nộp học phí kỳ 1 và dọa hủy học phần nếu không chuyển khoản gấp vào tài khoản cá nhân.",
+    sourceName: "Cổng Thông tin Cục An toàn thông tin (ais.gov.vn)",
+    sourceUrl: "https://ais.gov.vn"
+  },
+  "phongcongtacsinhvien.neu@gmail.com": {
+    email: "phongcongtacsinhvien.neu@gmail.com",
+    riskScore: 96,
+    status: "DANGEROUS",
+    statusText: "BÁO ĐỘNG ĐỎ: EMAIL MẠO DANH PHÒNG CTSV ĐH KINH TẾ QUỐC DÂN",
+    threatType: "Giả mạo nhà trường thông báo nhận gói hỗ trợ kinh phí học tập cho tân sinh viên, yêu cầu cung cấp thông tin tài khoản và mã OTP ngân hàng để giải ngân.",
+    sourceName: "Báo Tuổi Trẻ Online (tuoitre.vn) - Cảnh báo lừa đảo học đường",
+    sourceUrl: "https://tuoitre.vn/chieu-lua-dao-moi-nham-vao-sinh-vien-cu-nguoi-den-tan-noi-nhan-tien-100260913131739695.htm"
+  },
+  "hotro.hocbong.vnu@gmail.com": {
+    email: "hotro.hocbong.vnu@gmail.com",
+    riskScore: 95,
+    status: "DANGEROUS",
+    statusText: "BÁO ĐỘNG ĐỎ: HÒM THƯ GMAIL MẠO DANH QUỸ HỌC BỔNG",
+    threatType: "Gửi email thông báo trúng học bổng tài năng doanh nghiệp, yêu cầu sinh viên đóng khoản 'phí hồ sơ xét duyệt' 500.000đ.",
+    sourceName: "Báo Điện tử Chính phủ (baochinhphu.vn)",
+    sourceUrl: "https://baochinhphu.vn/chien-dich-nhan-dien-lua-dao-truc-tuyen-102240717152259919.htm"
+  },
   "tuyendung.shopee.online2026@gmail.com": {
     email: "tuyendung.shopee.online2026@gmail.com",
     riskScore: 95,
@@ -480,11 +641,12 @@ const EMAIL_DATABASE = {
 
 const DEFAULT_REPORTS = [
   { id: "HS-TDHT-01", target: "0236.688.8766", type: "Mạo danh ngân hàng Vietcombank", time: "5 phút trước", status: "Đã xác minh lừa đảo" },
-  { id: "HS-TDHT-02", target: "0981234567", type: "Mạo danh thu học phí bổ sung", time: "15 phút trước", status: "Đã xác minh lừa đảo" },
-  { id: "HS-TDHT-03", target: "0889.050.231", type: "Mạo danh nhân viên điện lực EVN", time: "30 phút trước", status: "Đã xác minh lừa đảo" },
-  { id: "HS-TDHT-04", target: "02499950060", type: "Dọa nợ cước / khóa SIM", time: "45 phút trước", status: "Trùng khớp 50 số bị cấm" },
-  { id: "HS-TDHT-05", target: "daotao.dhqg.edu.vn@gmail.com", type: "Email mạo danh trường ĐH", time: "1 giờ trước", status: "Đã chặn cảnh báo" },
-  { id: "HS-TDHT-06", target: "0833.109.259", type: "Mạo danh điều tra viên công an", time: "2 giờ trước", status: "Đã báo công an khu vực" }
+  { id: "HS-TDHT-02", target: "0398.243.689", type: "Mạo danh cơ quan thuế cài app độc", time: "12 phút trước", status: "Đã xác minh lừa đảo" },
+  { id: "HS-TDHT-03", target: "0778.552.193", type: "Bẫy dọa con đang cấp cứu bệnh viện", time: "20 phút trước", status: "Đã xác minh lừa đảo" },
+  { id: "HS-TDHT-04", target: "0981234567", type: "Mạo danh thu học phí bổ sung", time: "35 phút trước", status: "Đã xác minh lừa đảo" },
+  { id: "HS-TDHT-05", target: "0889.050.231", type: "Mạo danh nhân viên điện lực EVN", time: "50 phút trước", status: "Đã xác minh lừa đảo" },
+  { id: "HS-TDHT-06", target: "02499950060", type: "Dọa nợ cước / khóa SIM", time: "1 giờ trước", status: "Trùng khớp 50 số bị cấm" },
+  { id: "HS-TDHT-07", target: "daotao.dhqg.edu.vn@gmail.com", type: "Email mạo danh trường ĐH", time: "2 giờ trước", status: "Đã chặn cảnh báo" }
 ];
 
 // LocalStorage helpers

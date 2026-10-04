@@ -2,8 +2,19 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Cổng Tra Cứu & Tiếp Nhận Báo Cáo Lừa Đảo - Tổ 4 | Tư Duy Hệ Thống</title>
+  
+  <!-- Chống chớp sáng/tối khi tải trang -->
+  <script>
+    (function() {
+      const saved = localStorage.getItem('to4_portal_theme');
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = saved || (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -18,20 +29,29 @@
   <!-- Clean Portal Header -->
   <header class="portal-header">
     <div class="header-inner">
-      <div class="header-brand">
-        <h1>🛡️ Cổng Tra Cứu & Tiếp Nhận Phản Ánh Lừa Đảo <span class="badge-team">TỔ 4</span></h1>
-        <p>Bài làm Tổ 4 • Môn: Tư duy hệ thống (Đề tài 9: Lừa đảo trực tuyến nhắm vào sinh viên)</p>
+      <div class="header-top-row">
+        <div class="header-brand">
+          <h1>🛡️ Cổng Tra Cứu & Tiếp Nhận Phản Ánh Lừa Đảo <span class="badge-team">TỔ 4</span></h1>
+          <p>Bài làm Tổ 4 • Môn: Tư duy hệ thống (Đề tài 9: Lừa đảo trực tuyến nhắm vào sinh viên)</p>
+        </div>
+        <button id="themeToggleBtn" class="btn-theme-toggle" onclick="toggleTheme()" title="Chuyển chế độ sáng / tối">
+          🌙 Tối
+        </button>
       </div>
-      <div style="display: flex; gap: 8px;">
-        <a href="../scam_phone_database.sql" download="scam_phone_database.sql" class="btn-header-link" style="background: #0f766e; color: #fff; border-color: #0f766e;">💾 Tải File SQL Đối Soát</a>
-        <a href="../slides/index.html" class="btn-header-link" target="_blank">📊 Xem Slide Thuyết Trình</a>
+      <div class="header-actions">
+        <a href="../scam_phone_database.sql" download="scam_phone_database.sql" class="btn-header-link" style="background: #0f766e; color: #fff; border-color: #0f766e;">
+          💾 Tải File SQL Đối Soát
+        </a>
+        <a href="../slides/index.html" class="btn-header-link" target="_blank">
+          📊 Xem Slide Thuyết Trình
+        </a>
       </div>
     </div>
   </header>
 
   <!-- Main Container -->
   <main class="portal-container">
-    <!-- Clean Tab Navigation -->
+    <!-- Clean Tab Navigation - Mobile Smooth Scroll -->
     <nav class="app-tab-nav">
       <button class="active" data-tab="lookup" onclick="switchAppTab('lookup')">🔍 Tra Cứu SĐT & Email</button>
       <button data-tab="intake" onclick="switchAppTab('intake')">📝 Tiếp Nhận Báo Cáo</button>
@@ -42,7 +62,7 @@
     <section id="tab-lookup" class="tab-section active">
       <div class="lookup-card">
         <h2 class="lookup-title">Kiểm Tra Mức Độ An Toàn Của Số Điện Thoại & Email</h2>
-        <p class="lookup-desc">Đối soát dữ liệu với danh sách đen Cục An toàn thông tin và danh bạ xác thực của các trường đại học</p>
+        <p class="lookup-desc">Đối soát dữ liệu với danh sách đen Cục An toàn thông tin, Thư Viện Pháp Luật, BV Lê Văn Thịnh & danh bạ xác thực</p>
 
         <!-- Radio Switcher -->
         <div class="lookup-type-radios">
@@ -58,13 +78,13 @@
 
         <!-- Search Input -->
         <div class="search-input-group">
-          <input type="text" id="lookupInput" placeholder="Nhập số điện thoại (Ví dụ: 0981234567)..." value="0981234567">
+          <input type="text" id="lookupInput" placeholder="Nhập số điện thoại (Ví dụ: 0236.688.8766)..." value="0236.688.8766">
           <button class="btn-search" onclick="executeLookup()">Tra Cứu Ngay</button>
         </div>
 
-        <!-- Discreet hint text (không màu mè, không nút linh tinh) -->
-        <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: -12px; margin-bottom: 16px; line-height: 1.5;">
-          <em>Gợi ý thử nghiệm: Thử SĐT <code>0236.688.8766</code> (Mạo danh Vietcombank), <code>0889050231</code> (Mạo danh EVN), <code>0833109259</code> (Mạo danh Công an), <code>0901757297</code> (Shipper giả), <code>02499950060</code> (50 số cấm), đầu số quốc tế <code>+224</code>, đầu SMS <code>6781</code>, hoặc Email <code>daotao.dhqg.edu.vn@gmail.com</code>. Mỗi kết quả tra cứu đều hiển thị nguồn và đường link dẫn chứng có thật.</em>
+        <!-- Discreet hint text -->
+        <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: -10px; margin-bottom: 16px; line-height: 1.5;">
+          <em>Gợi ý thử nghiệm: Thử SĐT <code>0236.688.8766</code> (Vietcombank), <code>0398.243.689</code> (Thuế eTax), <code>0778.552.193</code> (Cấp cứu bệnh viện), <code>0889050231</code> (EVN), <code>0833109259</code> (Công an), <code>0901757297</code> (Shipper), đầu số quốc tế <code>+224</code>, đầu SMS <code>6781</code>, hoặc Email <code>daotao.dhqg.edu.vn@gmail.com</code>. Dấu hiệu cảnh báo chỉ hiển thị khi có dữ liệu xác thực có thật.</em>
         </div>
 
         <!-- Result Container -->
@@ -94,6 +114,8 @@
                 <option value="Mạo danh thu học phí">Mạo danh thu học phí bổ sung</option>
                 <option value="Lừa đảo việc làm online">Bẫy việc làm online Shopee/TikTok</option>
                 <option value="Công an dọa án phạt">Giả mạo công an dọa án ma túy / nợ cước</option>
+                <option value="Mạo danh cơ quan thuế">Giả mạo cơ quan thuế cài app độc hại</option>
+                <option value="Dọa cấp cứu bệnh viện">Bẫy tin con đang cấp cứu bệnh viện</option>
                 <option value="Khác">Chiêu trò lừa đảo khác</option>
               </select>
             </div>
@@ -113,20 +135,22 @@
             <h2 class="intake-title" style="margin-bottom: 0;">Sổ Tiếp Nhận Hồ Sơ Trực Tuyến</h2>
             <span style="font-size: 0.78rem; color: var(--text-dim); font-weight: 600;">Cập nhật tự động</span>
           </div>
-          <table class="clean-table">
-            <thead>
-              <tr>
-                <th>Mã Hồ Sơ</th>
-                <th>Đối Tượng</th>
-                <th>Thủ Đoạn</th>
-                <th>Trạng Thái</th>
-                <th>Thời Gian</th>
-              </tr>
-            </thead>
-            <tbody id="intakeTableBody">
-              <!-- Populated by intake.js -->
-            </tbody>
-          </table>
+          <div class="table-responsive">
+            <table class="clean-table">
+              <thead>
+                <tr>
+                  <th>Mã Hồ Sơ</th>
+                  <th>Đối Tượng</th>
+                  <th>Thủ Đoạn</th>
+                  <th>Trạng Thái</th>
+                  <th>Thời Gian</th>
+                </tr>
+              </thead>
+              <tbody id="intakeTableBody">
+                <!-- Populated by intake.js -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </section>
@@ -158,8 +182,8 @@
           </div>
           <p>Dữ liệu đối soát đã được Tổ 4 chuẩn hóa và lưu trữ dạng file SQL (<code>scam_phone_database.sql</code>), tương thích hoàn toàn với MySQL, PostgreSQL, SQLite và MariaDB. Cấu trúc gồm 5 bảng chính:</p>
           <ul style="margin: 10px 0 10px 22px;">
-            <li><strong>scam_sources:</strong> Lưu trữ danh mục các nguồn tin chính thống có thật (Thư Viện Pháp Luật, Bệnh Viện Lê Văn Thịnh, Thế Giới Di Động, UBND Xã Quảng Châu, Báo Chính Phủ, Tuổi Trẻ).</li>
-            <li><strong>scam_phones:</strong> Danh sách chi tiết các số điện thoại lừa đảo đã xác thực (18 số mạo danh Vietcombank, EVN, Shipper, Công an từ Thư Viện Pháp Luật; 8 số công an nêu đích danh; các số nháy máy quốc tế).</li>
+            <li><strong>scam_sources:</strong> Lưu trữ danh mục các nguồn tin chính thống có thật (Thư Viện Pháp Luật, Bệnh Viện Lê Văn Thịnh, Thế Giới Di Động, UBND Xã Quảng Châu, Báo Chính Phủ, Tuổi Trẻ, Cục An toàn thông tin).</li>
+            <li><strong>scam_phones:</strong> Danh sách chi tiết các số điện thoại lừa đảo đã xác thực (18 số mạo danh Vietcombank, EVN, Shipper, Công an từ Thư Viện Pháp Luật; 8 số công an nêu đích danh; số mạo danh thuế, VNeID, cấp cứu bệnh viện).</li>
             <li><strong>scam_patterns:</strong> Nhận diện <em>đầu số quốc tế</em> Wangiri (+224, +231, +232...), <em>đầu số cố định VoIP</em> (024999, 028999, 02856...), <em>đầu số SMS</em> trừ tiền ngầm (6781, 8781, 7777...) và <em>đuôi số bot tự động</em> (%9999, %8888, %0000).</li>
             <li><strong>scam_emails:</strong> Quản lý danh mục email giả danh nhà trường có đuôi công cộng (@gmail.com).</li>
             <li><strong>scam_reports:</strong> Sổ tiếp nhận hồ sơ phản ánh lừa đảo trực tuyến từ cộng đồng sinh viên.</li>

@@ -1,13 +1,14 @@
 /* ===================================================================
    BASE & SYSTEM LAYOUT - TỔ 4 (TƯ DUY HỆ THỐNG)
-   Thiết kế: Tối giản, thanh lịch, dễ nhìn, chuẩn cổng dịch vụ học đường
+   Thiết kế: Tối giản, thanh lịch, chuẩn cổng học đường
+   Hỗ trợ Chế độ Sáng / Tối (Light / Dark Mode) & Tối ưu Điện Thoại
    =================================================================== */
 
 :root {
   --font-sans: 'Segoe UI', 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, 'Roboto', 'Arial', sans-serif;
   --font-mono: 'Consolas', 'JetBrains Mono', monospace;
 
-  /* Palette trung tính, nhã nhặn, không màu mè */
+  /* LIGHT THEME (Mặc định) */
   --bg-page: #f8fafc;
   --bg-surface: #ffffff;
   --bg-subtle: #f1f5f9;
@@ -20,16 +21,74 @@
 
   --primary: #1e40af;
   --primary-hover: #1d4ed8;
+
   --danger: #b91c1c;
   --danger-bg: #fef2f2;
   --danger-border: #fecaca;
+  --danger-text: #991b1b;
+
   --success: #15803d;
   --success-bg: #f0fdf4;
+  --success-border: #bbf7d0;
+  --success-text: #166534;
+
   --warning: #b45309;
+  --warning-bg: #fffbeb;
+  --warning-border: #fde68a;
+  --warning-text: #92400e;
+
+  --neutral-bg: #f1f5f9;
+  --neutral-border: #cbd5e1;
+  --neutral-text: #334155;
+
+  --header-bg: #0f172a;
+  --header-border: #1e293b;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
+
+  --transition-speed: 0.25s;
+}
+
+/* DARK THEME (Chế độ tối) */
+[data-theme="dark"] {
+  --bg-page: #090d16;
+  --bg-surface: #111827;
+  --bg-subtle: #1e293b;
+  --border-color: #334155;
+  --border-focus: #3b82f6;
+
+  --text-main: #f8fafc;
+  --text-muted: #cbd5e1;
+  --text-dim: #94a3b8;
+
+  --primary: #3b82f6;
+  --primary-hover: #60a5fa;
+
+  --danger: #ef4444;
+  --danger-bg: #291114;
+  --danger-border: #7f1d1d;
+  --danger-text: #fca5a5;
+
+  --success: #22c55e;
+  --success-bg: #08281a;
+  --success-border: #14532d;
+  --success-text: #86efac;
+
+  --warning: #f59e0b;
+  --warning-bg: #271a07;
+  --warning-border: #78350f;
+  --warning-text: #fcd34d;
+
+  --neutral-bg: #1e293b;
+  --neutral-border: #334155;
+  --neutral-text: #cbd5e1;
+
+  --header-bg: #050811;
+  --header-border: #1e293b;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 * {
@@ -46,14 +105,19 @@ body {
   display: flex;
   flex-direction: column;
   line-height: 1.5;
+  transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
 }
 
 /* Header */
 .portal-header {
-  background-color: #0f172a;
+  background-color: var(--header-bg);
   color: #ffffff;
-  border-bottom: 1px solid #1e293b;
-  padding: 14px 24px;
+  border-bottom: 1px solid var(--header-border);
+  padding: 12px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: background-color var(--transition-speed) ease;
 }
 
 .header-inner {
@@ -62,14 +126,22 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
+}
+
+.header-brand {
+  flex: 1;
+  min-width: 0;
 }
 
 .header-brand h1 {
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 6px;
+  color: #ffffff;
 }
 
 .badge-team {
@@ -82,21 +154,35 @@ body {
 }
 
 .header-brand p {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: #94a3b8;
   margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .btn-header-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   background-color: rgba(255, 255, 255, 0.1);
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 6px 14px;
+  padding: 6px 12px;
   border-radius: var(--radius-sm);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
   text-decoration: none;
   transition: all 0.2s;
+  white-space: nowrap;
 }
 
 .btn-header-link:hover {
@@ -104,38 +190,72 @@ body {
   border-color: #2563eb;
 }
 
+/* Theme Toggle Button */
+.btn-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-theme-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.22);
+}
+
 /* Container */
 .portal-container {
   max-width: 1100px;
-  margin: 24px auto;
-  padding: 0 20px;
+  margin: 20px auto;
+  padding: 0 16px;
   flex: 1;
   width: 100%;
 }
 
-/* Clean Tab Navigation */
+/* Clean Tab Navigation - Mobile Smooth Scroll */
 .app-tab-nav {
   display: flex;
   border-bottom: 2px solid var(--border-color);
-  margin-bottom: 24px;
-  gap: 8px;
+  margin-bottom: 20px;
+  gap: 6px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  white-space: nowrap;
+  padding-bottom: 2px;
+}
+
+.app-tab-nav::-webkit-scrollbar {
+  display: none;
 }
 
 .app-tab-nav button {
   background: transparent;
   border: none;
   border-bottom: 3px solid transparent;
-  padding: 10px 18px;
-  font-size: 0.92rem;
+  padding: 10px 16px;
+  font-size: 0.9rem;
   font-weight: 700;
   color: var(--text-muted);
   cursor: pointer;
   margin-bottom: -2px;
   transition: all 0.2s;
+  flex-shrink: 0;
+  border-radius: 4px 4px 0 0;
 }
 
 .app-tab-nav button:hover {
   color: var(--primary);
+  background-color: var(--bg-subtle);
 }
 
 .app-tab-nav button.active {
@@ -160,4 +280,60 @@ body {
   font-size: 0.8rem;
   color: var(--text-dim);
   text-align: center;
+  transition: background-color var(--transition-speed) ease;
+}
+
+/* RESPONSIVE DESIGN CHO ĐIỆN THOẠI (< 768px) */
+@media (max-width: 768px) {
+  .portal-header {
+    padding: 10px 14px;
+  }
+
+  .header-inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .header-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .header-brand h1 {
+    font-size: 1rem;
+  }
+
+  .header-brand p {
+    display: none; /* Thu gọn tiêu đề dài trên màn hình nhỏ */
+  }
+
+  .header-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .btn-header-link {
+    justify-content: center;
+    padding: 8px;
+    font-size: 0.76rem;
+  }
+
+  .portal-container {
+    margin: 14px auto;
+    padding: 0 12px;
+  }
+
+  .app-tab-nav {
+    margin-bottom: 14px;
+  }
+
+  .app-tab-nav button {
+    padding: 8px 12px;
+    font-size: 0.82rem;
+  }
 }
