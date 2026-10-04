@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cổng Tra Cứu & Tiếp Nhận Báo Cáo Lừa Đảo - Tổ 4 | Tư Duy Hệ Thống</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Modular CSS -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/lookup.css">
+  <link rel="stylesheet" href="css/intake.css">
+</head>
+<body>
+
+  <!-- Clean Portal Header -->
+  <header class="portal-header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <h1>🛡️ Cổng Tra Cứu & Tiếp Nhận Phản Ánh Lừa Đảo <span class="badge-team">TỔ 4</span></h1>
+        <p>Bài làm Tổ 4 • Môn: Tư duy hệ thống (Đề tài 9: Lừa đảo trực tuyến nhắm vào sinh viên)</p>
+      </div>
+      <div>
+        <a href="../slides/index.html" class="btn-header-link" target="_blank">📊 Xem Slide Thuyết Trình</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="portal-container">
+    <!-- Clean Tab Navigation -->
+    <nav class="app-tab-nav">
+      <button class="active" data-tab="lookup" onclick="switchAppTab('lookup')">🔍 Tra Cứu SĐT & Email</button>
+      <button data-tab="intake" onclick="switchAppTab('intake')">📝 Tiếp Nhận Báo Cáo</button>
+      <button data-tab="system" onclick="switchAppTab('system')">🌐 Sơ Đồ Tư Duy Hệ Thống</button>
+    </nav>
+
+    <!-- TAB 1: TRA CỨU SĐT & EMAIL -->
+    <section id="tab-lookup" class="tab-section active">
+      <div class="lookup-card">
+        <h2 class="lookup-title">Kiểm Tra Mức Độ An Toàn Của Số Điện Thoại & Email</h2>
+        <p class="lookup-desc">Đối soát dữ liệu với danh sách đen Cục An toàn thông tin và danh bạ xác thực của các trường đại học</p>
+
+        <!-- Radio Switcher -->
+        <div class="lookup-type-radios">
+          <label>
+            <input type="radio" name="lookupType" value="phone" checked>
+            <span>Tra cứu Số Điện Thoại</span>
+          </label>
+          <label>
+            <input type="radio" name="lookupType" value="email">
+            <span>Tra cứu Địa Chỉ Email</span>
+          </label>
+        </div>
+
+        <!-- Search Input -->
+        <div class="search-input-group">
+          <input type="text" id="lookupInput" placeholder="Nhập số điện thoại (Ví dụ: 0981234567)..." value="0981234567">
+          <button class="btn-search" onclick="executeLookup()">Tra Cứu Ngay</button>
+        </div>
+
+        <!-- Discreet hint text (không màu mè, không nút linh tinh) -->
+        <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: -12px; margin-bottom: 16px; line-height: 1.5;">
+          <em>Gợi ý thử nghiệm: Thử SĐT <code>02499950060</code> (thuộc danh mục 50 số lừa đảo cần chặn ngay), <code>0981234567</code> (học phí giả), hoặc Email <code>daotao.dhqg.edu.vn@gmail.com</code>. Mỗi kết quả tra cứu đều hiển thị nguồn và đường link dẫn chứng có thật.</em>
+        </div>
+
+        <!-- Result Container -->
+        <div id="lookupResultContainer">
+          <!-- Populated by lookup.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: TIẾP NHẬN PHẢN ÁNH (BÁO CÁO) -->
+    <section id="tab-intake" class="tab-section">
+      <div class="intake-layout">
+        <!-- Form Tiếp Nhận -->
+        <div class="intake-form-box">
+          <h2 class="intake-title">Gửi Phản Ánh Lừa Đảo</h2>
+          <p class="intake-desc">Điền thông tin để hệ thống cấp mã hồ sơ tiếp nhận và đưa vào danh sách đen cảnh báo cho sinh viên.</p>
+
+          <form id="intakeForm" onsubmit="handleIntakeFormSubmit(event)">
+            <div class="form-group">
+              <label for="intakeTarget">SĐT hoặc Email nghi vấn:</label>
+              <input type="text" id="intakeTarget" placeholder="Ví dụ: 098xxxxxxx hoặc daotao...@gmail.com" required>
+            </div>
+
+            <div class="form-group">
+              <label for="intakeType">Thủ đoạn nghi vấn:</label>
+              <select id="intakeType">
+                <option value="Mạo danh thu học phí">Mạo danh thu học phí bổ sung</option>
+                <option value="Lừa đảo việc làm online">Bẫy việc làm online Shopee/TikTok</option>
+                <option value="Công an dọa án phạt">Giả mạo công an dọa án ma túy / nợ cước</option>
+                <option value="Khác">Chiêu trò lừa đảo khác</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="intakeNote">Nội dung tin nhắn / Ghi chú vụ việc:</label>
+              <textarea id="intakeNote" rows="3" placeholder="Mô tả tóm tắt nội dung kẻ lừa đảo yêu cầu..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit-intake">📥 Nộp Phản Ánh & Cấp Mã Hồ Sơ</button>
+          </form>
+        </div>
+
+        <!-- Sổ Tiếp Nhận -->
+        <div class="intake-table-box">
+          <div class="table-header-row">
+            <h2 class="intake-title" style="margin-bottom: 0;">Sổ Tiếp Nhận Hồ Sơ Trực Tuyến</h2>
+            <span style="font-size: 0.78rem; color: var(--text-dim); font-weight: 600;">Cập nhật tự động</span>
+          </div>
+          <table class="clean-table">
+            <thead>
+              <tr>
+                <th>Mã Hồ Sơ</th>
+                <th>Đối Tượng</th>
+                <th>Thủ Đoạn</th>
+                <th>Trạng Thái</th>
+                <th>Thời Gian</th>
+              </tr>
+            </thead>
+            <tbody id="intakeTableBody">
+              <!-- Populated by intake.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: SƠ ĐỒ HỆ THỐNG -->
+    <section id="tab-system" class="tab-section">
+      <div class="lookup-card">
+        <h2 class="lookup-title">Mô Phỏng Tư Duy Hệ Thống: Phòng Vệ Đa Tác Nhân</h2>
+        <p class="lookup-desc">Khắc phục 4 điểm gãy liên kết xã hội và tái lập Tính nhất thể (Wholeness) cho hệ thống phòng vệ học đường</p>
+
+        <div style="background-color: var(--bg-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 20px; font-size: 0.88rem; line-height: 1.7;">
+          <p><strong>1. Bản chất hệ thống của đường dây lừa đảo:</strong> Không hoạt động tự phát mà tổ chức thành 3 phân hệ chuyên môn hóa: <em>Săn tìm mục tiêu</em> ➔ <em>Thao túng tâm lý (Social Engineering)</em> ➔ <em>Tẩu tán dòng tiền qua tài khoản rác trong 3 phút</em>.</p>
+          <p style="margin-top: 10px;"><strong>2. Nguyên nhân cảnh báo rời rạc thất bại (Thiếu tính nhất thể):</strong> Mỗi đơn vị (Nhà trường, Ngân hàng, Nhà mạng, Công an) hoạt động trong ốc đảo thông tin của mình. Kẻ lừa đảo khai thác chính <em>khoảng trống liên kết</em> giữa các bên để tấn công vào sinh viên năm nhất bị cô lập.</p>
+          <p style="margin-top: 10px;"><strong>3. Giải pháp từ Cổng Tra Cứu & Tiếp Nhận Tổ 4:</strong> Tạo cơ chế chia sẻ dữ liệu tức thì ($1 + 1 > 2$), sinh viên tra cứu đối soát ngay số tài khoản học phí, đồng thời tiếp nhận phản ánh để cập nhật blacklist cho toàn bộ mạng lưới sinh viên.</p>
+          <div style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--border-color); font-size: 0.76rem; color: var(--text-dim); font-style: italic;">
+            Nguồn: Báo cáo phân tích chuyên sâu - Tổ 4 • Môn Tư duy hệ thống (Chương 1)
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Clean Footer -->
+  <footer class="portal-footer">
+    <p><strong>Bài làm Tổ 4</strong> • Môn: <strong>Tư duy hệ thống</strong> (Đề tài 9: Lừa đảo trực tuyến nhắm vào sinh viên)</p>
+  </footer>
+
+  <!-- Modular Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/lookup.js"></script>
+  <script src="js/intake.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

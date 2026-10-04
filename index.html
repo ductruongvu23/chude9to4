@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài Làm Tổ 4 - Môn Tư Duy Hệ Thống | Đề Tài 9: Lừa Đảo Trực Tuyến Nhắm Vào Sinh Viên</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --bg-page: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-card: #ffffff;
+      --border-color: #cbd5e1;
+      --primary: #1e40af;
+      --primary-hover: #1d4ed8;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #64748b;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* Header */
+    .hero-header {
+      text-align: center;
+      margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .badge-pill {
+      display: inline-block;
+      background-color: #e0f2fe;
+      color: #0369a1;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 9999px;
+      margin-bottom: 12px;
+      border: 1px solid #bae6fd;
+    }
+
+    .hero-title {
+      font-size: 2.3rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+
+    .hero-subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    /* Rubric mini banner */
+    .rubric-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 36px;
+      text-align: center;
+    }
+
+    .rubric-box {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      padding: 12px 8px;
+      border-radius: var(--radius-sm);
+    }
+
+    .rubric-score {
+      font-family: var(--font-mono);
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .rubric-name {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* 2 Main Product Cards */
+    .section-heading {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+      color: var(--text-main);
+    }
+
+    .grid-2-products {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 36px;
+    }
+
+    .product-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      transition: all 0.2s;
+    }
+
+    .product-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 8px 20px -5px rgba(30, 64, 175, 0.15);
+    }
+
+    .product-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .product-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .product-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .tag-sm {
+      font-size: 0.72rem;
+      background-color: var(--bg-page);
+      border: 1px solid var(--border-color);
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: var(--text-dim);
+    }
+
+    .btn-action {
+      display: inline-block;
+      text-align: center;
+      background-color: var(--primary);
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.92rem;
+      padding: 12px 20px;
+      border-radius: var(--radius-sm);
+      transition: background-color 0.2s;
+    }
+
+    .btn-action:hover {
+      background-color: var(--primary-hover);
+    }
+
+    /* Subdued References (Ẩn tài liệu về phía sau) */
+    .drawer-references {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .drawer-title {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .drawer-links a {
+      font-size: 0.82rem;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      margin-left: 12px;
+    }
+
+    .drawer-links a:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      margin-top: 36px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    @media (max-width: 768px) {
+      .grid-2-products, .rubric-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="hero-header">
+      <span class="badge-pill">BÀI LÀM TỔ 4 • MÔN TƯ DUY HỆ THỐNG</span>
+      <h1 class="hero-title">Đề Tài 9: Lừa Đảo Trực Tuyến Nhắm Vào Sinh Viên</h1>
+      <p class="hero-subtitle">
+        Bóc tách mạng lưới lừa đảo, phân tích điểm gãy liên kết phòng vệ và xây dựng Cổng tra cứu SĐT/Email & Tiếp nhận phản ánh cho sinh viên.
+      </p>
+    </header>
+
+    <!-- Rubric Bar -->
+    <div class="rubric-row">
+      <div class="rubric-box">
+        <div class="rubric-score">3.0đ</div>
+        <div class="rubric-name">Khái Niệm Hệ Thống</div>
+      </div>
+      <div class="rubric-box">
+        <div class="rubric-score">2.0đ</div>
+        <div class="rubric-name">Gắn Với Thực Tế</div>
+      </div>
+      <div class="rubric-box">
+        <div class="rubric-score">2.0đ</div>
+        <div class="rubric-name">Giải Pháp & Rủi Ro</div>
+      </div>
+      <div class="rubric-box">
+        <div class="rubric-score">1.5đ</div>
+        <div class="rubric-name">Trình Bày Slide</div>
+      </div>
+      <div class="rubric-box">
+        <div class="rubric-score">1.5đ</div>
+        <div class="rubric-name">Phản Biện (Q&A)</div>
+      </div>
+    </div>
+
+    <!-- 2 Products -->
+    <h2 class="section-heading">📦 Sản Phẩm Hoàn Thành Của Tổ 4</h2>
+
+    <div class="grid-2-products">
+
+      <!-- Product 1: Slides -->
+      <div class="product-card">
+        <div>
+          <h3 class="product-title">📊 Bộ Slide Trình Chiếu (14 Slides)</h3>
+          <p class="product-desc">
+            Thiết kế tối giản, dễ nhìn với 14 slide hoàn chỉnh. Bổ sung ảnh chụp bằng chứng thực tế tại Việt Nam (tin nhắn học phí mạo danh, bẫy tuyển dụng Shopee/TikTok) kèm chú thích nguồn rõ ràng.<br>
+            • Hỗ trợ 3 bản thiết kế: Minimalist Swiss, Dark Minimal, Academic Editorial.<br>
+            • Tích hợp Presenter Mode (ghi chú người nói, đồng hồ đếm ngược 10-12 phút).
+          </p>
+          <div class="product-tags">
+            <span class="tag-sm">14 Slides</span>
+            <span class="tag-sm">Ảnh thật VN</span>
+            <span class="tag-sm">Có chú thích nguồn</span>
+            <span class="tag-sm">3 Phong cách</span>
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 14px;">
+          <a href="slides/index.html" class="btn-action" style="flex: 1;">
+            🚀 Mở Trình Chiếu Slide
+          </a>
+          <a href="Slide_To4_DeTai9.pdf" download="Slide_To4_DeTai9.pdf" class="btn-action" style="flex: 1; background-color: #047857; text-align: center;">
+            📥 Tải Slide PDF (14 Trang)
+          </a>
+        </div>
+      </div>
+
+      <!-- Product 2: Web App -->
+      <div class="product-card">
+        <div>
+          <h3 class="product-title">🛡️ Cổng Tra Cứu & Tiếp Nhận Báo Cáo</h3>
+          <p class="product-desc">
+            Trang web đơn giản, nhã nhặn, dễ sử dụng phục vụ nhu cầu phòng ngừa lừa đảo:<br>
+            • <strong>Tra cứu SĐT & Email:</strong> Kiểm tra mức độ uy tín, phát hiện hòm thư miễn phí (@gmail) giả danh phòng đào tạo.<br>
+            • <strong>Tiếp nhận phản ánh:</strong> Điền thông tin vụ việc, tự động sinh mã hồ sơ tiếp nhận (Ticket ID: HS-TDHT-XXXX).<br>
+            • Đã bỏ bớt các nút thử nghiệm rườm rà và lược bỏ mô phỏng Deepfake.
+          </p>
+          <div class="product-tags">
+            <span class="tag-sm">Tra cứu SĐT & Email</span>
+            <span class="tag-sm">Tiếp nhận báo cáo</span>
+            <span class="tag-sm">Sinh mã hồ sơ</span>
+            <span class="tag-sm">Giao diện sạch sẽ</span>
+          </div>
+        </div>
+        <a href="app/index.html" class="btn-action">
+          ⚡ Mở Cổng Tra Cứu & Tiếp Nhận
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Subdued Documents Link (Ẩn tài liệu về phía sau) -->
+    <div class="drawer-references">
+      <span class="drawer-title">📁 Hồ sơ & Tài liệu đính kèm (Nằm ở phía sau):</span>
+      <div class="drawer-links">
+        <a href="docs/KICH_BAN_THUYET_TRINH_VA_BAN_GIAY.md" target="_blank">📄 Kịch bản bản giấy & Phản biện Q&A</a>
+        <a href="docs/TIEU_LUAN_PHAN_TICH_HE_THONG.md" target="_blank">📚 Báo cáo tiểu luận học thuật đầy đủ</a>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p><strong>Bài làm Tổ 4</strong> • Môn: <strong>Tư duy hệ thống</strong> (Đề tài 9: Lừa đảo trực tuyến nhắm vào sinh viên)</p>
+      <p style="margin-top: 4px; font-size: 0.74rem;">Đã modun hóa toàn bộ mã nguồn CSS & JS • Sẵn sàng trình chiếu và vận hành ngoại tuyến.</p>
+    </footer>
+
+  </div>
+
+</body>
+</html>

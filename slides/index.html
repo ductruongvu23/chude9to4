@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide Thuyết Trình: Đề tài 9 - Lừa đảo trực tuyến nhắm vào sinh viên (Tổ 4)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <!-- Modular Slide CSS -->
+  <link rel="stylesheet" href="css/slides.css">
+  <link rel="stylesheet" href="css/themes.css">
+</head>
+<body data-theme="swiss">
+
+  <!-- Top Header -->
+  <header class="presentation-header">
+    <div class="header-left">
+      <div class="badge-topic">BÀI LÀM TỔ 4 • TƯ DUY HỆ THỐNG</div>
+      <h1 class="header-title">Đề Tài 9: Lừa Đảo Trực Tuyến Nhắm Vào Sinh Viên</h1>
+    </div>
+
+    <div class="header-controls">
+      <!-- 3 Theme Switcher -->
+      <div class="theme-selector-wrap">
+        <select id="themeSelect" onchange="changeTheme(this.value)">
+          <option value="swiss" selected>Bản 1: Minimalist Swiss (Sáng tối giản)</option>
+          <option value="dark">Bản 2: Minimal Dark (Tối giản thanh lịch)</option>
+          <option value="academic">Bản 3: Academic Editorial (Học thuật trang nhã)</option>
+        </select>
+      </div>
+
+      <button class="btn-ctrl" onclick="togglePresenterMode()" title="Ghi chú người nói & Hẹn giờ">
+        🎙️ Ghi chú
+      </button>
+      <a href="Slide_To4_DeTai9.pdf" download="Slide_To4_DeTai9.pdf" class="btn-ctrl" title="Tải về file PDF 14 slide hoàn chỉnh">
+        📥 Tải Slide PDF (14 Trang)
+      </a>
+      <button class="btn-ctrl" onclick="openPrintModal()" title="In ra giấy hoặc xem trước trang in">
+        🖨️ In Trình Duyệt
+      </button>
+      <a href="../app/index.html" target="_blank" class="btn-ctrl btn-highlight">
+        🚀 Cổng Tra Cứu
+      </a>
+    </div>
+  </header>
+
+  <!-- Slide Canvas -->
+  <main class="slide-viewport">
+    <div class="slides-container" id="slidesContainer">
+
+      <!-- SLIDE 1: COVER -->
+      <section class="slide-item active" data-slide="1" data-speaker="Thành viên 1">
+        <div class="slide-inner cover-layout">
+          <div class="tag-pill">BÁO CÁO NGHIÊN CỨU • BÀI LÀM TỔ 4 • MÔN TƯ DUY HỆ THỐNG</div>
+          <h2 class="hero-title">LỪA ĐẢO TRỰC TUYẾN<br><span style="color: var(--accent-primary);">NHẮM VÀO SINH VIÊN</span></h2>
+          <p class="hero-subtitle">Bóc tách mạng lưới lừa đảo, chỉ ra điểm gãy liên kết phòng vệ và giải pháp Cổng tra cứu & tiếp nhận phản ánh</p>
+
+          <div class="cover-meta-grid">
+            <div class="meta-card">
+              <span class="meta-label">Môn học</span>
+              <span class="meta-value">Tư duy hệ thống</span>
+            </div>
+            <div class="meta-card">
+              <span class="meta-label">Đơn vị thực hiện</span>
+              <span class="meta-value">Tổ 4 • Đại học</span>
+            </div>
+            <div class="meta-card">
+              <span class="meta-label">Khái niệm cốt lõi</span>
+              <span class="meta-value">Mục tiêu • Phân hệ • Liên kết • Tính nhất thể</span>
+            </div>
+            <div class="meta-card">
+              <span class="meta-label">Sản phẩm thực tế</span>
+              <span class="meta-value">Cổng Tra Cứu & Tiếp Nhận</span>
+            </div>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 1 (0:00 - 1:00)</strong><br>
+          - Chào Thầy Cô và các bạn. Giới thiệu đề tài 9 dưới góc độ môn Tư duy hệ thống.<br>
+          - Tiếp cận khoa học bóc tách cấu trúc hệ thống của đường dây tội phạm và tìm ra nguyên nhân gốc rễ vì sao các bên cảnh báo riêng rẽ lại thất bại.
+        </div>
+      </section>
+
+      <!-- SLIDE 2: BỐI CẢNH THỰC TẾ & SỐ LIỆU CHÍNH THỨC (ẢNH THỰC TẾ 1) -->
+      <section class="slide-item" data-slide="2" data-speaker="Thành viên 1">
+        <div class="slide-inner">
+          <div>
+            <span class="section-tag">BỐI CẢNH THỰC TẾ & BÁO CÁO CHÍNH THỨC</span>
+            <h2 class="slide-title">Thực Trạng: Sinh Viên & Giới Trẻ Trong Tầm Ngắm Tội Phạm Mạng</h2>
+            <p class="slide-desc">Dữ liệu tổng hợp từ Báo cáo của Cục An toàn thông tin (Bộ TT&TT), Liên minh GASA và các nghiên cứu an ninh mạng</p>
+          </div>
+
+          <div class="evidence-split">
+            <div class="evidence-img-container">
+              <img src="../assets/images/vn_student_campus.jpg" alt="Sinh viên lo âu xem điện thoại tại khuôn viên trường">
+            </div>
+
+            <div class="evidence-points">
+              <div class="point-card danger">
+                <strong>50% Nạn nhân lừa đảo tài chính trực tuyến là sinh viên & thanh niên &lt; 22 tuổi</strong>
+                <p>Theo số liệu an ninh mạng và các nền tảng thanh toán (công bố trên Báo Tiền Phong), tân sinh viên xa nhà, bỡ ngỡ tự lập là nhóm dễ bị thao túng tâm lý nhất.</p>
+              </div>
+              <div class="point-card">
+                <strong>70% Người dùng đối mặt lừa đảo hàng tháng &bull; 71% qua Facebook & Gmail</strong>
+                <p>Báo cáo của Liên minh Phòng chống Lừa đảo Toàn cầu (GASA) và Chongluadao.vn cho thấy tội phạm mạng tiếp cận sinh viên liên tục qua các kênh liên lạc phổ biến.</p>
+              </div>
+              <div class="point-card">
+                <strong>Hơn 22.200 Vụ phản ánh &bull; 13 thủ đoạn chuyên nhắm vào giới trẻ</strong>
+                <p>Theo Cục An toàn thông tin, bẫy việc làm online, học phí giả và bắt cóc tống tiền online chiếm tỷ lệ áp đảo trong các vụ nhắm vào sinh viên đại học.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn chính thức:</strong> Liên minh Chống Lừa Đảo Toàn Cầu GASA &amp; <a href="https://chongluadao.vn" target="_blank" rel="noopener noreferrer">Chongluadao.vn ↗</a> &bull; Báo Tiền Phong (<a href="https://tienphong.vn" target="_blank" rel="noopener noreferrer">tienphong.vn ↗</a>) &bull; Báo Điện tử Chính phủ (<a href="https://baochinhphu.vn/chien-dich-nhan-dien-lua-dao-truc-tuyen-102240717152259919.htm" target="_blank" rel="noopener noreferrer">baochinhphu.vn - Chiến dịch Nhận diện lừa đảo ↗</a>)</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 1 (1:00 - 1:45)</strong><br>
+          - Dẫn chứng số liệu thực tế được kiểm chứng: 50% nạn nhân lừa đảo tài chính là sinh viên/thanh niên dưới 22 tuổi.<br>
+          - Báo cáo GASA & Chongluadao: 70% người dùng gặp bẫy lừa hàng tháng, chủ yếu qua Facebook/Gmail.<br>
+          - Bóc tách nguyên nhân hệ thống: Tân sinh viên bước từ hệ thống kín (gia đình) sang hệ thống mở, bị hổng liên kết bảo vệ.
+        </div>
+      </section>
+
+      <!-- SLIDE 3: BẰNG CHỨNG THỰC TẾ: HỌC PHÍ GIẢ MẠO (ẢNH THỰC TẾ 2) -->
+      <section class="slide-item" data-slide="3" data-speaker="Thành viên 1">
+        <div class="slide-inner">
+          <div>
+            <span class="section-tag">BẰNG CHỨNG THỰC TẾ TẠI VIỆT NAM</span>
+            <h2 class="slide-title">Hình Ảnh Thực Tế: Tin Nhắn Mạo Danh Thu Học Phí</h2>
+            <p class="slide-desc">Thủ đoạn mạo danh Phòng Đào tạo hối thúc chuyển tiền vào STK cá nhân kèm đe dọa kỷ luật</p>
+          </div>
+
+          <div class="evidence-split">
+            <div class="evidence-img-container">
+              <img src="../assets/images/vn_scam_sms_tuition.jpg" alt="Tin nhắn SMS mạo danh Phòng Đào tạo thu học phí">
+            </div>
+
+            <div class="evidence-points">
+              <div class="point-card danger">
+                <strong>1. Giả mạo thẩm quyền (Authority Impersonation):</strong>
+                <p>Lấy danh nghĩa "Phòng Đào tạo" gửi tin nhắn thông báo thiếu 3.250.000đ học phí.</p>
+              </div>
+              <div class="point-card danger">
+                <strong>2. Tạo áp lực thời gian gấp (Urgency Manipulation):</strong>
+                <p>Yêu cầu nộp "trước 17h hôm nay" nếu không sẽ bị đình chỉ và xóa tên khỏi danh sách thi.</p>
+              </div>
+              <div class="point-card">
+                <strong>3. Hướng dòng tiền về tài khoản cá nhân:</strong>
+                <p>Yêu cầu chuyển khoản Techcombank của kẻ lừa đảo thay vì cổng Portal thanh toán chuẩn của trường.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn chính thức:</strong> Báo Điện tử Chính phủ (<a href="https://baochinhphu.vn/lua-dao-sinh-vien-chuyen-tien-dang-ky-cho-o-ky-tuc-xa-10224081107491905.htm" target="_blank" rel="noopener noreferrer">baochinhphu.vn - Cảnh báo thủ đoạn mạo danh lừa đảo sinh viên ↗</a>)</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 1 (1:45 - 2:30)</strong><br>
+          - Bằng chứng tin nhắn SMS mạo danh thu học phí thực tế tại Việt Nam.<br>
+          - Tân sinh viên sợ bị đình chỉ học nên bị cuốn vào bẫy tâm lý và chuyển tiền ngay.
+        </div>
+      </section>
+
+      <!-- SLIDE 4: BẰNG CHỨNG THỰC TẾ: BẪY VIỆC LÀM ONLINE (ẢNH THỰC TẾ 3) -->
+      <section class="slide-item" data-slide="4" data-speaker="Thành viên 1">
+        <div class="slide-inner">
+          <div>
+            <span class="section-tag">BẰNG CHỨNG THỰC TẾ TẠI VIỆT NAM</span>
+            <h2 class="slide-title">Hình Ảnh Thực Tế: Bẫy "Việc Nhẹ Lương Cao" Tuyển CTV</h2>
+            <p class="slide-desc">Dẫn dụ làm nhiệm vụ xem video TikTok, giật đơn hàng Shopee nhận hoa hồng 300k - 500k/ngày</p>
+          </div>
+
+          <div class="evidence-split">
+            <div class="evidence-img-container">
+              <img src="../assets/images/vn_job_scam_chat.jpg" alt="Tin nhắn tuyển dụng CTV Shopee TikTok lừa đảo">
+            </div>
+
+            <div class="evidence-points">
+              <div class="point-card danger">
+                <strong>1. Mồi câu hoa hồng bất thường (Greed Trigger):</strong>
+                <p>Hứa hẹn thu nhập 300k - 500k/ngày nhận tiền ngay vào tài khoản, không cần kinh nghiệm.</p>
+              </div>
+              <div class="point-card danger">
+                <strong>2. Chiến thuật tạo niềm tin giả (False Trust):</strong>
+                <p>Cho nạn nhân nhận 50k thật ở 1-2 nhiệm vụ đầu tiên để loại bỏ tâm lý hoài nghi.</p>
+              </div>
+              <div class="point-card">
+                <strong>3. Ép nạp tiền cọc nâng hạn mức:</strong>
+                <p>Nâng vốn lên hàng triệu đồng làm nhiệm vụ giật đơn rồi khóa rút tiền, yêu cầu nộp thêm tiền giải cứu.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn chính thức:</strong> Báo Tuổi Trẻ Online (<a href="https://tuoitre.vn/chieu-lua-dao-moi-nham-vao-sinh-vien-cu-nguoi-den-tan-noi-nhan-tien-100260913131739695.htm" target="_blank" rel="noopener noreferrer">tuoitre.vn - Chiêu lừa đảo mới nhắm vào sinh viên ↗</a>)</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 1 (2:30 - 3:15)</strong><br>
+          - Phân tích bẫy việc làm Shopee/TikTok: Kẻ lừa đảo thả mồi nhỏ ban đầu rồi nuốt trọn số tiền lớn sau đó.
+        </div>
+      </section>
+
+      <!-- SLIDE 5: ĐƯỜNG DÂY LỪA ĐẢO NHƯ MỘT HỆ THỐNG -->
+      <section class="slide-item" data-slide="5" data-speaker="Thành viên 1">
+        <div class="slide-inner">
+          <div>
+            <span class="section-tag">NHIỆM VỤ 1 • VẬN DỤNG KHÁI NIỆM HỆ THỐNG</span>
+            <h2 class="slide-title">Đường Dây Lừa Đảo: Một Hệ Thống Có Tổ Chức</h2>
+            <p class="slide-desc">Mục tiêu hệ thống: Tối đa hóa tài sản chiếm đoạt phi pháp trong thời gian ngắn nhất & xóa dấu vết</p>
+          </div>
+
+          <div class="system-pipeline">
+            <div class="pipeline-step">
+              <div class="step-num">Phân hệ 1</div>
+              <h3 class="step-title">Săn Tìm Mục Tiêu</h3>
+              <ul class="step-list">
+                <li>Thu thập data tân sinh viên (group tân sinh viên, lộ lọt dữ liệu).</li>
+                <li>Phân loại nhu cầu: Tìm việc làm thêm, tìm trọ, nộp học phí.</li>
+                <li>Phát tán mồi câu qua SMS, Zalo, mạng xã hội.</li>
+              </ul>
+            </div>
+
+            <div class="pipeline-arrow">➔</div>
+
+            <div class="pipeline-step highlight">
+              <div class="step-num">Phân hệ 2</div>
+              <h3 class="step-title">Thao Túng Tâm Lý (Social Engineering)</h3>
+              <ul class="step-list">
+                <li>Tạo niềm tin: Trả hoa hồng nhỏ 50k-100k sòng phẳng.</li>
+                <li>Gây áp lực: Dọa đình chỉ học, dọa kiện tụng hoặc viện cớ khẩn cấp.</li>
+                <li>Cô lập nạn nhân: Ép không được nói cho người thân.</li>
+              </ul>
+            </div>
+
+            <div class="pipeline-arrow">➔</div>
+
+            <div class="pipeline-step">
+              <div class="step-num">Phân hệ 3</div>
+              <h3 class="step-title">Tẩu Tán & Rửa Tiền</h3>
+              <ul class="step-list">
+                <li>Mạng lưới tài khoản ngân hàng rác (mule accounts).</li>
+                <li>Chia nhỏ lệnh chuyển tiền dưới 10 triệu để lách sinh trắc học.</li>
+                <li>Chuyển hóa sang tiền số quốc tế trong 3 - 5 phút.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn tham chiếu:</strong> Quyết định 2345/QĐ-NHNN về xác thực sinh trắc học (<a href="https://sbv.gov.vn" target="_blank" rel="noopener noreferrer">sbv.gov.vn ↗</a>) &bull; Báo cáo bóc gỡ đường dây mua bán tài khoản rác (mule account) - Bộ Công An (<a href="https://bocongan.gov.vn" target="_blank" rel="noopener noreferrer">bocongan.gov.vn ↗</a>)</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 1 (3:15 - 4:00)</strong><br>
+          - Bóc tách đường dây thành 3 phân hệ theo Chương 1: Săn tìm mục tiêu, Thao túng tâm lý, Tẩu tán tiền.<br>
+          - Dẫn chứng đường dây vận hành như một doanh nghiệp tội phạm công nghệ cao.
+        </div>
+      </section>
+
+      <!-- SLIDE 6: TÍNH THÍCH NGHI VÀ FEEDBACK LOOP -->
+      <section class="slide-item" data-slide="6" data-speaker="Thành viên 1">
+        <div class="slide-inner">
+          <div>
+            <span class="section-tag">NHIỆM VỤ 1 (TIẾP) • KHẢ NĂNG THÍCH NGHI</span>
+            <h2 class="slide-title">Tính Thích Nghi & Vòng Phản Hồi (Feedback Loop)</h2>
+            <p class="slide-desc">Hệ thống lừa đảo liên tục điều chỉnh hành vi khi nhận tín hiệu siết chặt từ xã hội</p>
+          </div>
+
+          <div class="grid-3">
+            <div class="stat-card">
+              <h3 style="font-size: 1.05rem; margin-bottom: 6px;">📅 Theo Mùa Vụ</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Tháng 9: Đánh vào bẫy học phí, ký túc xá, tìm phòng trọ.<br>Tháng 12 - Tết: Đánh vào việc làm thời vụ, vé xe khách giá rẻ.</p>
+            </div>
+            <div class="stat-card">
+              <h3 style="font-size: 1.05rem; margin-bottom: 6px;">📲 Theo Công Nghệ</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Nhà mạng siết SMS rác ➔ Chuyển sang lập group Telegram tự hủy.<br>Nạn nhân cảnh giác ➔ Dùng email giả mạo hoặc cuộc gọi giả danh.</p>
+            </div>
+            <div class="stat-card">
+              <h3 style="font-size: 1.05rem; margin-bottom: 6px;">⚖️ Theo Luật Pháp</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Ngân hàng bắt buộc quét khuôn mặt trên 10 triệu (QĐ 2345) ➔ Lập tức chia nhỏ các lệnh chuyển tiền thành 9.5 triệu đồng.</p>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn chính thức:</strong> Cục Viễn thông - Bộ TT&TT (<a href="https://vnta.gov.vn" target="_blank" rel="noopener noreferrer">vnta.gov.vn ↗</a>) &bull; Hiệp hội An toàn thông tin Việt Nam VNISA (<a href="https://vnisa.org.vn" target="_blank" rel="noopener noreferrer">vnisa.org.vn ↗</a>)</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 1 (4:00 - 4:45)</strong><br>
+          - Cơ chế phản hồi (Feedback loop): thích nghi theo mùa, theo công nghệ và lách luật.<br>
+          - Chuyển giao phần trình bày cho Thành viên 2 sang Nhiệm vụ 2 & 3.
+        </div>
+      </section>
+
+      <!-- SLIDE 7: SƠ ĐỒ HỆ THỐNG PHÒNG VỆ -->
+      <section class="slide-item" data-slide="7" data-speaker="Thành viên 2">
+        <div class="slide-inner">
+          <div>
+            <span class="section-tag">NHIỆM VỤ 2 • SƠ ĐỒ HỆ THỐNG PHÒNG VỆ</span>
+            <h2 class="slide-title">Hệ Thống Phòng Vệ Đa Tác Nhân: 6 Trụ Cột</h2>
+            <p class="slide-desc">Mạng lưới phòng thủ xã hội liên kết bảo vệ sinh viên trước tội phạm mạng</p>
+          </div>
+
+          <div class="defense-hex-grid">
+            <div class="actor-card center-actor">
+              <div style="font-size: 0.7rem; font-weight: 800; color: var(--accent-primary);">TRUNG TÂM</div>
+              <h3>🎓 SINH VIÊN</h3>
+              <p>Chủ thể trực tiếp tiếp nhận thông tin và đưa ra quyết định chuyển tiền.</p>
+            </div>
+            <div class="actor-card">
+              <h3>👨‍👩‍👦 GIA ĐÌNH</h3>
+              <p>Hậu phương chu cấp tài chính và là chốt chặn tâm lý cố vấn quan trọng nhất.</p>
+            </div>
+            <div class="actor-card">
+              <h3>🏛️ NHÀ TRƯỜNG</h3>
+              <p>Ban hành quy chế học phí, quản lý sinh viên và các kênh thông báo chính thức.</p>
+            </div>
+            <div class="actor-card">
+              <h3>💳 NGÂN HÀNG</h3>
+              <p>Cổng kiểm soát dòng tiền, xác thực tài khoản và thực hiện lệnh giao dịch.</p>
+            </div>
+            <div class="actor-card">
+              <h3>📶 NHÀ MẠNG</h3>
+              <p>Hạ tầng viễn thông, quản lý SIM chính chủ và ngăn chặn cuộc gọi, tin nhắn rác.</p>
+            </div>
+            <div class="actor-card">
+              <h3>🛡️ CÔNG AN</h3>
+              <p>Thực thi pháp luật, điều tra bóc gỡ đường dây và cưỡng chế phong tỏa tài khoản.</p>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn tham chiếu:</strong> Mô hình phòng vệ đa tác nhân kết hợp Tổng đài quốc gia 156 của Bộ TT&TT (<a href="https://mic.gov.vn" target="_blank" rel="noopener noreferrer">mic.gov.vn ↗</a>) &bull; Đề xuất Tổ 4 (Tư duy hệ thống)</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 2 (4:45 - 5:30)</strong><br>
+          - Giới thiệu sơ đồ 6 tác nhân.<br>
+          - Tại sao có đủ 6 bên nhưng tội phạm vẫn chọc thủng được? Câu trả lời nằm ở khái niệm Liên kết.
+        </div>
+      </section>
+
+      <!-- SLIDE 8: ĐIỂM YẾU NẰM Ở LIÊN KẾT NÀO? -->
+      <section class="slide-item" data-slide="8" data-speaker="Thành viên 2">
+        <div class="slide-inner">
+          <div>
+            <span class="section-tag">NHIỆM VỤ 2 (TIẾP) • PHÂN TÍCH ĐIỂM GÃY</span>
+            <h2 class="slide-title">Điểm Yếu Nằm Ở Liên Kết Nào? (Linkage Gaps)</h2>
+            <p class="slide-desc">Sức mạnh hệ thống không nằm ở số phần tử, mà nằm ở độ bền vững của các liên kết</p>
+          </div>
+
+          <div class="grid-2">
+            <div class="point-card danger">
+              <strong>1. Điểm gãy Sinh viên ⚡ Gia đình:</strong>
+              <p>Sinh viên sợ bố mẹ la mắng, muốn tỏ ra tự lập. Kẻ lừa đảo triệt để cô lập nạn nhân bằng câu dặn "Bí mật nghiệp vụ, cấm nói cho gia đình".</p>
+            </div>
+            <div class="point-card danger">
+              <strong>2. Điểm gãy Sinh viên ⚡ Nhà trường:</strong>
+              <p>Kênh thông tin đào tạo 1 chiều, thiếu đường dây nóng xác minh STK 24/7. Nhận tin nhắn dọa xóa tên lúc 11h đêm sinh viên không biết hỏi ai.</p>
+            </div>
+            <div class="point-card danger">
+              <strong>3. Điểm gãy Ngân hàng ⚡ Công an (Độ trễ):</strong>
+              <p>Dòng tiền tội phạm bốc hơi trong 3 phút, nhưng quy trình công văn xác minh phong tỏa tài khoản mất 24h đến vài ngày.</p>
+            </div>
+            <div class="point-card">
+              <strong>4. Điểm gãy Nhà mạng ⚡ Sinh viên:</strong>
+              <p>Chỉ lọc số rác chung chung, chưa có cơ chế cảnh báo ngữ cảnh thời gian thực ngay trên màn hình chuông reo.</p>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn tham chiếu:</strong> Cổng Tiếp nhận phản ánh cuộc gọi rác 156 (<a href="https://thongbaorac.ais.gov.vn" target="_blank" rel="noopener noreferrer">thongbaorac.ais.gov.vn ↗</a>) &bull; Cổng Điều phối ứng cứu sự cố an toàn thông tin VNCERT/CC (<a href="https://vncert.vn" target="_blank" rel="noopener noreferrer">vncert.vn ↗</a>)</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 2 (5:30 - 6:15)</strong><br>
+          - Chỉ ra 4 điểm gãy liên kết (đặc biệt là Sinh viên - Gia đình và Ngân hàng - Công an).<br>
+          - Chênh lệch vận tốc: Tẩu tán mất 3 phút, công văn mất vài ngày.
+        </div>
+      </section>
+
+      <!-- SLIDE 9: VÌ SAO CẢNH BÁO RỜI RẠC CHƯA ĐỦ? (TÍNH NHẤT THỂ) -->
+      <section class="slide-item" data-slide="9" data-speaker="Thành viên 2">
+        <div class="slide-inner">
+          <div>
+            <span class="section-tag">NHIỆM VỤ 3 • KHÁI NIỆM TÍNH NHẤT THỂ</span>
+            <h2 class="slide-title">Vì Sao Cảnh Báo Rời Rạc Chưa Đủ?</h2>
+            <p class="slide-desc">Luận giải bằng nguyên lý Tính nhất thể (Wholeness / Systemic Integrity)</p>
+          </div>
+
+          <div class="theory-split">
+            <div class="theory-box">
+              <div style="font-size: 0.78rem; font-weight: 800; color: var(--accent-primary); text-transform: uppercase;">Định lý Tính Nhất Thể</div>
+              <p class="theory-quote">"Một hệ thống là một chỉnh thể hữu cơ, trong đó các thuộc tính tổng thể (Emergent Properties) không thể suy ra bằng cách cộng gộp số học các phần tử riêng rẽ."</p>
+              <div style="font-family: var(--font-mono); font-size: 0.82rem; font-weight: 700; color: var(--accent-danger);">
+                Hiệu quả phòng vệ &ne; Cảnh báo Trường + SMS Nhà mạng + Pop-up Ngân hàng
+              </div>
+            </div>
+
+            <div>
+              <div class="silo-item">
+                <span class="silo-badge">Ốc đảo dữ liệu (Data Silos)</span>
+                <p>Mỗi bên chỉ nhìn thấy một phần: Ngân hàng thấy chuyển tiền, Nhà mạng thấy cuộc gọi, Trường thấy thông báo đào tạo.</p>
+              </div>
+              <div class="silo-item">
+                <span class="silo-badge">Khai thác khoảng trống liên kết</span>
+                <p>Kẻ lừa đảo không tấn công trực tiếp vào ngân hàng hay trường học; chúng đánh vào ranh giới chuyển tiếp thiếu kiểm soát.</p>
+              </div>
+              <div class="silo-item">
+                <span class="silo-badge">Quá tải cảnh báo (Warning Fatigue)</span>
+                <p>Quá nhiều cảnh báo chung chung không đúng lúc khiến sinh viên nảy sinh tâm lý thờ ơ, bấm "Bỏ qua".</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn học thuật &amp; thực tiễn:</strong> Giáo trình Nhập môn Tư duy hệ thống (L. v. Bertalanffy - Chương 1) &bull; Báo Điện tử Chính phủ (<a href="https://baochinhphu.vn/chien-dich-nhan-dien-lua-dao-truc-tuyen-102240717152259919.htm" target="_blank" rel="noopener noreferrer">baochinhphu.vn - Cẩm nang Nhận diện lừa đảo ↗</a>)</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 2 (6:15 - 7:00)</strong><br>
+          - Vận dụng khái niệm Tính nhất thể (Wholeness). Giải thích vì sao nỗ lực đơn lẻ triệt tiêu lẫn nhau.<br>
+          - Chuyển giao phần trình bày cho Thành viên 3 sang Giải pháp Cổng tra cứu & tiếp nhận.
+        </div>
+      </section>
+
+      <!-- SLIDE 10: Ý TƯỞNG CÔNG CỤ: CỔNG TRA CỨU & TIẾP NHẬN TỔ 4 -->
+      <section class="slide-item" data-slide="10" data-speaker="Thành viên 3">
+        <div class="slide-inner">
+          <div>
+            <span class="section-tag">NHIỆM VỤ 4 • GIẢI PHÁP CÔNG NGHỆ</span>
+            <h2 class="slide-title">Ý Tưởng Giải Pháp: Cổng Tra Cứu & Tiếp Nhận Tổ 4</h2>
+            <p class="slide-desc">Bộ điều phối liên kết hợp nhất tái lập Tính nhất thể cho hệ thống phòng vệ học đường</p>
+          </div>
+
+          <div class="grid-3">
+            <div class="stat-card">
+              <h3 style="font-size: 1.05rem; margin-bottom: 6px;">🔍 Tra Cứu SĐT & Email</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Đối soát tức thì số điện thoại lạ và phát hiện hòm thư miễn phí (@gmail/@outlook) mạo danh trường đại học.</p>
+            </div>
+            <div class="stat-card">
+              <h3 style="font-size: 1.05rem; margin-bottom: 6px;">📋 Tiếp Nhận Báo Cáo</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Tiếp nhận thông tin phản ánh từ sinh viên, tự động cấp mã hồ sơ (Ticket ID) và cập nhật vào danh sách đen của cộng đồng.</p>
+            </div>
+            <div class="stat-card">
+              <h3 style="font-size: 1.05rem; margin-bottom: 6px;">🤝 Cơ Chế Cộng Sinh Dữ Liệu</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Một sinh viên báo cáo, toàn bộ sinh viên khác đều được cảnh báo chéo, tạo thành mạng lưới phòng vệ kiên cố ($1 + 1 > 2$).</p>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn tham chiếu:</strong> Dự án Chống Lừa Đảo Việt Nam (<a href="https://chongluadao.vn" target="_blank" rel="noopener noreferrer">chongluadao.vn ↗</a>) &bull; Báo Chính Phủ (<a href="https://baochinhphu.vn/ra-mat-phan-mem-phat-hien-dau-hieu-lua-dao-qua-dien-thoai-102240730125149283.htm" target="_blank" rel="noopener noreferrer">baochinhphu.vn - Phần mềm phát hiện dấu hiệu lừa đảo ↗</a>)</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 3 (7:00 - 7:45)</strong><br>
+          - Giới thiệu giải pháp: Cổng Tra cứu & Tiếp nhận phản ánh Tổ 4.<br>
+          - Đơn giản hóa, không màu mè, tập trung vào 2 tính năng thực chất: Tra cứu đa kênh và Tiếp nhận hồ sơ.
+        </div>
+      </section>
+
+      <!-- SLIDE 11: YÊU CẦU CHỨC NĂNG & PHI CHỨC NĂNG -->
+      <section class="slide-item" data-slide="11" data-speaker="Thành viên 3">
+        <div class="slide-inner">
+          <div>
+            <span class="section-tag">NHIỆM VỤ 4 (TIẾP) • TIÊU CHUẨN KỸ THUẬT</span>
+            <h2 class="slide-title">Yêu Cầu Chức Năng & Phi Chức Năng</h2>
+            <p class="slide-desc">Đảm bảo tính khả thi công nghệ và bảo vệ nghiêm ngặt quyền riêng tư của sinh viên</p>
+          </div>
+
+          <div class="grid-2">
+            <div class="spec-box">
+              <h3>⚙️ Yêu Cầu Chức Năng (Functional)</h3>
+              <ul>
+                <li><strong>Tra cứu đa nguồn SĐT & Email:</strong> Đối chiếu kho blacklist quốc gia và danh bạ tên miền .edu.vn chuẩn.</li>
+                <li><strong>Hệ thống tiếp nhận hồ sơ:</strong> Cấp mã định danh hồ sơ tiếp nhận, lưu vết và chia sẻ cảnh báo chéo.</li>
+                <li><strong>Đối soát STK học phí:</strong> Nhận diện số tài khoản cá nhân lừa đảo không thuộc danh bạ trường.</li>
+              </ul>
+            </div>
+
+            <div class="spec-box highlight">
+              <h3>🔒 Yêu Cầu Phi Chức Năng (Non-Functional)</h3>
+              <ul>
+                <li><strong>Độ chính xác (Accuracy):</strong> Precision &ge; 96%, Recall &ge; 98% đối với các bẫy học phí và việc làm.</li>
+                <li><strong>Độ trễ thời gian thực:</strong> Phản hồi kết quả tra cứu trong &lt; 1 giây.</li>
+                <li><strong>Quyền riêng tư (Privacy):</strong> Không lưu log dữ liệu cá nhân, tuân thủ Nghị định 13/2023/NĐ-CP.</li>
+                <li><strong>Tính khả dụng:</strong> Giao diện tối giản, trực quan, dễ dùng trên mọi thiết bị di động.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn pháp lý &amp; tiêu chuẩn:</strong> Nghị định số 13/2023/NĐ-CP về Bảo vệ dữ liệu cá nhân (<a href="https://vanban.chinhphu.vn" target="_blank" rel="noopener noreferrer">vanban.chinhphu.vn ↗</a>) &bull; Tiêu chuẩn chất lượng phần mềm ISO/IEC 25010</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 3 (7:45 - 8:30)</strong><br>
+          - Bóc tách yêu cầu chức năng và phi chức năng.<br>
+          - Nhấn mạnh cam kết quyền riêng tư (Privacy-by-design) theo Nghị định 13.
+        </div>
+      </section>
+
+      <!-- SLIDE 12: ĐÁNH GIÁ RỦI RO HỆ THỐNG -->
+      <section class="slide-item" data-slide="12" data-speaker="Thành viên 3">
+        <div class="slide-inner">
+          <div>
+            <span class="section-tag">NHIỆM VỤ 4 (TIẾP) • ĐÁNH GIÁ RỦI RO</span>
+            <h2 class="slide-title">Đánh Giá Rủi Ro Hệ Thống & Kiểm Soát</h2>
+            <p class="slide-desc">Mọi giải pháp công nghệ đều có hạn chế và tạo ra phản ứng phụ trong hệ thống</p>
+          </div>
+
+          <div class="grid-3">
+            <div class="stat-card" style="border-top: 4px solid var(--accent-danger);">
+              <h3 style="font-size: 1rem; color: var(--accent-danger);">Rủi Ro Tâm Lý Ỷ Lại</h3>
+              <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.45;">Sinh viên phụ thuộc 100% vào công cụ, mất phản xạ cảnh giác tự nhiên trước các thủ đoạn mới.<br><strong>Kiểm soát:</strong> Triết lý <em>Human-in-the-loop</em>, công cụ chỉ hỗ trợ ra quyết định.</p>
+            </div>
+            <div class="stat-card" style="border-top: 4px solid #f59e0b;">
+              <h3 style="font-size: 1rem; color: #b45309;">Rủi Ro Báo Động Sai (False Positive)</h3>
+              <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.45;">Gắn cờ nhầm thông báo học bổng hoặc nhắc nộp học phí thật của trường.<br><strong>Kiểm soát:</strong> Danh bạ trắng (Whitelist) đồng bộ tự động từ phòng đào tạo.</p>
+            </div>
+            <div class="stat-card" style="border-top: 4px solid var(--accent-primary);">
+              <h3 style="font-size: 1rem; color: var(--accent-primary);">Rủi Ro Tấn Công Đối Kháng</h3>
+              <p style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.45;">Kẻ lừa đảo liên tục đổi đầu số và biến thể nội dung để lách bộ lọc.<br><strong>Kiểm soát:</strong> Cơ chế học liên kết (Federated Learning) cập nhật mẫu mới trong 24h.</p>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn tham chiếu:</strong> Báo Điện tử Chính phủ (<a href="https://baochinhphu.vn/ra-mat-phan-mem-phat-hien-dau-hieu-lua-dao-qua-dien-thoai-102240730125149283.htm" target="_blank" rel="noopener noreferrer">baochinhphu.vn - Đánh giá rủi ro an toàn số ↗</a>) &bull; Đánh giá rủi ro hệ thống Tổ 4</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 3 (8:30 - 9:15)</strong><br>
+          - Đánh giá trung thực 3 rủi ro hệ thống (đáp ứng trọn 2đ tiêu chí giải pháp & rủi ro).<br>
+          - Chuyển giao phần demo và kết luận cho Thành viên 4.
+        </div>
+      </section>
+
+      <!-- SLIDE 13: DEMO CỔNG TRA CỨU & TIẾP NHẬN TỔ 4 -->
+      <section class="slide-item" data-slide="13" data-speaker="Thành viên 4">
+        <div class="slide-inner">
+          <div>
+            <span class="section-tag">SẢN PHẨM THỰC TẾ • CỔNG TRA CỨU TỔ 4</span>
+            <h2 class="slide-title">Trải Nghiệm Cổng Tra Cứu & Tiếp Nhận Trực Tuyến</h2>
+            <p class="slide-desc">Giao diện đơn giản, dễ sử dụng, phục vụ trực tiếp nhu cầu phòng ngừa lừa đảo của sinh viên</p>
+          </div>
+
+          <div class="grid-2">
+            <div class="stat-card">
+              <h3 style="font-size: 1.1rem; color: var(--accent-primary); margin-bottom: 8px;">1. Tính Năng Tra Cứu SĐT & Email</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+                - Nhập SĐT lạ để tra cứu mức độ uy tín và lịch sử báo cáo vi phạm.<br>
+                - Nhập Email để bóc tách xem có phải hòm thư miễn phí (@gmail) giả danh phòng đào tạo nhà trường hay không.
+              </p>
+            </div>
+            <div class="stat-card">
+              <h3 style="font-size: 1.1rem; color: var(--accent-primary); margin-bottom: 8px;">2. Cổng Tiếp Nhận Báo Cáo Lừa Đảo</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6;">
+                - Sinh viên điền thông tin vụ việc, hệ thống tự động sinh <strong>Mã hồ sơ tiếp nhận</strong>.<br>
+                - Cập nhật tức thời vào Sổ tiếp nhận trực tuyến để cảnh báo cho cộng đồng sinh viên toàn trường.
+              </p>
+            </div>
+          </div>
+
+          <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 14px 20px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: space-between;">
+            <span style="font-weight: 600; font-size: 0.9rem;">👉 Trải nghiệm trực tiếp ứng dụng tại:</span>
+            <a href="../app/index.html" target="_blank" style="background-color: var(--accent-primary); color: #fff; text-decoration: none; padding: 8px 18px; border-radius: 4px; font-weight: 700; font-size: 0.85rem;">MỞ CỔNG TRA CỨU TỔ 4 🚀</a>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn dữ liệu xác thực:</strong> Cổng TTĐT Xã Quảng Châu - Nghệ An (<a href="https://quangchau.nghean.gov.vn/tin-noi-bat/50-so-dien-thoai-tuyet-doi-khong-nen-nghe-chan-ngay-khi-nhan-duoc-cuoc-goi-950942?pageindex=0" target="_blank" rel="noopener noreferrer">quangchau.nghean.gov.vn - Danh mục 50 SĐT lừa đảo cần chặn ngay ↗</a>)</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 4 (9:15 - 10:00)</strong><br>
+          - Giới thiệu ứng dụng thực tế nhóm đã xây dựng.<br>
+          - Thao tác nhanh tra cứu SĐT hoặc Email giả mạo.
+        </div>
+      </section>
+
+      <!-- SLIDE 14: TỔNG KẾT & PHẢN BIỆN -->
+      <section class="slide-item" data-slide="14" data-speaker="Thành viên 4">
+        <div class="slide-inner">
+          <div>
+            <span class="section-tag">KẾT LUẬN & THÔNG ĐIỆP HỆ THỐNG</span>
+            <h2 class="slide-title">Thông Điệp Hệ Thống & Sẵn Sàng Phản Biện</h2>
+            <p class="slide-desc">Chống lại một mạng lưới tội phạm phải bằng một mạng lưới phòng vệ nhất thể</p>
+          </div>
+
+          <div class="grid-3">
+            <div class="stat-card">
+              <h3 style="font-size: 1.05rem; margin-bottom: 6px;">🌐 Tư Duy Mạng Lưới</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Lừa đảo trực tuyến không phải lỗi sơ suất cá nhân, mà là sự tấn công có tổ chức vào các lỗ hổng liên kết xã hội.</p>
+            </div>
+            <div class="stat-card" style="border-color: var(--accent-primary); background-color: var(--accent-light);">
+              <h3 style="font-size: 1.05rem; margin-bottom: 6px;">🤝 Tính Nhất Thể Hóa</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Chỉ khi dữ liệu của Trường học, Ngân hàng, Nhà mạng và Công an được liên thông, bức tường phòng vệ mới thực sự kiên cố.</p>
+            </div>
+            <div class="stat-card">
+              <h3 style="font-size: 1.05rem; margin-bottom: 6px;">🛡️ Công Nghệ Phục Vụ Con Người</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Công cụ tra cứu và tiếp nhận là lớp khiên bảo vệ tân sinh viên trong giai đoạn bỡ ngỡ bước ra thế giới độc lập.</p>
+            </div>
+          </div>
+
+          <div style="background-color: var(--accent-primary); color: #fff; padding: 14px; border-radius: var(--radius-sm); text-align: center; font-weight: 800; font-size: 1.05rem; margin-top: 8px;">
+            BÀI LÀM TỔ 4 XIN TRÂN TRỌNG CẢM ƠN THẦY CÔ VÀ CÁC BẠN!
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Tài liệu nghiệm thu:</strong> Bản giải trình &amp; Bộ câu hỏi phản biện Q&A - Bài làm Tổ 4 &bull; Môn: Tư duy hệ thống (Xem tài liệu tại <a href="../docs/KICH_BAN_THUYET_TRINH_VA_BAN_GIAY.md" target="_blank">docs/KICH_BAN_THUYET_TRINH_VA_BAN_GIAY.md ↗</a>)</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 4 (10:00 - 11:00)</strong><br>
+          - Đúc kết thông điệp cốt lõi: "Chống lại một mạng lưới phải bằng một mạng lưới".<br>
+          - Mời Thầy Cô và các bạn đặt câu hỏi phản biện. Tự tin bước vào phần Q&A.
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Slide Footer Navigation -->
+  <footer class="presentation-footer">
+    <div class="footer-left">
+      <span class="slide-counter"><strong id="currentSlideNum">1</strong> / <span id="totalSlidesNum">14</span></span>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+    </div>
+
+    <div class="footer-center">
+      <span style="font-size: 0.78rem; color: var(--text-dim);">Dùng phím mũi tên ⬅️ ➡️ để chuyển slide • Phím P để mở ghi chú người nói</span>
+    </div>
+
+    <div class="footer-right">
+      <button class="nav-btn" onclick="prevSlide()" id="prevBtn">◀ Trước</button>
+      <button class="nav-btn primary" onclick="nextSlide()" id="nextBtn">Sau ▶</button>
+    </div>
+  </footer>
+
+  <!-- Presenter Drawer -->
+  <aside class="presenter-drawer" id="presenterDrawer">
+    <div class="drawer-header">
+      <div class="drawer-title">🎙️ GHI CHÚ THUYẾT TRÌNH VIÊN (TỔ 4)</div>
+      <button class="drawer-close" onclick="togglePresenterMode()">✕</button>
+    </div>
+    
+    <div class="timer-section">
+      <div style="display: flex; justify-content: space-between; align-items: baseline;">
+        <span style="font-size: 0.72rem; font-weight: 700; color: var(--text-dim);">ĐỒNG HỒ THUYẾT TRÌNH</span>
+        <div class="timer-display" id="timerDisplay">00:00</div>
+      </div>
+      <div class="timer-controls">
+        <button class="btn-timer" onclick="startTimer()">Bắt đầu</button>
+        <button class="btn-timer" onclick="pauseTimer()">Tạm dừng</button>
+        <button class="btn-timer" onclick="resetTimer()">Đặt lại</button>
+      </div>
+      <div style="font-size: 0.72rem; color: var(--accent-primary); font-weight: 600;">Mục tiêu: 10 - 12 phút (Đảm bảo 1.5đ đúng giờ)</div>
+    </div>
+
+    <div class="notes-section">
+      <div style="font-size: 0.75rem; font-weight: 700; color: var(--accent-primary); margin-bottom: 8px;" id="currentSpeakerTag">Người nói: Đang tải...</div>
+      <div id="notesBody">Đang tải ghi chú...</div>
+    </div>
+  </aside>
+
+  <!-- Modular Presentation Script -->
+  <script src="js/presentation.js"></script>
+</body>
+</html>
