@@ -325,6 +325,13 @@ body {
   margin: 10px 0;
 }
 
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin: 10px 0;
+}
+
 .stat-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -596,20 +603,33 @@ body {
 /* Risk Matrix Table & Cards */
 .risk-matrix-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
-  margin-top: 8px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  margin: 10px 0;
   align-items: stretch;
+  flex: 1;
+}
+
+.risk-card-item:nth-child(1),
+.risk-card-item:nth-child(2),
+.risk-card-item:nth-child(3) {
+  grid-column: span 2;
+}
+
+.risk-card-item:nth-child(4),
+.risk-card-item:nth-child(5) {
+  grid-column: span 3;
 }
 
 .risk-card-item {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
-  padding: 10px 10px;
+  padding: 12px 14px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  justify-content: space-between;
+  gap: 6px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -702,13 +722,15 @@ body {
   grid-template-columns: 1.15fr 1fr;
   gap: 14px;
   align-items: stretch;
-  margin-top: 6px;
+  margin: 6px 0;
+  flex: 1;
 }
 
 .showcase-media-col {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  justify-content: space-between;
 }
 
 .showcase-preview-frame {
@@ -721,7 +743,9 @@ body {
 
 .showcase-preview-frame img {
   width: 100%;
-  height: auto;
+  max-height: 145px;
+  object-fit: cover;
+  object-position: top;
   border-radius: 4px;
   display: block;
 }
@@ -1039,29 +1063,31 @@ body {
 .mindmap-grid {
   display: grid;
   grid-template-columns: 1.05fr 1.25fr 1.05fr;
-  gap: 12px;
+  gap: 14px;
   align-items: stretch;
-  margin: 8px 0;
+  margin: 10px 0;
   flex: 1;
 }
 
 .mindmap-col {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  justify-content: space-between;
+  gap: 10px;
+  justify-content: center;
 }
 
 .mindmap-branch-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
-  padding: 8px 12px;
+  padding: 10px 14px;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
   font-size: 0.78rem;
   transition: transform 0.2s, border-color 0.2s;
+  flex: 1;
+  justify-content: center;
 }
 
 .mindmap-branch-card.danger {
@@ -1103,6 +1129,7 @@ body {
   align-items: center;
   gap: 5px;
   box-shadow: var(--shadow-sm);
+  flex: 1;
 }
 
 .mindmap-center-title {
@@ -1145,8 +1172,8 @@ body {
 .crisis-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin: 8px 0;
+  gap: 12px;
+  margin: 10px 0;
   flex: 1;
 }
 
@@ -1154,10 +1181,11 @@ body {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
-  padding: 10px 12px;
+  padding: 14px 16px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  justify-content: flex-start;
+  gap: 6px;
   position: relative;
   overflow: hidden;
 }
@@ -1251,6 +1279,20 @@ body {
   padding: 2px 8px;
   border-radius: 999px;
   font-weight: 700;
+}
+
+/* Slide 16 Conclusion Layout Enhancements */
+.slide-item[data-slide="16"] .grid-3 {
+  gap: 16px;
+  margin: 14px 0;
+  flex: 1;
+}
+
+.slide-item[data-slide="16"] .stat-card {
+  padding: 20px 18px;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ===================================================================
@@ -1505,17 +1547,13 @@ body {
 
   /* Cột bố cục Grids trên điện thoại */
   .grid-3 {
-    grid-template-columns: 1fr !important;
-    gap: 10px !important;
-  }
-
-  .grid-3 {
     grid-template-columns: minmax(0, 1fr) !important;
     gap: 8px !important;
     width: 100%;
   }
 
-  .grid-2 {
+  .grid-2,
+  .grid-4 {
     grid-template-columns: minmax(0, 1fr) !important;
     gap: 8px !important;
     width: 100%;
@@ -1748,6 +1786,7 @@ body {
   .risk-card-item {
     min-width: 0;
     box-sizing: border-box;
+    grid-column: auto !important;
   }
 
   .showcase-container {
