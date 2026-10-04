@@ -50,6 +50,10 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (e.key === 'p' || e.key === 'P') {
       togglePresenterMode();
     } else if (e.key === 'f' || e.key === 'F') {
+      e.preventDefault();
+      toggleFullScreen();
+    } else if (e.key === 'b' || e.key === 'B') {
+      e.preventDefault();
       toggleFullBleed();
     } else if (e.key === 'e' || e.key === 'E') {
       toggleEditMode();
@@ -225,7 +229,55 @@ document.addEventListener('click', (e) => {
 });
 
 // ===================================================================
-// CHẾ ĐỘ FULL VIỀN (BORDERLESS / EDGE-TO-EDGE)
+// CHẾ ĐỘ TOÀN MÀN HÌNH (FULLSCREEN MODE - F11 / PHÍM F)
+// ===================================================================
+function toggleFullScreen() {
+  if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement) {
+    const el = document.documentElement;
+    const rfs = el.requestFullscreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+    if (rfs) {
+      rfs.call(el).then(() => {
+        document.body.classList.add('full-bleed');
+      }).catch(err => {
+        console.warn('Fullscreen request failed:', err);
+        toggleFullBleed();
+      });
+    } else {
+      toggleFullBleed();
+    }
+  } else {
+    const efs = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+    if (efs) {
+      efs.call(document).catch(err => console.warn(err));
+    }
+  }
+}
+
+function updateFullscreenState() {
+  const isFull = !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
+  const btn = document.getElementById('btnFullScreen');
+  if (btn) {
+    btn.innerHTML = isFull ? '🗗 Thu Nhỏ' : '⛶ Toàn Màn';
+    btn.classList.toggle('btn-highlight', isFull);
+  }
+  document.body.classList.toggle('is-fullscreen', isFull);
+  if (isFull) {
+    document.body.classList.add('full-bleed');
+    const bleedBtn = document.getElementById('btnFullBleed');
+    if (bleedBtn) {
+      bleedBtn.innerHTML = '⏹️ Thu Viền';
+      bleedBtn.classList.add('btn-highlight');
+    }
+  }
+}
+
+document.addEventListener('fullscreenchange', updateFullscreenState);
+document.addEventListener('webkitfullscreenchange', updateFullscreenState);
+document.addEventListener('mozfullscreenchange', updateFullscreenState);
+document.addEventListener('MSFullscreenChange', updateFullscreenState);
+
+// ===================================================================
+// CHẾ ĐỘ TRÀN VIỀN (BORDERLESS / EDGE-TO-EDGE)
 // ===================================================================
 function toggleFullBleed() {
   document.body.classList.toggle('full-bleed');
@@ -233,7 +285,7 @@ function toggleFullBleed() {
   localStorage.setItem('to4_full_bleed', isFull ? 'true' : 'false');
   const btn = document.getElementById('btnFullBleed');
   if (btn) {
-    btn.innerHTML = isFull ? '⏹️ Thu Viền' : '🔲 Full Viền';
+    btn.innerHTML = isFull ? '⏹️ Thu Viền' : '🔲 Tràn Viền';
     btn.classList.toggle('btn-highlight', isFull);
   }
 }
