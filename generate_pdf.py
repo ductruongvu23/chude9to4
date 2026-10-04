@@ -43,10 +43,20 @@ def main():
             'html': 'theme_cyber.html',
             'pdf_name': 'Slide_To4_ThietKe4_Cyber_Defense.pdf',
             'title': 'Bản 4: Modern Cyber Defense (Phong cách Canva Tech Pitch Deck)'
+        },
+        {
+            'name': 'canva',
+            'html': 'theme_canva_cyber.html',
+            'pdf_name': 'Slide_To4_ThietKe5_Canva_Cyber.pdf',
+            'title': 'Bản 5: Canva Cyber Pitch Deck (15 Slides Chuẩn Canva)',
+            'is_standalone': True
         }
     ]
 
     for config in theme_configs:
+        if config.get('is_standalone'):
+            print(f"Keeping standalone file: {config['html']}")
+            continue
         theme = config['name']
         out_file = os.path.join(slides_dir, config['html'])
         # replace body theme attribute

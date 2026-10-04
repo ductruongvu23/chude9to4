@@ -79,6 +79,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function changeTheme(themeName) {
+  if (themeName === 'canva') {
+    if (!window.location.pathname.endsWith('theme_canva_cyber.html')) {
+      window.location.href = 'theme_canva_cyber.html';
+      return;
+    }
+  }
   document.body.setAttribute('data-theme', themeName);
   localStorage.setItem('to4_slide_theme', themeName);
 }
