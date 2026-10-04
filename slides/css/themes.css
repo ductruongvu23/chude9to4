@@ -121,18 +121,18 @@ body[data-theme="cyber"] .slide-item[data-slide="1"] {
               url('../assets/canva_cyber_bg.jpg') no-repeat right center / cover !important;
 }
 
-/* TYPOGRAPHY PHÓNG TO VÀ DỄ NHÌN CHO BẢN 4 */
+/* TYPOGRAPHY PHÓNG TO VÀ DỄ NHÌN CHO BẢN 4 (CYBER THEME) */
 body[data-theme="cyber"] .slide-title {
   color: #ffffff !important;
-  font-size: 2.25rem !important;
-  line-height: 1.24 !important;
+  font-size: 2.75rem !important;
+  line-height: 1.22 !important;
   font-weight: 900 !important;
   letter-spacing: -0.01em !important;
   text-shadow: 0 0 25px rgba(0, 210, 255, 0.45);
 }
 
 body[data-theme="cyber"] .hero-title {
-  font-size: 3.15rem !important;
+  font-size: 3.6rem !important;
   font-weight: 900 !important;
   line-height: 1.18 !important;
   color: #ffffff !important;
@@ -140,9 +140,9 @@ body[data-theme="cyber"] .hero-title {
 }
 
 body[data-theme="cyber"] .hero-subtitle {
-  font-size: 1.35rem !important;
+  font-size: 1.4rem !important;
   color: #e2e8f0 !important;
-  line-height: 1.62 !important;
+  line-height: 1.65 !important;
 }
 
 body[data-theme="cyber"] .section-tag {
@@ -151,14 +151,14 @@ body[data-theme="cyber"] .section-tag {
   color: #00d2ff;
   box-shadow: 0 0 15px rgba(0, 210, 255, 0.35);
   font-weight: 900;
-  font-size: 0.88rem !important;
+  font-size: 0.95rem !important;
   letter-spacing: 1.5px;
-  padding: 4px 12px !important;
+  padding: 4px 14px !important;
 }
 
 body[data-theme="cyber"] .slide-desc {
   color: #cbd5e1 !important;
-  font-size: 1.12rem !important;
+  font-size: 1.22rem !important;
   font-weight: 500 !important;
   line-height: 1.52 !important;
   border-bottom: 2px solid;
@@ -193,29 +193,45 @@ body[data-theme="cyber"] .diagram-step-card:hover {
   transform: translateY(-2px);
 }
 
-/* Tiêu đề & nội dung trong các Card */
+/* Tiêu đề trong các Card - Phóng to và nổi bật */
 body[data-theme="cyber"] .stat-card h3,
 body[data-theme="cyber"] .point-card h4,
+body[data-theme="cyber"] .point-card strong,
+body[data-theme="cyber"] .spec-box h3,
 body[data-theme="cyber"] .spec-box h4,
 body[data-theme="cyber"] .diagram-step-title,
+body[data-theme="cyber"] .actor-card h3,
 body[data-theme="cyber"] .actor-card-title,
 body[data-theme="cyber"] .mindmap-branch-header span,
-body[data-theme="cyber"] .crisis-step-title {
-  font-size: 1.25rem !important;
+body[data-theme="cyber"] .mindmap-center-title,
+body[data-theme="cyber"] .crisis-step-title,
+body[data-theme="cyber"] .feature-pill-card h4,
+body[data-theme="cyber"] .risk-title {
+  font-size: 1.35rem !important;
   font-weight: 800 !important;
   color: #ffffff !important;
 }
 
+/* Nội dung văn bản trong các Card - Rõ ràng, dễ đọc */
 body[data-theme="cyber"] .stat-card p,
 body[data-theme="cyber"] .point-card p,
 body[data-theme="cyber"] .spec-box p,
+body[data-theme="cyber"] .spec-box ul,
+body[data-theme="cyber"] .spec-box li,
 body[data-theme="cyber"] .diagram-step-desc,
 body[data-theme="cyber"] .mindmap-branch-card p,
 body[data-theme="cyber"] .actor-card p,
 body[data-theme="cyber"] .silo-desc,
+body[data-theme="cyber"] .silo-item p,
 body[data-theme="cyber"] .crisis-card p,
-body[data-theme="cyber"] .risk-card-item p {
-  font-size: 1.02rem !important;
+body[data-theme="cyber"] .crisis-step-desc,
+body[data-theme="cyber"] .risk-card-item p,
+body[data-theme="cyber"] .risk-desc,
+body[data-theme="cyber"] .risk-mitigation,
+body[data-theme="cyber"] .req-item,
+body[data-theme="cyber"] .feature-pill-card p,
+body[data-theme="cyber"] .mindmap-link-item {
+  font-size: 1.08rem !important;
   line-height: 1.62 !important;
   color: #e2e8f0 !important;
 }
@@ -229,23 +245,23 @@ body[data-theme="cyber"] .point-card.danger,
 body[data-theme="cyber"] .mindmap-branch-card.danger,
 body[data-theme="cyber"] .diagram-step-card.danger {
   border-color: rgba(255, 75, 75, 0.5) !important;
-  border-left: 4px solid #ff4b4b !important;
+  border-left: 5px solid #ff4b4b !important;
   background: rgba(45, 14, 28, 0.72) !important;
 }
 
 body[data-theme="cyber"] .diagram-step-card.warning {
   border-color: rgba(245, 158, 11, 0.45) !important;
-  border-left: 4px solid #f59e0b !important;
+  border-left: 5px solid #f59e0b !important;
 }
 
 body[data-theme="cyber"] .system-goal-banner {
   background: linear-gradient(90deg, rgba(0, 210, 255, 0.25), rgba(7, 23, 48, 0.85));
   border: 1.5px solid rgba(0, 210, 255, 0.5);
-  border-left: 5px solid #00d2ff;
+  border-left: 6px solid #00d2ff;
   box-shadow: 0 0 20px rgba(0, 210, 255, 0.25);
-  font-size: 0.96rem !important;
-  line-height: 1.55 !important;
-  padding: 10px 18px !important;
+  font-size: 1.12rem !important;
+  line-height: 1.58 !important;
+  padding: 12px 22px !important;
   color: #ffffff !important;
 }
 
@@ -257,7 +273,7 @@ body[data-theme="cyber"] .system-goal-banner.danger {
 
 body[data-theme="cyber"] .qr-access-box {
   background: rgba(8, 28, 62, 0.95);
-  border: 1.5px dashed #00d2ff;
+  border: 2px dashed #00d2ff;
   box-shadow: 0 0 25px rgba(0, 210, 255, 0.3);
 }
 
@@ -276,16 +292,16 @@ body[data-theme="cyber"] .nav-btn.primary {
 }
 
 body[data-theme="cyber"] .diagram-flow-badge {
-  font-size: 0.78rem !important;
+  font-size: 0.82rem !important;
   font-weight: 800 !important;
-  padding: 3px 8px !important;
+  padding: 4px 10px !important;
   background: rgba(0, 210, 255, 0.12) !important;
   border: 1px solid rgba(0, 210, 255, 0.3) !important;
   color: #00d2ff !important;
 }
 
 body[data-theme="cyber"] .slide-source-caption {
-  font-size: 0.82rem !important;
+  font-size: 0.86rem !important;
   color: #94a3b8 !important;
 }
 
