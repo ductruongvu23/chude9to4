@@ -669,14 +669,18 @@ body {
     size: landscape;
     margin: 0;
   }
+  *, *::before, *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
   html, body {
-    background: #ffffff !important;
-    color: #000000 !important;
+    background: var(--bg-canvas) !important;
+    color: var(--text-main) !important;
     overflow: visible !important;
     height: auto !important;
   }
   .presentation-header, .presentation-footer, .presenter-drawer { display: none !important; }
-  .slide-viewport { padding: 0 !important; display: block !important; height: auto !important; }
+  .slide-viewport { padding: 0 !important; display: block !important; height: auto !important; background: var(--bg-canvas) !important; }
   .slides-container { 
     max-width: 100% !important; 
     border: none !important; 
@@ -686,6 +690,7 @@ body {
     position: static !important;
     height: auto !important;
     aspect-ratio: auto !important;
+    background: var(--bg-canvas) !important;
   }
   .slide-item { 
     position: relative !important; 
@@ -698,6 +703,8 @@ body {
     width: 100vw !important; 
     display: flex !important;
     box-sizing: border-box !important;
+    background: var(--bg-canvas) !important;
+    color: var(--text-main) !important;
   }
   .slide-inner {
     padding: 30px 45px !important;

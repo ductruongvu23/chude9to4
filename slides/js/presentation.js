@@ -29,11 +29,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Restore theme
-  const saved = localStorage.getItem('to4_slide_theme') || 'swiss';
-  changeTheme(saved);
+  // Restore theme (respect pre-set body data-theme, URL param, or localStorage)
+  const urlParams = new URLSearchParams(window.location.search);
+  const paramTheme = urlParams.get('theme');
+  const bodyTheme = document.body.getAttribute('data-theme');
+  const savedTheme = localStorage.getItem('to4_slide_theme');
+  const activeTheme = paramTheme || bodyTheme || savedTheme || 'swiss';
+  changeTheme(activeTheme);
   const themeSelect = document.getElementById('themeSelect');
-  if (themeSelect) themeSelect.value = saved;
+  if (themeSelect) themeSelect.value = activeTheme;
 });
 
 function changeTheme(themeName) {
@@ -133,3 +137,19 @@ function renderTimer() {
 function openPrintModal() {
   window.print();
 }
+
+function toggleDownloadMenu() {
+  const menu = document.getElementById('downloadMenu');
+  if (menu) {
+    menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+  }
+}
+
+document.addEventListener('click', (e) => {
+  const wrap = document.querySelector('.download-dropdown-wrap');
+  const menu = document.getElementById('downloadMenu');
+  if (wrap && menu && !wrap.contains(e.target)) {
+    menu.style.display = 'none';
+  }
+});
+

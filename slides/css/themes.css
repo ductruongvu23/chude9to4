@@ -1,11 +1,13 @@
 /* ===================================================================
    SLIDE DESIGN THEMES (3 BẢN THIẾT KẾ CHO TỔ 4)
+   Font chữ chuẩn tiếng Việt 100%, chống lỗi dấu và hiển thị sắc nét
    =================================================================== */
 
 :root {
-  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-  --font-serif: 'Playfair Display', Georgia, serif;
+  /* Font Sans tối ưu riêng cho tiếng Việt - Segoe UI (chuẩn Windows) & Be Vietnam Pro */
+  --font-sans: 'Segoe UI', 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, 'Roboto', 'Arial', sans-serif;
+  --font-mono: 'Consolas', 'JetBrains Mono', 'Courier New', monospace;
+  --font-serif: 'Times New Roman', 'Georgia', serif;
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;

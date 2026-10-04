@@ -4,8 +4,8 @@
    =================================================================== */
 
 :root {
-  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Segoe UI', 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, 'Roboto', 'Arial', sans-serif;
+  --font-mono: 'Consolas', 'JetBrains Mono', monospace;
 
   /* Palette trung tính, nhã nhặn, không màu mè */
   --bg-page: #f8fafc;
