@@ -35,16 +35,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const totalEl = document.getElementById('totalSlidesNum');
   if (totalEl) totalEl.textContent = totalSlides;
 
+  const dockTotalEl = document.getElementById('dockTotalNum');
+  if (dockTotalEl) dockTotalEl.textContent = totalSlides;
+
   updateSlideView();
+  fitSlidesToScreen();
+  window.addEventListener('resize', fitSlidesToScreen);
 
   // Keyboard navigation
   document.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT' || e.target.isContentEditable) return;
 
-    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown' || e.key === 'Enter') {
       e.preventDefault();
       nextSlide();
-    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp' || e.key === 'Backspace') {
       e.preventDefault();
       prevSlide();
     } else if (e.key === 'p' || e.key === 'P') {
@@ -52,14 +57,12 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (e.key === 'f' || e.key === 'F') {
       e.preventDefault();
       toggleFullScreen();
-    } else if (e.key === 'b' || e.key === 'B') {
-      e.preventDefault();
-      toggleFullBleed();
     } else if (e.key === 'e' || e.key === 'E') {
       toggleEditMode();
     } else if (e.key === 'Escape') {
       closeLightbox();
       if (document.body.classList.contains('edit-mode-active')) toggleEditMode();
+      if (document.body.classList.contains('is-presentation-mode')) exitPresentationMode();
     }
   });
 
@@ -150,6 +153,9 @@ function updateSlideView() {
   const numEl = document.getElementById('currentSlideNum');
   if (numEl) numEl.textContent = currentSlideIndex;
 
+  const dockNumEl = document.getElementById('dockCurrentNum');
+  if (dockNumEl) dockNumEl.textContent = currentSlideIndex;
+
   const bar = document.getElementById('progressBar');
   if (bar) bar.style.width = `${(currentSlideIndex / totalSlides) * 100}%`;
 
@@ -159,6 +165,7 @@ function updateSlideView() {
   if (nextBtn) nextBtn.disabled = (currentSlideIndex === totalSlides);
 
   syncNotes();
+  fitSlidesToScreen();
 }
 
 function togglePresenterMode() {
@@ -229,66 +236,121 @@ document.addEventListener('click', (e) => {
 });
 
 // ===================================================================
-// CHẾ ĐỘ TOÀN MÀN HÌNH (FULLSCREEN MODE - F11 / PHÍM F)
+// TỰ ĐỘNG CÂN CHỈNH TỈ LỆ 16:9 & PHÓNG TO THÀNH PHẦN (FIT TO SCREEN)
+// ===================================================================
+function fitSlidesToScreen() {
+  const container = document.getElementById('slidesContainer');
+  const viewport = document.querySelector('.slide-viewport');
+  if (!container || !viewport) return;
+
+  const isPres = document.body.classList.contains('is-presentation-mode');
+  const baseW = 1600;
+  const baseH = 900;
+
+  const availW = isPres ? window.innerWidth : viewport.clientWidth;
+  const availH = isPres ? window.innerHeight : viewport.clientHeight;
+
+  if (availW <= 0 || availH <= 0) return;
+
+  const padX = isPres ? 0 : 20;
+  const padY = isPres ? 0 : 16;
+
+  const maxW = Math.max(100, availW - padX * 2);
+  const maxH = Math.max(100, availH - padY * 2);
+
+  const scale = Math.min(maxW / baseW, maxH / baseH);
+
+  container.style.transform = `scale(${scale})`;
+  container.style.transformOrigin = 'center center';
+}
+
+// ===================================================================
+// CHẾ ĐỘ TRÌNH CHIẾU TOÀN MÀN HÌNH CHUẨN CANVA & POWERPOINT
 // ===================================================================
 function toggleFullScreen() {
-  if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement) {
-    const el = document.documentElement;
-    const rfs = el.requestFullscreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullscreen;
-    if (rfs) {
-      rfs.call(el).then(() => {
-        document.body.classList.add('full-bleed');
-      }).catch(err => {
-        console.warn('Fullscreen request failed:', err);
-        toggleFullBleed();
-      });
-    } else {
-      toggleFullBleed();
-    }
+  if (!document.body.classList.contains('is-presentation-mode')) {
+    enterPresentationMode();
   } else {
-    const efs = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
-    if (efs) {
-      efs.call(document).catch(err => console.warn(err));
-    }
+    exitPresentationMode();
   }
 }
 
-function updateFullscreenState() {
-  const isFull = !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
+function enterPresentationMode() {
+  document.body.classList.add('is-presentation-mode');
+
+  // Trigger HTML5 fullscreen
+  const el = document.documentElement;
+  const rfs = el.requestFullscreen || el.webkitRequestFullScreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+  if (rfs && !document.fullscreenElement) {
+    rfs.call(el).catch(err => console.warn('Native fullscreen request:', err));
+  }
+
   const btn = document.getElementById('btnFullScreen');
-  if (btn) {
-    btn.innerHTML = isFull ? '🗗 Thu Nhỏ' : '⛶ Toàn Màn';
-    btn.classList.toggle('btn-highlight', isFull);
+  if (btn) btn.innerHTML = '🗗 Thu Nhỏ';
+
+  const dockCur = document.getElementById('dockCurrentNum');
+  const dockTot = document.getElementById('dockTotalNum');
+  if (dockCur) dockCur.textContent = currentSlideIndex;
+  if (dockTot) dockTot.textContent = totalSlides;
+
+  fitSlidesToScreen();
+  resetIdleTimer();
+}
+
+function exitPresentationMode() {
+  document.body.classList.remove('is-presentation-mode');
+  document.body.classList.remove('mouse-idle');
+
+  const btn = document.getElementById('btnFullScreen');
+  if (btn) btn.innerHTML = '⛶ Trình Chiếu (Full)';
+
+  const dock = document.getElementById('presentationDock');
+  if (dock) dock.classList.remove('dock-hidden');
+
+  if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement) {
+    const efs = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+    if (efs) efs.call(document).catch(err => console.warn(err));
   }
-  document.body.classList.toggle('is-fullscreen', isFull);
-  if (isFull) {
-    document.body.classList.add('full-bleed');
-    const bleedBtn = document.getElementById('btnFullBleed');
-    if (bleedBtn) {
-      bleedBtn.innerHTML = '⏹️ Thu Viền';
-      bleedBtn.classList.add('btn-highlight');
-    }
+
+  clearTimeout(idleTimeout);
+  setTimeout(fitSlidesToScreen, 100);
+}
+
+// Tự động ẩn thanh dock nổi khi chuột không di chuyển trong 3.5 giây (như Canva)
+let idleTimeout = null;
+function resetIdleTimer() {
+  const dock = document.getElementById('presentationDock');
+  if (dock) dock.classList.remove('dock-hidden');
+  document.body.classList.remove('mouse-idle');
+
+  clearTimeout(idleTimeout);
+  if (document.body.classList.contains('is-presentation-mode')) {
+    idleTimeout = setTimeout(() => {
+      if (document.body.classList.contains('is-presentation-mode')) {
+        if (dock) dock.classList.add('dock-hidden');
+        document.body.classList.add('mouse-idle');
+      }
+    }, 3500);
   }
 }
 
-document.addEventListener('fullscreenchange', updateFullscreenState);
-document.addEventListener('webkitfullscreenchange', updateFullscreenState);
-document.addEventListener('mozfullscreenchange', updateFullscreenState);
-document.addEventListener('MSFullscreenChange', updateFullscreenState);
-
-// ===================================================================
-// CHẾ ĐỘ TRÀN VIỀN (BORDERLESS / EDGE-TO-EDGE)
-// ===================================================================
-function toggleFullBleed() {
-  document.body.classList.toggle('full-bleed');
-  const isFull = document.body.classList.contains('full-bleed');
-  localStorage.setItem('to4_full_bleed', isFull ? 'true' : 'false');
-  const btn = document.getElementById('btnFullBleed');
-  if (btn) {
-    btn.innerHTML = isFull ? '⏹️ Thu Viền' : '🔲 Tràn Viền';
-    btn.classList.toggle('btn-highlight', isFull);
+document.addEventListener('mousemove', () => {
+  if (document.body.classList.contains('is-presentation-mode')) {
+    resetIdleTimer();
   }
-}
+});
+
+// Đồng bộ khi người dùng thoát fullscreen bằng phím Esc của trình duyệt
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement && document.body.classList.contains('is-presentation-mode')) {
+    exitPresentationMode();
+  }
+});
+document.addEventListener('webkitfullscreenchange', () => {
+  if (!document.webkitFullscreenElement && document.body.classList.contains('is-presentation-mode')) {
+    exitPresentationMode();
+  }
+});
 
 // ===================================================================
 // CHẾ ĐỘ CHỈNH SỬA TRỰC TIẾP (LIVE INLINE EDIT MODE)

@@ -124,15 +124,15 @@ body[data-theme="cyber"] .slide-item[data-slide="1"] {
 /* TYPOGRAPHY PHÓNG TO VÀ DỄ NHÌN CHO BẢN 4 */
 body[data-theme="cyber"] .slide-title {
   color: #ffffff !important;
-  font-size: 2.15rem !important;
-  line-height: 1.22 !important;
+  font-size: 2.25rem !important;
+  line-height: 1.24 !important;
   font-weight: 900 !important;
   letter-spacing: -0.01em !important;
   text-shadow: 0 0 25px rgba(0, 210, 255, 0.45);
 }
 
 body[data-theme="cyber"] .hero-title {
-  font-size: 2.85rem !important;
+  font-size: 3.15rem !important;
   font-weight: 900 !important;
   line-height: 1.18 !important;
   color: #ffffff !important;
@@ -140,9 +140,9 @@ body[data-theme="cyber"] .hero-title {
 }
 
 body[data-theme="cyber"] .hero-subtitle {
-  font-size: 1.22rem !important;
+  font-size: 1.35rem !important;
   color: #e2e8f0 !important;
-  line-height: 1.6 !important;
+  line-height: 1.62 !important;
 }
 
 body[data-theme="cyber"] .section-tag {
@@ -151,16 +151,16 @@ body[data-theme="cyber"] .section-tag {
   color: #00d2ff;
   box-shadow: 0 0 15px rgba(0, 210, 255, 0.35);
   font-weight: 900;
-  font-size: 0.82rem !important;
+  font-size: 0.88rem !important;
   letter-spacing: 1.5px;
   padding: 4px 12px !important;
 }
 
 body[data-theme="cyber"] .slide-desc {
   color: #cbd5e1 !important;
-  font-size: 1.05rem !important;
+  font-size: 1.12rem !important;
   font-weight: 500 !important;
-  line-height: 1.5 !important;
+  line-height: 1.52 !important;
   border-bottom: 2px solid;
   border-image: linear-gradient(90deg, #00d2ff 0%, rgba(148, 163, 184, 0.5) 65%, transparent 100%) 1;
   padding-bottom: 8px !important;
@@ -201,7 +201,7 @@ body[data-theme="cyber"] .diagram-step-title,
 body[data-theme="cyber"] .actor-card-title,
 body[data-theme="cyber"] .mindmap-branch-header span,
 body[data-theme="cyber"] .crisis-step-title {
-  font-size: 1.15rem !important;
+  font-size: 1.25rem !important;
   font-weight: 800 !important;
   color: #ffffff !important;
 }
@@ -215,7 +215,7 @@ body[data-theme="cyber"] .actor-card p,
 body[data-theme="cyber"] .silo-desc,
 body[data-theme="cyber"] .crisis-card p,
 body[data-theme="cyber"] .risk-card-item p {
-  font-size: 0.94rem !important;
+  font-size: 1.02rem !important;
   line-height: 1.62 !important;
   color: #e2e8f0 !important;
 }

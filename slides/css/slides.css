@@ -106,25 +106,38 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: calc(100vh - 104px);
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .slides-container {
-  width: 100%;
-  max-width: 1240px;
-  aspect-ratio: 16 / 9;
+  width: 1600px;
+  height: 900px;
+  min-width: 1600px;
+  min-height: 900px;
+  max-width: 1600px;
+  max-height: 900px;
   background-color: var(--bg-canvas);
-  border: 1px solid var(--border-color);
+  border: 1.5px solid var(--border-color);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   position: relative;
   overflow: hidden;
   display: flex;
+  flex-shrink: 0;
+  transform-origin: center center;
+  transition: transform 0.12s ease-out, border-radius 0.2s ease;
 }
 
 .slide-item {
   position: absolute;
   inset: 0;
+  width: 1600px;
+  height: 900px;
   opacity: 0;
   visibility: hidden;
   transform: scale(0.98);
@@ -142,7 +155,7 @@ body {
 
 .slide-inner {
   flex: 1;
-  padding: 38px 48px;
+  padding: 36px 52px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1996,94 +2009,113 @@ body {
 }
 
 /* ===================================================================
-   CHẾ ĐỘ TOÀN MÀN HÌNH & TRÀN VIỀN (FULLSCREEN & FULL BLEED)
+   CANVA & POWERPOINT PRESENTATION MODE (CHẾ ĐỘ TRÌNH CHIẾU TOÀN MÀN)
    =================================================================== */
-body.full-bleed,
-body.is-fullscreen,
-:fullscreen body {
+body.is-presentation-mode {
   overflow: hidden !important;
 }
 
-body.full-bleed .presentation-header,
-body.is-fullscreen .presentation-header {
-  height: 50px !important;
-  padding: 0 16px !important;
-  flex-shrink: 0 !important;
+body.is-presentation-mode .presentation-header,
+body.is-presentation-mode .presentation-footer {
+  display: none !important;
 }
 
-body.full-bleed .presentation-footer,
-body.is-fullscreen .presentation-footer {
-  height: 42px !important;
-  padding: 0 16px !important;
-  flex-shrink: 0 !important;
-}
-
-body.full-bleed .slide-viewport,
-body.is-fullscreen .slide-viewport {
-  padding: 0 !important;
+body.is-presentation-mode .slide-viewport {
+  position: fixed !important;
+  inset: 0 !important;
   width: 100vw !important;
-  max-width: 100vw !important;
-  height: calc(100vh - 92px) !important;
-  min-height: calc(100vh - 92px) !important;
-  max-height: calc(100vh - 92px) !important;
-  display: block !important;
-  position: relative !important;
-  overflow: hidden !important;
-  flex: 1 1 auto !important;
-}
-
-body.full-bleed .slides-container,
-body.is-fullscreen .slides-container {
-  width: 100% !important;
-  max-width: 100% !important;
-  height: 100% !important;
-  min-height: 100% !important;
-  max-height: 100% !important;
-  aspect-ratio: unset !important;
-  border-radius: 0 !important;
-  border: none !important;
-  box-shadow: none !important;
-  position: relative !important;
-  display: block !important;
+  height: 100vh !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background-color: #020611 !important;
+  z-index: 9999 !important;
   overflow: hidden !important;
 }
 
-body.full-bleed .slide-item,
-body.is-fullscreen .slide-item {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
+body.is-presentation-mode .slides-container {
   border-radius: 0 !important;
   border: none !important;
-  display: flex !important;
-  flex-direction: column !important;
+  box-shadow: 0 0 100px rgba(0, 0, 0, 0.95) !important;
 }
 
-body.full-bleed .slide-inner,
-body.is-fullscreen .slide-inner {
-  width: 100% !important;
-  height: 100% !important;
-  max-width: 1750px !important;
-  margin: 0 auto !important;
-  padding: 24px 48px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: space-between !important;
-  overflow-y: auto !important;
+/* Floating Presentation Dock (Thanh điều khiển nổi thông minh giống Canva & PowerPoint) */
+.presentation-dock {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(4, 13, 26, 0.92);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1.5px solid rgba(0, 210, 255, 0.45);
+  border-radius: 9999px;
+  padding: 6px 14px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85), 0 0 25px rgba(0, 210, 255, 0.25);
+  z-index: 10001;
+  align-items: center;
+  gap: 10px;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
 }
 
-body.full-bleed .slide-item[data-slide="5"] .diagram-img-frame img,
-body.is-fullscreen .slide-item[data-slide="5"] .diagram-img-frame img {
-  max-height: 560px !important;
+body.is-presentation-mode .presentation-dock {
+  display: flex;
 }
 
-body.full-bleed .slide-item[data-slide="8"] .diagram-img-frame img,
-body.is-fullscreen .slide-item[data-slide="8"] .diagram-img-frame img {
-  max-height: 600px !important;
+.presentation-dock.dock-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 18px);
+}
+
+.dock-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #FFFFFF;
+  border-radius: 9999px;
+  padding: 6px 14px;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.dock-btn:hover {
+  background: rgba(0, 210, 255, 0.25);
+  border-color: #00D2FF;
+  color: #00D2FF;
+  transform: translateY(-1px);
+}
+
+.dock-btn.danger:hover {
+  background: rgba(255, 75, 75, 0.25);
+  border-color: #FF4B4B;
+  color: #FF4B4B;
+}
+
+.dock-counter {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #00D2FF;
+  min-width: 65px;
+  text-align: center;
+  font-family: var(--font-mono, monospace);
+  letter-spacing: 0.5px;
+}
+
+.dock-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+body.is-presentation-mode.mouse-idle {
+  cursor: none;
 }
 
 /* ===================================================================
