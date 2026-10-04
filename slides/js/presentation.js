@@ -35,15 +35,47 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Mobile touch swipe gestures
+  let touchStartX = 0;
+  let touchStartY = 0;
+  const container = document.getElementById('slidesContainer');
+  if (container) {
+    container.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    container.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].screenX;
+      const touchEndY = e.changedTouches[0].screenY;
+      const dx = touchEndX - touchStartX;
+      const dy = touchEndY - touchStartY;
+
+      // Detect horizontal swipe if delta X > 45px and predominantly horizontal
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.3) {
+        if (dx < 0) {
+          nextSlide(); // Vuốt sang trái -> chuyển slide tiếp theo
+        } else {
+          prevSlide(); // Vuốt sang phải -> quay lại slide trước
+        }
+      }
+    }, { passive: true });
+  }
+
   // Restore theme (respect pre-set body data-theme, URL param, or localStorage)
   const urlParams = new URLSearchParams(window.location.search);
   const paramTheme = urlParams.get('theme');
+  const paramSlide = parseInt(urlParams.get('slide'), 10);
   const bodyTheme = document.body.getAttribute('data-theme');
   const savedTheme = localStorage.getItem('to4_slide_theme');
   const activeTheme = paramTheme || bodyTheme || savedTheme || 'swiss';
   changeTheme(activeTheme);
   const themeSelect = document.getElementById('themeSelect');
   if (themeSelect) themeSelect.value = activeTheme;
+
+  if (paramSlide && paramSlide >= 1 && paramSlide <= totalSlides) {
+    showSlide(paramSlide);
+  }
 });
 
 function changeTheme(themeName) {
