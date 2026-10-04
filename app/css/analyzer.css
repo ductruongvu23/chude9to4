@@ -80,6 +80,20 @@
   color: var(--text-muted);
 }
 
+.clipboard-hint-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  margin-top: 8px;
+}
+
 .image-preview-wrapper {
   margin-top: 14px;
   display: flex;
@@ -226,12 +240,15 @@
   background-color: var(--bg-card-hover);
 }
 
-/* Local AI Config Panel (Cấu hình Mô hình Cục bộ) */
+/* ===================================================================
+   LOCAL AI CONFIG & MODEL RECOMMENDATIONS GUIDE
+   Hướng dẫn lựa chọn và so sánh các mô hình AI cục bộ
+   =================================================================== */
 .local-ai-config-panel {
   background-color: var(--bg-surface);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
-  padding: 12px 16px;
+  padding: 14px 18px;
 }
 
 .local-ai-config-header {
@@ -243,12 +260,12 @@
 }
 
 .local-ai-config-title {
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: var(--text-main);
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .local-ai-config-badge {
@@ -262,9 +279,15 @@
 }
 
 .local-ai-config-body {
-  margin-top: 12px;
-  padding-top: 12px;
+  margin-top: 14px;
+  padding-top: 14px;
   border-top: 1px dashed var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.local-ai-inputs-row {
   display: grid;
   grid-template-columns: 1fr 1fr auto;
   gap: 12px;
@@ -308,6 +331,90 @@
 .btn-test-local-ai:hover {
   border-color: var(--accent-primary);
   background-color: var(--bg-card-hover);
+}
+
+/* Model Recommendations Cards */
+.model-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.model-guide-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
+  position: relative;
+  transition: border-color 0.2s;
+}
+
+.model-guide-card:hover {
+  border-color: var(--accent-primary);
+}
+
+.model-guide-card.recommended {
+  border-color: var(--accent-primary);
+  background-color: var(--accent-light);
+}
+
+.model-guide-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.model-guide-specs {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.model-guide-specs strong {
+  color: var(--text-main);
+}
+
+.btn-copy-model-cmd {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 4px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn-copy-model-cmd:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+/* Prompt Template Drawer */
+.prompt-template-box {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+  max-height: 130px;
+  overflow-y: auto;
+  white-space: pre-wrap;
 }
 
 /* Actions Row */
@@ -442,6 +549,124 @@
   margin-top: 4px;
 }
 
+/* ===================================================================
+   ANNOTATED MESSAGE HIGHLIGHTING VIEW
+   Đánh dấu từ khóa trực quan trong tin nhắn
+   =================================================================== */
+.annotated-box {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--text-main);
+  margin-bottom: 16px;
+}
+
+.annotated-header {
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+mark.kw-danger {
+  background-color: rgba(220, 38, 38, 0.2);
+  color: #ef4444;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border-bottom: 2px solid #ef4444;
+}
+
+mark.kw-warning {
+  background-color: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border-bottom: 2px solid #f59e0b;
+}
+
+mark.kw-money {
+  background-color: rgba(14, 165, 233, 0.2);
+  color: #0284c7;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border-bottom: 2px solid #0284c7;
+}
+
+/* ===================================================================
+   5-DIMENSIONAL RISK GAUGES (THANH ĐO ĐA CHIỀU)
+   =================================================================== */
+.risk-dimensions-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.risk-dimensions-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.risk-dimensions-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.dim-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dim-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  display: flex;
+  justify-content: space-between;
+}
+
+.dim-label span:last-child {
+  font-weight: 800;
+  font-family: var(--font-mono);
+}
+
+.dim-bar-track {
+  height: 6px;
+  background-color: var(--bg-surface);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.dim-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dim-bar-fill.danger { background-color: var(--accent-danger); }
+.dim-bar-fill.warning { background-color: #f59e0b; }
+.dim-bar-fill.primary { background-color: var(--accent-primary); }
+.dim-bar-fill.safe { background-color: #10b981; }
+
 /* Insights Grid */
 .insights-grid {
   display: grid;
@@ -561,7 +786,39 @@
   border-color: var(--accent-primary);
 }
 
+/* Floating Toast Notification */
+.toast-notice {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background-color: var(--accent-primary);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: var(--shadow-lg);
+  z-index: 9999;
+  display: none;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
 /* Mobile Responsiveness */
+@media (max-width: 900px) {
+  .model-guide-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .risk-dimensions-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 768px) {
   .insights-grid {
     grid-template-columns: 1fr;
@@ -576,7 +833,11 @@
     width: 100%;
   }
 
-  .local-ai-config-body {
+  .local-ai-inputs-row {
+    grid-template-columns: 1fr;
+  }
+
+  .model-guide-grid {
     grid-template-columns: 1fr;
   }
 

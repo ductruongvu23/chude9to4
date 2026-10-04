@@ -127,6 +127,9 @@
               <span class="image-dropzone-icon">📷</span>
               <div class="image-dropzone-title">Kéo thả ảnh chụp màn hình vào đây hoặc bấm để chọn ảnh</div>
               <div class="image-dropzone-desc">Hỗ trợ định dạng PNG, JPG, JPEG, WEBP (Ảnh chụp SMS, màn hình chat Zalo, Telegram, Facebook...)</div>
+              <div class="clipboard-hint-badge">
+                <span>⌨️ Mẹo: Có thể bấm <strong>Ctrl + V</strong> bất kỳ lúc nào để dán ảnh chụp màn hình trực tiếp!</span>
+              </div>
             </div>
 
             <div class="image-preview-wrapper" id="imagePreviewWrapper" style="display: none;">
@@ -156,7 +159,7 @@
             </div>
             <textarea id="analyzerMessageText" class="analyzer-textarea" placeholder="Dán nội dung tin nhắn SMS, tin nhắn Zalo, Telegram, Facebook Messenger hoặc thông báo học phí đáng ngờ vào đây..."></textarea>
 
-            <!-- Quick Preset Chips -->
+            <!-- Quick Preset Chips (8 Kịch bản) -->
             <div class="sample-presets-bar">
               <span class="sample-presets-label">Mẫu thử nghiệm:</span>
               <button class="btn-sample-chip" onclick="loadScamSample('tuition')">🏫 Học phí gấp (Techcombank)</button>
@@ -164,40 +167,86 @@
               <button class="btn-sample-chip" onclick="loadScamSample('vneid')">👮 Công an định danh VNeID</button>
               <button class="btn-sample-chip" onclick="loadScamSample('sim')">📶 Khóa SIM 2 giờ</button>
               <button class="btn-sample-chip" onclick="loadScamSample('hospital')">🏥 Con đang cấp cứu viện</button>
-              <button class="btn-sample-chip" onclick="loadScamSample('safe')">✅ Tin nhắn an toàn (Thầy cô)</button>
+              <button class="btn-sample-chip" onclick="loadScamSample('shipper')">📦 Giả Shipper giao hàng</button>
+              <button class="btn-sample-chip" onclick="loadScamSample('evn')">⚡ EVN dọa ngắt điện</button>
+              <button class="btn-sample-chip" onclick="loadScamSample('safe')">✅ Tin nhắn an toàn (Khoa)</button>
             </div>
           </div>
 
-          <!-- Local AI Configuration Panel (Collapsible) -->
+          <!-- Local AI Configuration & Model Selection Panel (Collapsible) -->
           <div class="local-ai-config-panel">
             <div class="local-ai-config-header" onclick="toggleLocalAiConfig()">
               <div class="local-ai-config-title">
-                <span>⚙️ Cấu Hình Mô Hình AI Cục Bộ (Local Model / Ollama)</span>
+                <span>⚙️ Cấu Hình & Gợi Ý Lựa Chọn Mô Hình AI Cục Bộ (Local LLMs)</span>
                 <span class="local-ai-config-badge">Privacy First</span>
               </div>
               <span id="localAiConfigArrow" style="color: var(--text-dim); font-size: 0.8rem;">▼</span>
             </div>
 
             <div class="local-ai-config-body" id="localAiConfigBody" style="display: none;">
-              <div class="local-ai-config-field">
-                <label>Chế độ Động cơ AI:</label>
-                <select id="localAiModeSelect">
-                  <option value="embedded" selected>Động cơ NLP Cục bộ nhúng sẵn (Offline 100% - Khuyên dùng)</option>
-                  <option value="ollama">Kết nối Local LLM (Ollama / LM Studio qua API)</option>
-                </select>
+              <!-- Input Connectors -->
+              <div class="local-ai-inputs-row">
+                <div class="local-ai-config-field">
+                  <label>Chế độ Động cơ AI:</label>
+                  <select id="localAiModeSelect">
+                    <option value="embedded" selected>Động cơ NLP Cục bộ nhúng sẵn (Offline 100% - Khuyên dùng)</option>
+                    <option value="ollama">Kết nối Local LLM (Ollama qua localhost:11434)</option>
+                    <option value="lmstudio">Kết nối LM Studio / vLLM (localhost:1234/v1)</option>
+                  </select>
+                </div>
+
+                <div class="local-ai-config-field">
+                  <label>Endpoint Máy chủ Cục bộ (Localhost):</label>
+                  <input type="text" id="localAiEndpointInput" value="http://localhost:11434" placeholder="http://localhost:11434">
+                </div>
+
+                <div style="display: flex; gap: 8px;">
+                  <button class="btn-test-local-ai" onclick="testLocalAiConnection()">Kiểm Tra Kết Nối</button>
+                  <button class="btn-test-local-ai" onclick="toggleSystemPromptModal()" title="Xem prompt định hình cho model">📄 Prompt Mẫu</button>
+                </div>
               </div>
 
-              <div class="local-ai-config-field">
-                <label>Endpoint Máy chủ Cục bộ (Localhost):</label>
-                <input type="text" id="localAiEndpointInput" value="http://localhost:11434" placeholder="http://localhost:11434">
-              </div>
-
-              <div style="display: flex; gap: 8px;">
-                <button class="btn-test-local-ai" onclick="testLocalAiConnection()">Kiểm Tra Kết Nối</button>
-              </div>
-
-              <div id="localAiConnectionStatus" style="grid-column: 1 / -1; font-size: 0.76rem; color: var(--text-dim); margin-top: 2px;">
+              <div id="localAiConnectionStatus" style="font-size: 0.76rem; color: var(--text-dim);">
                 Mặc định: Sử dụng Động cơ NLP Cục bộ nhúng sẵn, hoạt động tức thời không cần kết nối mạng hoặc server phụ trợ.
+              </div>
+
+              <!-- System Prompt Modal / Drawer -->
+              <div id="systemPromptBox" style="display: none; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                  <strong style="font-size: 0.8rem; color: var(--text-main);">📋 System Prompt & JSON Schema Cho Mô Hình Cục Bộ:</strong>
+                  <button onclick="copySystemPrompt()" class="btn-copy-model-cmd">Sao Chép Prompt</button>
+                </div>
+                <div class="prompt-template-box">Bạn là Trợ lý AI Chuyên gia Giám định An ninh mạng (Anti-Scam Intelligence Agent) thuộc Đề tài 9 - Tổ 4 (Môn Tư duy hệ thống).
+Nhiệm vụ: Phân tích đoạn tin nhắn hoặc nội dung trích xuất từ ảnh chụp màn hình do sinh viên cung cấp, xác định xem có phải là bẫy lừa đảo trực tuyến hay không.
+
+Yêu cầu phân tích:
+1. Nhận diện các thủ đoạn thao túng tâm lý: Thúc ép thời gian gấp, đe dọa kỷ luật, mạo danh thẩm quyền (Nhà trường, Công an, Thuế), mồi nhử hoa hồng.
+2. Trích xuất các thực thể nhạy cảm: Số tài khoản ngân hàng cá nhân, số điện thoại lạ, đường link website độc hại.
+3. Đánh giá chỉ số rủi ro từ 0% đến 100%.
+
+Định dạng JSON yêu cầu:
+{
+  "risk_score": 95,
+  "scam_category": "Mạo danh Nhà trường thu học phí",
+  "urgency_index": 90,
+  "financial_risk": 100,
+  "authority_impersonation": 85,
+  "malicious_links": 30,
+  "greed_trigger": 10,
+  "triggers": ["Ép thời hạn trước 17h", "Dọa xóa tên khỏi danh sách thi"],
+  "entities": { "bank_account": "190368888999 Techcombank", "phone": "0368888999" },
+  "recommendations": ["Tuyệt đối không chuyển tiền vào STK cá nhân", "Gọi hotline Phòng Đào tạo để kiểm chứng"]
+}</div>
+              </div>
+
+              <!-- Recommended Models Guide -->
+              <div>
+                <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 4px;">
+                  💡 Gợi Ý 4 Mô Hình AI Nhẹ &amp; Tối Ưu Cho Máy Cá Nhân (CPU/Laptop):
+                </div>
+                <div id="modelGuideContainer" class="model-guide-grid">
+                  <!-- Populated by analyzer.js -->
+                </div>
               </div>
             </div>
           </div>
