@@ -7,25 +7,31 @@ Dự án nghiên cứu, slide trình chiếu và cổng dịch vụ tra cứu & 
 
 ### 📦 Danh Mục Sản Phẩm Dự Án
 
-1. **Bộ Slide Trình Chiếu Chuyên Nghiệp (14 Slides)**:
-   - Thư mục: [`slides/`](slides/) (Mở file [`slides/index.html`](slides/index.html))
-   - **Tải về file PDF 14 trang hoàn chỉnh**: [`Slide_To4_DeTai9.pdf`](Slide_To4_DeTai9.pdf) hoặc [`slides/Slide_To4_DeTai9.pdf`](slides/Slide_To4_DeTai9.pdf)
-   - Tích hợp 3 phong cách thiết kế: *Minimalist Swiss (Sáng tối giản)*, *Minimal Dark (Tối giản thanh lịch)*, *Academic Editorial (Học thuật trang nhã)*.
-   - Chế độ Presenter Drawer (Ghi chú diễn giả từng slide + Đồng hồ đếm giờ 10 - 12 phút).
-   - Ảnh chụp thực tế tại Việt Nam kèm số liệu thống kê được công bố chính thức và đường link dẫn chứng trực tiếp.
+### 📦 Danh Mục Sản Phẩm Dự Án
 
-2. **Cổng Tra Cứu & Tiếp Nhận Phản Ánh Lừa Đảo (Web App)**:
+1. **Bộ Slide Trình Chiếu Chuyên Nghiệp (16 Slides Hệ Thống Chuẩn Hóa)**:
+   - Thư mục: [`slides/`](slides/) (Mở trực tiếp [`slides/index.html`](slides/index.html))
+   - **Tải về file PDF 16 trang hoàn chỉnh**: [`Slide_To4_DeTai9.pdf`](Slide_To4_DeTai9.pdf) hoặc [`slides/Slide_To4_DeTai9.pdf`](slides/Slide_To4_DeTai9.pdf)
+   - Xuất bản đồng bộ 3 phong cách thiết kế:
+     - Bản 1: *Minimalist Swiss (Sáng tối giản)* — [`Slide_To4_ThietKe1_Swiss_Tech.pdf`](Slide_To4_ThietKe1_Swiss_Tech.pdf)
+     - Bản 2: *Minimal Dark (Tối giản thanh lịch)* — [`Slide_To4_ThietKe2_Minimal_Dark.pdf`](Slide_To4_ThietKe2_Minimal_Dark.pdf)
+     - Bản 3: *Academic Editorial (Học thuật trang nhã)* — [`Slide_To4_ThietKe3_Academic_Editorial.pdf`](Slide_To4_ThietKe3_Academic_Editorial.pdf)
+   - **Phân tích có hệ thống đầy đủ 5 trụ cột**: Mục tiêu hệ thống, Phân hệ đối kháng/phòng vệ, Tính nhất thể (Wholeness & Emergent Properties), Yêu cầu chức năng/phi chức năng (FR1-FR5 & NFR1-NFR5), Ma trận 5 Rủi ro hệ thống & Kiểm soát.
+   - **Tích hợp Mã QR truy cập tức thì**: Quét mã QR tại Slide 14 và Slide 16 để mở ứng dụng web trực tiếp trên điện thoại.
+   - **Kịch bản xử lý khủng hoảng "Giờ Vàng" 15-30 phút đầu** (Slide 15): Khóa thẻ khẩn cấp, ngắt app độc hại, bảo toàn chứng cứ số và trình báo Công an/156.
+   - **Chế độ Presenter Drawer**: Ghi chú thuyết minh chi tiết cho 4 thành viên kèm đồng hồ đếm giờ 10-12 phút.
+
+2. **Cổng Tra Cứu & Tiếp Nhận Phản Ánh Lừa Đảo (Web App & Local AI)**:
    - Thư mục: [`app/`](app/) (Mở file [`app/index.html`](app/index.html))
-   - Thiết kế giao diện nhã nhặn, chuẩn cổng dịch vụ đại học (không màu mè neon, dễ sử dụng).
-   - **Tra cứu SĐT & Email nghi vấn**: Đối soát với danh mục 50 số điện thoại lừa đảo cần chặn ngay theo cảnh báo của chính quyền địa phương, Báo Chính Phủ và Cổng ATTT. Mỗi kết quả tra cứu đều hiển thị khung dẫn chứng kèm link bài viết gốc.
-   - **Tiếp nhận phản ánh**: Tự động cấp mã hồ sơ (Ticket ID: `HS-TDHT-XXXX`) và cập nhật danh sách đen cho cộng đồng sinh viên.
-   - **Sơ đồ tư duy hệ thống**: Phân tích 6 trụ cột phòng vệ và khắc phục 4 điểm gãy liên kết.
+   - Online GitHub Pages: [https://ductruongvu23.github.io/chude9to4/app/index.html](https://ductruongvu23.github.io/chude9to4/app/index.html)
+   - **Tra cứu SĐT, Email & STK nghi vấn**: Đối soát với CSDL hơn 100 số điện thoại lừa đảo đã được Bộ Công An, Báo Tuổi Trẻ, Bệnh viện Lê Văn Thịnh, Thư Viện Pháp Luật nêu tên; bóc tách hòm thư miễn phí `@gmail.com` mạo danh trường học.
+   - **Trợ lý AI bóc tách tin nhắn (Local AI NLP/Vision)**: Phân tích áp lực thời gian, dấu hiệu đe dọa nợ học phí, bóc tách kịch bản thao túng tâm lý; bảo mật 100% dữ liệu (chạy Offline tại máy khách, không thu thập PII theo Nghị định 13/2023/NĐ-CP).
+   - **Tiếp nhận phản ánh & CSDL SQL**: Tự động sinh mã Ticket ID định danh (`TK-2026-XXXX`), cập nhật vào CSDL quan hệ chuẩn [`scam_phone_database.sql`](scam_phone_database.sql).
+   - **Tối ưu 100% Mobile & Chế độ Sáng / Tối**: Chuẩn UX/UI hiện đại, hỗ trợ vuốt chạm chuyển tab mượt mà.
 
-3. **Cổng Điều Phối Tổng Quan (Hub)**:
-   - File trung tâm: [`index.html`](index.html) kết nối toàn bộ hệ thống sản phẩm.
-
-4. **Tài Liệu Thuyết Trình & Báo Cáo Học Thuật**:
-   - [`docs/KICH_BAN_THUYET_TRINH_VA_BAN_GIAY.md`](docs/KICH_BAN_THUYET_TRINH_VA_BAN_GIAY.md): Kịch bản chi tiết 14 slide, phân công người nói, lời thoại diễn giải và bộ câu hỏi phản biện Q&A chuẩn điểm 10.
+3. **Tài Liệu Hướng Dẫn & Nghiên Cứu Chuyên Sâu**:
+   - [`docs/GIOI_THIEU_CONG_TRA_CUU_TO4.md`](docs/GIOI_THIEU_CONG_TRA_CUU_TO4.md): Tài liệu ngắn giới thiệu toàn diện Cổng Tra cứu & Tiếp nhận phản ánh, mã QR quét điện thoại, 4 tính năng cốt lõi và cam kết bảo mật Nghị định 13/2023.
+   - [`docs/KICH_BAN_THUYET_TRINH_VA_BAN_GIAY.md`](docs/KICH_BAN_THUYET_TRINH_VA_BAN_GIAY.md): Kịch bản thuyết trình chi tiết 16 slide, phân công lời thoại 4 diễn giả và ngân hàng câu hỏi phản biện Q&A.
    - [`docs/TIEU_LUAN_PHAN_TICH_HE_THONG.md`](docs/TIEU_LUAN_PHAN_TICH_HE_THONG.md): Tiểu luận nghiên cứu 4 nhiệm vụ theo chuẩn học thuật Tổ 4.
 
 ---
