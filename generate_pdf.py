@@ -53,8 +53,8 @@ def main():
             f_out.write(content)
         print(f"Generated clean UTF-8 HTML: {config['html']} ({len(content)} characters)")
 
-    # Verify no mojibake in generated files
-    mojibake_tokens = ['Ã¡', 'Ã ', 'Ã¢', 'Ã©', 'Ã¨', 'Ãª', 'Ã³', 'Ã²', 'Ã´', 'Ãº', 'Ã¹', 'Ä‘', 'Ä ', 'áº', 'á»', 'â€¢', 'ðŸ']
+    # Verify no mojibake in generated files (only actual mojibake multi-byte corruptions)
+    mojibake_tokens = ['Ã¡', '\xc3\xa0', 'Ã¢', 'Ã©', 'Ã¨', 'Ãª', 'Ã³', 'Ã²', 'Ã´', 'Ãº', 'Ã¹', 'Ä‘', '\xc4\x91', 'áº', 'á»', 'â€¢', 'ðŸ']
     for config in theme_configs:
         out_file = os.path.join(slides_dir, config['html'])
         with open(out_file, 'r', encoding='utf-8') as f_check:
