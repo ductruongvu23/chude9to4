@@ -743,3 +743,224 @@ body {
   opacity: 0.8;
 }
 
+/* ===================================================================
+   MINDMAP SYSTEM LAYOUT (CƠ ĐỒ TƯ DUY HỆ THỐNG TOÀN CẢNH)
+   =================================================================== */
+.mindmap-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 1.25fr 1.05fr;
+  gap: 12px;
+  align-items: stretch;
+  margin: 8px 0;
+  flex: 1;
+}
+
+.mindmap-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.mindmap-branch-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 0.78rem;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.mindmap-branch-card.danger {
+  border-left: 3px solid var(--accent-danger);
+}
+
+.mindmap-branch-card.primary {
+  border-left: 3px solid var(--accent-primary);
+}
+
+.mindmap-branch-card.success {
+  border-left: 3px solid #10b981;
+}
+
+.mindmap-branch-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--text-main);
+}
+
+.mindmap-branch-card p {
+  color: var(--text-muted);
+  line-height: 1.35;
+  font-size: 0.74rem;
+}
+
+.mindmap-center-box {
+  background: var(--accent-light);
+  border: 2px solid var(--accent-primary);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  box-shadow: var(--shadow-sm);
+}
+
+.mindmap-center-title {
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--accent-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mindmap-link-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.mindmap-link-item {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  font-size: 0.72rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-align: left;
+}
+
+.mindmap-link-item strong {
+  color: var(--accent-danger);
+  white-space: nowrap;
+}
+
+/* ===================================================================
+   CRISIS RESPONSE GRID (BIỆN PHÁP ỨNG PHÓ KHẨN CẤP "GIỜ VÀNG")
+   =================================================================== */
+.crisis-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 8px 0;
+  flex: 1;
+}
+
+.crisis-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.crisis-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: var(--accent-primary);
+}
+
+.crisis-card.step-urgent::before {
+  background-color: var(--accent-danger);
+}
+
+.crisis-card.step-bank::before {
+  background-color: #0284c7;
+}
+
+.crisis-card.step-evidence::before {
+  background-color: #f59e0b;
+}
+
+.crisis-card.step-police::before {
+  background-color: #dc2626;
+}
+
+.crisis-card.step-report::before {
+  background-color: #8b5cf6;
+}
+
+.crisis-card.step-secure::before {
+  background-color: #10b981;
+}
+
+.crisis-step-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+}
+
+.crisis-card.step-urgent .crisis-step-badge { color: var(--accent-danger); }
+.crisis-card.step-bank .crisis-step-badge { color: #0284c7; }
+.crisis-card.step-evidence .crisis-step-badge { color: #b45309; }
+.crisis-card.step-police .crisis-step-badge { color: #dc2626; }
+.crisis-card.step-report .crisis-step-badge { color: #7c3aed; }
+.crisis-card.step-secure .crisis-step-badge { color: #059669; }
+
+.crisis-step-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.25;
+}
+
+.crisis-step-desc {
+  font-size: 0.73rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+  margin-top: 2px;
+}
+
+.crisis-hotline-bar {
+  background-color: var(--accent-light);
+  border: 1px solid var(--accent-primary);
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.76rem;
+  color: var(--text-main);
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+.crisis-hotline-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--bg-canvas);
+  border: 1px solid var(--border-color);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+

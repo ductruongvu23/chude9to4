@@ -3,12 +3,18 @@
 // ===================================================================
 
 let currentSlideIndex = 1;
-const totalSlides = 14;
+let totalSlides = 16;
 let timerInterval = null;
 let timerSeconds = 0;
 let isTimerRunning = false;
 
+function getTotalSlides() {
+  const slides = document.querySelectorAll('.slide-item');
+  return slides.length > 0 ? slides.length : totalSlides;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  totalSlides = getTotalSlides();
   const totalEl = document.getElementById('totalSlidesNum');
   if (totalEl) totalEl.textContent = totalSlides;
 
@@ -46,6 +52,7 @@ function changeTheme(themeName) {
 }
 
 function showSlide(idx) {
+  totalSlides = getTotalSlides();
   if (idx < 1) idx = 1;
   if (idx > totalSlides) idx = totalSlides;
   currentSlideIndex = idx;
@@ -53,6 +60,7 @@ function showSlide(idx) {
 }
 
 function nextSlide() {
+  totalSlides = getTotalSlides();
   if (currentSlideIndex < totalSlides) {
     currentSlideIndex++;
     updateSlideView();
@@ -60,6 +68,7 @@ function nextSlide() {
 }
 
 function prevSlide() {
+  totalSlides = getTotalSlides();
   if (currentSlideIndex > 1) {
     currentSlideIndex--;
     updateSlideView();
