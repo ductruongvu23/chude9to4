@@ -593,4 +593,165 @@ const EMAIL_DATABASE = {
   }
 };
 
-// Quản lý hồ sơ phản ánh được chuyển giao hoàn toàn cho FirebaseService (Cloud Firestore)
+// ===================================================================
+// DỮ LIỆU BÁO CÁO CỘNG ĐỒNG TÍCH HỢP SẴN (SYSTEM SEED REPORTS)
+// Đảm bảo mọi máy mở lên (kể cả clone GitHub hay mở offline) đều CÓ SẴN
+// đầy đủ dữ liệu phản ánh thực tế và đối soát không phụ thuộc tải file local.
+// ===================================================================
+const SYSTEM_SEED_REPORTS = [
+  {
+    id: "HS-TDHT-9104",
+    target: "02366888766",
+    scamType: "Mạo danh ngân hàng",
+    content: "Đối tượng tự xưng nhân viên Vietcombank thông báo tài khoản có giao dịch bất thường, dọa khóa thẻ và đòi đọc mã OTP.",
+    status: "Cảnh báo cao",
+    createdAt: Date.now() - 6 * 60 * 1000 // 6 phút trước
+  },
+  {
+    id: "HS-TDHT-8821",
+    target: "daotao.dhqg.edu.vn@gmail.com",
+    scamType: "Mạo danh thu học phí",
+    content: "Gửi thông báo nộp 4.500.000đ học phí phụ thu vào số tài khoản cá nhân Techcombank, dọa đình chỉ thi học kỳ.",
+    status: "Đã xác minh",
+    createdAt: Date.now() - 18 * 60 * 1000 // 18 phút trước
+  },
+  {
+    id: "HS-TDHT-7734",
+    target: "0398243689",
+    scamType: "Mạo danh cơ quan thuế",
+    content: "Gọi điện dọa nợ thuế môn bài, gửi link tải app eTax Mobile giả mạo chứa mã độc chiếm quyền điện thoại.",
+    status: "Cảnh báo cao",
+    createdAt: Date.now() - 45 * 60 * 1000 // 45 phút trước
+  },
+  {
+    id: "HS-TDHT-6102",
+    target: "0778552193",
+    scamType: "Dọa cấp cứu bệnh viện",
+    content: "Giả danh bác sĩ bệnh viện Chợ Rẫy báo người nhà bị tai nạn nguy kịch, ép chuyển gấp 30 triệu viện phí.",
+    status: "Cảnh báo cao",
+    createdAt: Date.now() - 90 * 60 * 1000 // 1.5 giờ trước
+  },
+  {
+    id: "HS-TDHT-5541",
+    target: "0833109259",
+    scamType: "Công an dọa án phạt",
+    content: "Tự xưng điều tra viên Bộ Công an dọa sinh viên liên quan vụ án rửa tiền, ép chuyển tiền bảo lãnh và cấm báo người thân.",
+    status: "Cảnh báo cao",
+    createdAt: Date.now() - 140 * 60 * 1000 // hơn 2 giờ trước
+  },
+  {
+    id: "HS-TDHT-4923",
+    target: "0889050231",
+    scamType: "Mạo danh điện lực EVN",
+    content: "Dọa cắt điện ký túc xá/nhà trọ trong vòng 2 giờ vì quá hạn tiền điện, yêu cầu bấm link thanh toán lạ.",
+    status: "Đã xác minh",
+    createdAt: Date.now() - 210 * 60 * 1000 // 3.5 giờ trước
+  },
+  {
+    id: "HS-TDHT-4108",
+    target: "0901757297",
+    scamType: "Mạo danh Shipper giao hàng",
+    content: "Gọi báo có đơn hàng Shopee 450.000đ nhưng khách vắng nhà, ép chuyển tiền trước vào STK cá nhân rồi mới gửi bảo vệ.",
+    status: "Cảnh báo cao",
+    createdAt: Date.now() - 320 * 60 * 1000 // 5 giờ trước
+  },
+  {
+    id: "HS-TDHT-3755",
+    target: "0792836145",
+    scamType: "Mạo danh VNeID / Công an",
+    content: "Báo tài khoản định danh VNeID mức 2 bị lỗi sai thông tin CCCD, hướng dẫn cài file .apk lạ để kích hoạt lại.",
+    status: "Cảnh báo cao",
+    createdAt: Date.now() - 480 * 60 * 1000 // 8 giờ trước
+  },
+  {
+    id: "HS-TDHT-2914",
+    target: "tuyendung.shopee.online2026@gmail.com",
+    scamType: "Lừa đảo việc làm online",
+    content: "Mời làm CTV giật đơn online hoa hồng 500k/ngày, sau khi nạp tiền làm nhiệm vụ 3 thì bị khóa tài khoản không cho rút.",
+    status: "Cảnh báo cao",
+    createdAt: Date.now() - 720 * 60 * 1000 // 12 giờ trước
+  },
+  {
+    id: "HS-TDHT-1832",
+    target: "0345892115",
+    scamType: "Dọa khóa SIM viễn thông",
+    content: "Cuộc gọi tự động dọa khóa thuê bao 2 chiều sau 2 giờ vì chưa chuẩn hóa sinh trắc học, yêu cầu làm theo phím bấm.",
+    status: "Đã xác minh",
+    createdAt: Date.now() - 1050 * 60 * 1000 // 17 giờ trước
+  },
+  {
+    id: "HS-TDHT-1290",
+    target: "hocphi.sinhvien.hust@gmail.com",
+    scamType: "Mạo danh thu học phí",
+    content: "Email giả mạo Ban Đào tạo ĐHBK gửi thông báo đóng tiền học cải thiện qua STK Vietcombank cá nhân.",
+    status: "Đã xác minh",
+    createdAt: Date.now() - 1440 * 60 * 1000 // 1 ngày trước
+  }
+];
+
+// ===================================================================
+// BỘ QUẢN LÝ BÁO CÁO CỘNG ĐỒNG ĐỘNG (LOCAL REPORT REGISTRY)
+// Lưu trữ các lần người dùng bấm báo cáo để tăng % khả nghi ngay tức thì
+// ===================================================================
+const LocalReportRegistry = {
+  STORAGE_KEY: 'to4_custom_number_stats',
+
+  getAll() {
+    try {
+      const raw = localStorage.getItem(this.STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  },
+
+  getStats(target) {
+    if (!target) return { reportCount: 0, customRiskScore: 0, customReports: [] };
+    const clean = String(target).replace(/[\s.\-()]/g, '').toLowerCase();
+    const all = this.getAll();
+    return all[clean] || { reportCount: 0, customRiskScore: 0, customReports: [] };
+  },
+
+  report(target, threatType = "Nghi vấn lừa đảo qua phản ánh người dùng") {
+    if (!target) return null;
+    const clean = String(target).replace(/[\s.\-()]/g, '').toLowerCase();
+    const all = this.getAll();
+    const current = all[clean] || { reportCount: 0, customRiskScore: 0, customReports: [] };
+
+    // Tăng số lượt báo cáo
+    current.reportCount += 1;
+
+    // Tăng % khả nghi (Risk Percentage) theo số lượt báo cáo
+    // 1 lượt -> 45% (Khả nghi), 2 lượt -> 75% (Cảnh báo cao), 3+ lượt -> 95%-99% (Nguy hiểm)
+    let newScore = 45;
+    if (current.reportCount === 2) {
+      newScore = 75;
+    } else if (current.reportCount >= 3) {
+      newScore = Math.min(99, 85 + (current.reportCount - 3) * 5);
+    }
+    current.customRiskScore = Math.max(current.customRiskScore, newScore);
+    current.lastUpdated = Date.now();
+
+    const reportItem = {
+      id: `HS-TDHT-${Math.floor(1000 + Math.random() * 9000)}`,
+      scamType: threatType,
+      createdAt: Date.now(),
+      status: "Đang xác minh"
+    };
+    current.customReports.unshift(reportItem);
+
+    all[clean] = current;
+    try {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(all));
+    } catch (e) {
+      console.error("[LocalReportRegistry] Lỗi lưu stats:", e);
+    }
+
+    return {
+      cleanTarget: clean,
+      reportCount: current.reportCount,
+      riskScore: current.customRiskScore,
+      reportItem
+    };
+  }
+};

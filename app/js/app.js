@@ -20,26 +20,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     initAnalyzerView();
   }
 
-  // Quick lookup helper: change placeholder based on radio selection
-  const radios = document.querySelectorAll('input[name="lookupType"]');
+  // Hỗ trợ nhấn phím Enter trong ô tra cứu
   const inputEl = document.getElementById('lookupInput');
-
-  radios.forEach(radio => {
-    radio.addEventListener('change', () => {
-      if (radio.value === 'phone') {
-        inputEl.placeholder = "Nhập số điện thoại (Ví dụ: 0236.688.8766)...";
-        inputEl.value = "0236.688.8766";
-      } else {
-        inputEl.placeholder = "Nhập địa chỉ email (Ví dụ: daotao.dhqg.edu.vn@gmail.com)...";
-        inputEl.value = "daotao.dhqg.edu.vn@gmail.com";
+  if (inputEl) {
+    inputEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        executeLookup();
       }
-      document.getElementById('lookupResultContainer').innerHTML = '';
-      executeLookup();
     });
-  });
-
-  // Run initial default lookup
-  executeLookup();
+  }
 
   // URL parameters handling (tab, sample, analyze)
   const urlParams = new URLSearchParams(window.location.search);

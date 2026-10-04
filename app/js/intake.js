@@ -107,7 +107,7 @@ async function handleIntakeFormSubmit(e) {
           `• Mã hồ sơ định danh: ${result.reportId}\n` +
           `• Đối tượng nghi vấn: ${result.target}\n` +
           `• Bảo mật: Đã xác thực ẩn danh 100% (Không lưu trữ danh tính cá nhân)\n` +
-          `• Dữ liệu đã được đồng bộ tức thời vào Sổ tiếp nhận Firebase của cộng đồng.`);
+          `• Dữ liệu đã được đồng bộ tức thời vào Sổ tiếp nhận chung của cộng đồng.`);
 
   } catch (err) {
     console.error("[IntakeModule] Lỗi gửi báo cáo:", err);

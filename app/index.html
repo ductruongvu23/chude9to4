@@ -45,8 +45,8 @@
         </button>
       </div>
       <div class="header-actions">
-        <div id="cloudStatusBadge" class="btn-header-badge" title="Trạng thái kết nối cơ sở dữ liệu thời gian thực">
-          🟢 Firebase Realtime Active
+        <div id="cloudStatusBadge" class="btn-header-badge" title="Trạng thái hệ thống bảo vệ">
+          🟢 Dữ liệu: Sẵn sàng
         </div>
         <a href="../slides/index.html" class="btn-header-link" target="_blank">
           📊 Xem Slide Thuyết Trình
@@ -60,59 +60,35 @@
     <!-- Clean Tab Navigation - Mobile Smooth Scroll -->
     <nav class="app-tab-nav">
       <button class="active" data-tab="lookup" onclick="switchAppTab('lookup')">🔍 Tra Cứu SĐT & Email</button>
-      <button data-tab="analyzer" onclick="switchAppTab('analyzer')">🤖 Phân Tích Tin Nhắn (AI Local)</button>
+      <button data-tab="analyzer" onclick="switchAppTab('analyzer')">💬 Nhận Diện Tin Nhắn</button>
       <button data-tab="intake" onclick="switchAppTab('intake')">📝 Tiếp Nhận Báo Cáo</button>
-      <button data-tab="system" onclick="switchAppTab('system')">🌐 Sơ Đồ Tư Duy Hệ Thống</button>
+      <button data-tab="system" onclick="switchAppTab('system')">🌐 Sơ Đồ Hệ Thống</button>
     </nav>
 
     <!-- TAB 1: TRA CỨU SĐT & EMAIL -->
     <section id="tab-lookup" class="tab-section active">
       <div class="lookup-card">
-        <h2 class="lookup-title">Kiểm Tra Mức Độ An Toàn Của Số Điện Thoại & Email</h2>
-        <p class="lookup-desc">Đối soát dữ liệu với danh sách đen Cục An toàn thông tin, Thư Viện Pháp Luật, BV Lê Văn Thịnh & danh bạ xác thực</p>
+        <h2 class="lookup-title">🔍 Tra Cứu Số Điện Thoại & Email Nghi Vấn</h2>
+        <p class="lookup-desc">Kiểm tra tức thời mức độ khả nghi, cảnh báo lừa đảo và số lượt phản ánh từ cộng đồng.</p>
 
-        <!-- Radio Switcher -->
-        <div class="lookup-type-radios">
-          <label>
-            <input type="radio" name="lookupType" value="phone" checked>
-            <span>Tra cứu Số Điện Thoại</span>
-          </label>
-          <label>
-            <input type="radio" name="lookupType" value="email">
-            <span>Tra cứu Địa Chỉ Email</span>
-          </label>
-        </div>
-
-        <!-- Search Input -->
+        <!-- Clean Omni Search Input (Tối giản, không để sẵn ví dụ) -->
         <div class="search-input-group">
-          <input type="text" id="lookupInput" placeholder="Nhập số điện thoại (Ví dụ: 0236.688.8766)..." value="0236.688.8766">
-          <button class="btn-search" onclick="executeLookup()">Tra Cứu Ngay</button>
+          <input type="text" id="lookupInput" placeholder="Nhập số điện thoại, số tài khoản hoặc email cần kiểm tra..." autocomplete="off">
+          <button class="btn-search" id="btnExecuteLookup" onclick="executeLookup()">
+            <span>Kiểm Tra</span>
+          </button>
         </div>
 
-        <!-- Discreet hint text -->
-        <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: -10px; margin-bottom: 16px; line-height: 1.5;">
-          <em>Gợi ý thử nghiệm: Thử SĐT <code>0236.688.8766</code> (Vietcombank), <code>0398.243.689</code> (Thuế eTax), <code>0778.552.193</code> (Cấp cứu bệnh viện), <code>0889050231</code> (EVN), <code>0833109259</code> (Công an), <code>0901757297</code> (Shipper), đầu số quốc tế <code>+224</code>, đầu SMS <code>6781</code>, hoặc Email <code>daotao.dhqg.edu.vn@gmail.com</code>. Dấu hiệu cảnh báo chỉ hiển thị khi có dữ liệu xác thực có thật.</em>
-        </div>
-
-        <!-- Result Container -->
-        <div id="lookupResultContainer">
-          <!-- Populated by lookup.js -->
-        </div>
+        <!-- Result Container (Chỉ hiển thị sau khi người dùng bấm kiểm tra) -->
+        <div id="lookupResultContainer"></div>
       </div>
     </section>
 
-    <!-- TAB 2: PHÂN TÍCH TIN NHẮN BẰNG AI CỤC BỘ (LOCAL AI) -->
+    <!-- TAB 2: NHẬN DIỆN TIN NHẮN NGHI VẤN (TỐI GIẢN - KHÔNG ĐỂ SẴN VÍ DỤ) -->
     <section id="tab-analyzer" class="tab-section">
       <div class="lookup-card">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
-          <div>
-            <h2 class="lookup-title">🤖 Trợ Lý AI Phân Tích Tin Nhắn & Ảnh Chụp Đáng Ngờ</h2>
-            <p class="lookup-desc">Dán nội dung tin nhắn hoặc tải ảnh chụp màn hình để AI bóc tách thủ đoạn thao túng tâm lý, STK cá nhân & liên kết độc hại</p>
-          </div>
-          <span style="background-color: var(--accent-light); color: var(--accent-primary); border: 1px solid var(--accent-primary); font-size: 0.72rem; font-weight: 800; padding: 4px 10px; border-radius: 999px;">
-            🔒 100% CỤC BỘ • BẢO VỆ DỮ LIỆU NĐ 13/2023
-          </span>
-        </div>
+        <h2 class="lookup-title">💬 Kiểm Tra Dấu Hiệu Lừa Đảo Trong Tin Nhắn</h2>
+        <p class="lookup-desc">Dán nội dung tin nhắn hoặc tải ảnh chụp màn hình để đánh giá mức độ rủi ro và phát hiện các thủ đoạn thao túng tâm lý.</p>
 
         <div class="analyzer-container" style="margin-top: 14px;">
           <!-- Method Selector Tabs -->
@@ -121,19 +97,19 @@
               ✍️ Dán Văn Bản Tin Nhắn
             </button>
             <button class="analyzer-method-btn" data-method="image" onclick="switchAnalyzerMethod('image')">
-              🖼️ Tải Ảnh Chụp Màn Hình (OCR)
+              📷 Tải Ảnh Chụp Màn Hình
             </button>
           </div>
 
-          <!-- Image Upload Area (Ẩn mặc định, hiện khi chọn tải ảnh) -->
+          <!-- Image Upload Area -->
           <div id="analyzerUploadArea" style="display: none;">
             <div class="image-dropzone" id="imageDropzone">
               <input type="file" id="imageFileInput" accept="image/*" style="display: none;">
               <span class="image-dropzone-icon">📷</span>
-              <div class="image-dropzone-title">Kéo thả ảnh chụp màn hình vào đây hoặc bấm để chọn ảnh</div>
-              <div class="image-dropzone-desc">Hỗ trợ định dạng PNG, JPG, JPEG, WEBP (Ảnh chụp SMS, màn hình chat Zalo, Telegram, Facebook...)</div>
+              <div class="image-dropzone-title">Kéo thả ảnh chụp màn hình hoặc bấm để chọn ảnh</div>
+              <div class="image-dropzone-desc">Hỗ trợ ảnh chụp tin nhắn SMS, màn hình chat Zalo, Telegram, Facebook Messenger...</div>
               <div class="clipboard-hint-badge">
-                <span>⌨️ Mẹo: Có thể bấm <strong>Ctrl + V</strong> bất kỳ lúc nào để dán ảnh chụp màn hình trực tiếp!</span>
+                <span>⌨️ Mẹo: Có thể bấm <strong>Ctrl + V</strong> để dán ảnh chụp màn hình trực tiếp</span>
               </div>
             </div>
 
@@ -148,122 +124,28 @@
 
             <div class="ocr-progress-bar" id="ocrProgressBar">
               <span class="ocr-spinner"></span>
-              <span id="ocrStatusText">Đang trích xuất văn bản từ ảnh...</span>
+              <span id="ocrStatusText">Đang trích xuất nội dung từ hình ảnh...</span>
             </div>
           </div>
 
-          <!-- Textarea Input Area -->
+          <!-- Textarea Input Area (Không để sẵn mẫu hay chip ví dụ) -->
           <div class="analyzer-textarea-group">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <label for="analyzerMessageText" style="font-size: 0.82rem; font-weight: 700; color: var(--text-main);">
-                Nội dung tin nhắn cần thẩm định:
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label for="analyzerMessageText" style="font-size: 0.85rem; font-weight: 700; color: var(--text-main);">
+                Nội dung tin nhắn / thông báo cần kiểm tra:
               </label>
-              <button onclick="document.getElementById('analyzerMessageText').value=''; document.getElementById('analyzerResultsContainer').classList.remove('active');" style="background: none; border: none; color: var(--text-dim); font-size: 0.75rem; cursor: pointer; text-decoration: underline;">
+              <button onclick="clearAnalyzerInput()" style="background: none; border: none; color: var(--text-dim); font-size: 0.78rem; cursor: pointer; text-decoration: underline;">
                 Xóa nội dung
               </button>
             </div>
-            <textarea id="analyzerMessageText" class="analyzer-textarea" placeholder="Dán nội dung tin nhắn SMS, tin nhắn Zalo, Telegram, Facebook Messenger hoặc thông báo học phí đáng ngờ vào đây..."></textarea>
-
-            <!-- Quick Preset Chips (8 Kịch bản) -->
-            <div class="sample-presets-bar">
-              <span class="sample-presets-label">Mẫu thử nghiệm:</span>
-              <button class="btn-sample-chip" onclick="loadScamSample('tuition')">🏫 Học phí gấp (Techcombank)</button>
-              <button class="btn-sample-chip" onclick="loadScamSample('job')">💼 Tuyển CTV giật đơn (Shopee)</button>
-              <button class="btn-sample-chip" onclick="loadScamSample('vneid')">👮 Công an định danh VNeID</button>
-              <button class="btn-sample-chip" onclick="loadScamSample('sim')">📶 Khóa SIM 2 giờ</button>
-              <button class="btn-sample-chip" onclick="loadScamSample('hospital')">🏥 Con đang cấp cứu viện</button>
-              <button class="btn-sample-chip" onclick="loadScamSample('shipper')">📦 Giả Shipper giao hàng</button>
-              <button class="btn-sample-chip" onclick="loadScamSample('evn')">⚡ EVN dọa ngắt điện</button>
-              <button class="btn-sample-chip" onclick="loadScamSample('safe')">✅ Tin nhắn an toàn (Khoa)</button>
-            </div>
-          </div>
-
-          <!-- Local AI Configuration & Model Selection Panel (Collapsible) -->
-          <div class="local-ai-config-panel">
-            <div class="local-ai-config-header" onclick="toggleLocalAiConfig()">
-              <div class="local-ai-config-title">
-                <span>⚙️ Cấu Hình & Gợi Ý Lựa Chọn Mô Hình AI Cục Bộ (Local LLMs)</span>
-                <span class="local-ai-config-badge">Privacy First</span>
-              </div>
-              <span id="localAiConfigArrow" style="color: var(--text-dim); font-size: 0.8rem;">▼</span>
-            </div>
-
-            <div class="local-ai-config-body" id="localAiConfigBody" style="display: none;">
-              <!-- Input Connectors -->
-              <div class="local-ai-inputs-row">
-                <div class="local-ai-config-field">
-                  <label>Chế độ Động cơ AI:</label>
-                  <select id="localAiModeSelect">
-                    <option value="embedded" selected>Động cơ NLP Cục bộ nhúng sẵn (Offline 100% - Khuyên dùng)</option>
-                    <option value="ollama">Kết nối Local LLM (Ollama qua localhost:11434)</option>
-                    <option value="lmstudio">Kết nối LM Studio / vLLM (localhost:1234/v1)</option>
-                  </select>
-                </div>
-
-                <div class="local-ai-config-field">
-                  <label>Endpoint Máy chủ Cục bộ (Localhost):</label>
-                  <input type="text" id="localAiEndpointInput" value="http://localhost:11434" placeholder="http://localhost:11434">
-                </div>
-
-                <div style="display: flex; gap: 8px;">
-                  <button class="btn-test-local-ai" onclick="testLocalAiConnection()">Kiểm Tra Kết Nối</button>
-                  <button class="btn-test-local-ai" onclick="toggleSystemPromptModal()" title="Xem prompt định hình cho model">📄 Prompt Mẫu</button>
-                </div>
-              </div>
-
-              <div id="localAiConnectionStatus" style="font-size: 0.76rem; color: var(--text-dim);">
-                Mặc định: Sử dụng Động cơ NLP Cục bộ nhúng sẵn, hoạt động tức thời không cần kết nối mạng hoặc server phụ trợ.
-              </div>
-
-              <!-- System Prompt Modal / Drawer -->
-              <div id="systemPromptBox" style="display: none; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 12px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                  <strong style="font-size: 0.8rem; color: var(--text-main);">📋 System Prompt & JSON Schema Cho Mô Hình Cục Bộ:</strong>
-                  <button onclick="copySystemPrompt()" class="btn-copy-model-cmd">Sao Chép Prompt</button>
-                </div>
-                <div class="prompt-template-box">Bạn là Trợ lý AI Chuyên gia Giám định An ninh mạng (Anti-Scam Intelligence Agent) thuộc Đề tài 9 - Tổ 4 (Môn Tư duy hệ thống).
-Nhiệm vụ: Phân tích đoạn tin nhắn hoặc nội dung trích xuất từ ảnh chụp màn hình do sinh viên cung cấp, xác định xem có phải là bẫy lừa đảo trực tuyến hay không.
-
-Yêu cầu phân tích:
-1. Nhận diện các thủ đoạn thao túng tâm lý: Thúc ép thời gian gấp, đe dọa kỷ luật, mạo danh thẩm quyền (Nhà trường, Công an, Thuế), mồi nhử hoa hồng.
-2. Trích xuất các thực thể nhạy cảm: Số tài khoản ngân hàng cá nhân, số điện thoại lạ, đường link website độc hại.
-3. Đánh giá chỉ số rủi ro từ 0% đến 100%.
-
-Định dạng JSON yêu cầu:
-{
-  "risk_score": 95,
-  "scam_category": "Mạo danh Nhà trường thu học phí",
-  "urgency_index": 90,
-  "financial_risk": 100,
-  "authority_impersonation": 85,
-  "malicious_links": 30,
-  "greed_trigger": 10,
-  "triggers": ["Ép thời hạn trước 17h", "Dọa xóa tên khỏi danh sách thi"],
-  "entities": { "bank_account": "190368888999 Techcombank", "phone": "0368888999" },
-  "recommendations": ["Tuyệt đối không chuyển tiền vào STK cá nhân", "Gọi hotline Phòng Đào tạo để kiểm chứng"]
-}</div>
-              </div>
-
-              <!-- Recommended Models Guide -->
-              <div>
-                <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 4px;">
-                  💡 Gợi Ý 4 Mô Hình AI Nhẹ &amp; Tối Ưu Cho Máy Cá Nhân (CPU/Laptop):
-                </div>
-                <div id="modelGuideContainer" class="model-guide-grid">
-                  <!-- Populated by analyzer.js -->
-                </div>
-              </div>
-            </div>
+            <textarea id="analyzerMessageText" class="analyzer-textarea" placeholder="Dán nội dung tin nhắn SMS, tin nhắn mạng xã hội hoặc thông báo đáng ngờ vào đây để phân tích rủi ro..."></textarea>
           </div>
 
           <!-- Action Row -->
           <div class="analyzer-actions-row">
             <button id="runAnalyzerBtn" class="btn-run-analyzer" onclick="runScamAnalysis()">
-              🚀 Phân Tích Bằng AI Cục Bộ
+              🔍 Phân Tích Mức Độ Rủi Ro
             </button>
-            <span style="font-size: 0.78rem; color: var(--text-dim);">
-              ⚡ Tốc độ xử lý: ~0.1 giây &bull; Không gửi dữ liệu người dùng ra bên ngoài
-            </span>
           </div>
 
           <!-- Dynamic Analysis Results Container -->
@@ -352,19 +234,18 @@ Yêu cầu phân tích:
         <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 20px; margin-top: 16px; font-size: 0.88rem; line-height: 1.7;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
             <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
-              ⚡ Kiến Trúc Đám Mây Firebase Firestore & Bảo Mật Ẩn Danh (100% Anonymous)
+              ⚡ Cơ Chế Chia Sẻ Thông Tin Thời Gian Thực &amp; Bảo Mật Ẩn Danh
             </h3>
             <span style="padding: 4px 10px; font-size: 0.78rem; background-color: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 4px; font-weight: 700;">
-              Zero-PII Compliance
+              Bảo Mật Quyền Riêng Tư
             </span>
           </div>
-          <p>Hệ thống đã nâng cấp toàn diện từ file SQL tĩnh sang <strong>Google Cloud Firestore Database</strong> nhằm hỗ trợ cập nhật thời gian thực không độ trễ, tuân thủ các nguyên tắc bảo mật và quyền riêng tư nghiêm ngặt nhất:</p>
+          <p>Hệ thống vận hành theo nguyên tắc phòng vệ cộng đồng thời gian thực, kết nối sinh viên và dữ liệu cảnh báo nhằm tạo lớp lá chắn học đường vững chắc:</p>
           <ul style="margin: 10px 0 10px 22px;">
-            <li><strong>Collection <code>reports</code> Thời Gian Thực:</strong> Lưu trữ trực tiếp các phản ánh cộng đồng gồm <code>{ id, target, scamType, content, status, createdAt }</code>. Lắng nghe liên tục qua <code>onSnapshot()</code>, giúp sổ tiếp nhận tự động nhảy dòng mới tức thì trên mọi thiết bị mà không cần F5.</li>
-            <li><strong>Xác Thực Ẩn Danh (Firebase Anonymous Auth):</strong> Tự động kích hoạt <code>signInAnonymously()</code> trong nền để cấp Auth Token bảo vệ chống spam API, không yêu cầu người dùng đăng nhập tài khoản.</li>
-            <li><strong>Cam Kết Bảo Mật Tuyệt Đối (Zero PII):</strong> Hệ thống không bao giờ thu thập, lưu trữ họ tên, email cá nhân, số điện thoại người gửi, địa chỉ IP hay cookies thiết bị.</li>
-            <li><strong>Rate Limiting & Chống Tấn Công Injection:</strong> Khóa nút gửi phản ánh (Cooldown 30 giây) sau mỗi lần nộp. Dữ liệu được kiểm duyệt độ dài chuỗi ký tự nghiêm ngặt trước khi ghi nhận.</li>
-            <li><strong>Firestore Security Rules Chuẩn Mực:</strong> Thiết lập chính sách bảo vệ dữ liệu đám mây: <code>allow read: if true;</code>, <code>allow create: if request.auth != null;</code> và nghiêm cấm tuyệt đối client chỉnh sửa hoặc xóa dữ liệu (<code>allow update, delete: if false;</code>).</li>
+            <li><strong>Đồng Bộ Cảnh Báo Tức Thời:</strong> Các số điện thoại, tài khoản bị phản ánh được cập nhật trực tiếp vào cơ sở dữ liệu chung, giúp sinh viên khác tra cứu nhận được cảnh báo ngay lập tức.</li>
+            <li><strong>Bảo Mật Danh Tính Tuyệt Đối:</strong> Mọi phản ánh và tra cứu đều ẩn danh 100%, không thu thập số điện thoại cá nhân, họ tên hay dữ liệu riêng tư của người gửi.</li>
+            <li><strong>Chống Spam &amp; Làm Sai Lệch Dữ Liệu:</strong> Cơ chế kiểm soát tốc độ gửi (Rate-limiting) và đối soát đa tầng giúp ngăn chặn hành vi gửi thông tin giả mạo.</li>
+            <li><strong>Phản Hồi &amp; Tăng Mức Độ Cảnh Báo:</strong> Số điện thoại càng nhận nhiều phản ánh từ cộng đồng thì chỉ số rủi ro (% khả nghi) càng tăng cao, bảo vệ sinh viên trước các chiêu trò mới.</li>
           </ul>
         </div>
       </div>

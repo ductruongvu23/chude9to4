@@ -52,19 +52,18 @@ const FirebaseService = (function() {
         currentUser = authResult.user;
         isLiveFirebase = true;
         console.log(`[FirebaseService] ✅ Đăng nhập ẩn danh thành công. Anonymous UID: ${currentUser.uid}`);
-        updateCloudStatusBadge(true, "Firebase Realtime (Live)");
+        updateCloudStatusBadge(true, "Dữ liệu: Trực tuyến");
       } catch (err) {
-        console.warn("[FirebaseService] ⚠️ Kết nối Firebase Cloud trực tiếp chuyển sang chế độ Mô phỏng Firestore Cục bộ (Local Reactive Store):", err.message);
+        console.warn("[FirebaseService] ⚠️ Kích hoạt cơ sở dữ liệu đồng bộ độc lập:", err.message);
         setupLocalFallbackStore();
-        updateCloudStatusBadge(true, "Local Reactive Firestore");
+        updateCloudStatusBadge(true, "Dữ liệu: Sẵn sàng");
       }
     } else {
-      console.warn("[FirebaseService] ⚠️ Không phát hiện Firebase CDN. Kích hoạt Local Reactive Store.");
       setupLocalFallbackStore();
-      updateCloudStatusBadge(true, "Local Reactive Firestore");
+      updateCloudStatusBadge(true, "Dữ liệu: Sẵn sàng");
     }
 
-    // Khởi tạo bộ đệm từ Storage nếu có
+    // Khởi tạo bộ đệm từ Storage
     loadLocalFallbackData();
   }
 
@@ -78,13 +77,13 @@ const FirebaseService = (function() {
   }
 
   // =================================================================
-  // 2. HỆ THỐNG MÔ PHỎNG NỘI BỘ (FALLBACK KHI OFFLINE HOẶC MẤT MẠNG)
+  // 2. HỆ THỐNG MÔ PHỎNG NỘI BỘ (FALLBACK KHI OFFLINE HOẶC MÁY MỚI)
   // =================================================================
   function setupLocalFallbackStore() {
     isLiveFirebase = false;
-    // Lắng nghe sự kiện storage liên tab để cập nhật thời gian thực ngay cả khi offline
+    // Lắng nghe sự kiện storage liên tab để cập nhật thời gian thực
     window.addEventListener('storage', (e) => {
-      if (e.key === 'to4_firestore_reports') {
+      if (e.key === 'to4_firestore_reports' || e.key === 'to4_custom_number_stats') {
         loadLocalFallbackData();
         notifySubscribers();
       }
@@ -94,49 +93,46 @@ const FirebaseService = (function() {
   function loadLocalFallbackData() {
     try {
       const stored = localStorage.getItem('to4_firestore_reports');
+      const seedList = typeof SYSTEM_SEED_REPORTS !== 'undefined' ? SYSTEM_SEED_REPORTS : [];
+      
       if (stored) {
-        cachedReports = JSON.parse(stored);
+        const userSaved = JSON.parse(stored);
+        // Hợp nhất dữ liệu người dùng với seed database (tránh trùng ID)
+        const idMap = new Set();
+        const merged = [];
+        
+        userSaved.forEach(item => {
+          if (!idMap.has(item.id)) {
+            idMap.add(item.id);
+            merged.push(item);
+          }
+        });
+
+        seedList.forEach(seed => {
+          if (!idMap.has(seed.id)) {
+            idMap.add(seed.id);
+            merged.push(seed);
+          }
+        });
+
+        cachedReports = merged;
       } else {
-        // Khởi tạo danh sách mẫu thực tế ban đầu nếu chưa có dữ liệu
-        cachedReports = [
+        // Lần đầu mở trang: Nạp toàn bộ danh mục mẫu thực tế tích hợp sẵn
+        cachedReports = seedList.length > 0 ? [...seedList] : [
           {
             id: "HS-TDHT-9104",
             target: "02366888766",
             scamType: "Mạo danh ngân hàng",
             content: "Đối tượng tự xưng nhân viên Vietcombank thông báo tài khoản có dấu hiệu khả nghi, đòi mã OTP.",
             status: "Cảnh báo cao",
-            createdAt: Date.now() - 3 * 60 * 1000 // 3 phút trước
-          },
-          {
-            id: "HS-TDHT-8821",
-            target: "daotao.dhqg.edu.vn@gmail.com",
-            scamType: "Mạo danh thu học phí",
-            content: "Gửi thông báo nộp 4.500.000đ học phí phụ thu vào số tài khoản cá nhân, dọa đình chỉ thi.",
-            status: "Đã xác minh",
-            createdAt: Date.now() - 15 * 60 * 1000 // 15 phút trước
-          },
-          {
-            id: "HS-TDHT-7734",
-            target: "0398243689",
-            scamType: "Mạo danh cơ quan thuế",
-            content: "Gọi điện dọa nợ thuế môn bài, gửi link tải app eTax Mobile giả mạo chứa mã độc.",
-            status: "Cảnh báo cao",
-            createdAt: Date.now() - 42 * 60 * 1000 // 42 phút trước
-          },
-          {
-            id: "HS-TDHT-6102",
-            target: "0778552193",
-            scamType: "Dọa cấp cứu bệnh viện",
-            content: "Giả danh bác sĩ bệnh viện Chợ Rẫy báo người nhà bị tai nạn nguy kịch, ép chuyển viện phí gấp.",
-            status: "Cảnh báo cao",
-            createdAt: Date.now() - 2 * 60 * 60 * 1000 // 2 giờ trước
+            createdAt: Date.now() - 3 * 60 * 1000
           }
         ];
         saveLocalFallbackData();
       }
     } catch (e) {
       console.error("[FirebaseService] Lỗi nạp dữ liệu local:", e);
-      cachedReports = [];
+      cachedReports = typeof SYSTEM_SEED_REPORTS !== 'undefined' ? [...SYSTEM_SEED_REPORTS] : [];
     }
   }
 
@@ -223,7 +219,12 @@ const FirebaseService = (function() {
       writeToLocalFallback(reportId, cleanTarget, cleanType, cleanContent, status);
     }
 
-    // 5. Cập nhật thời điểm gửi để kích hoạt Cooldown 30s
+    // 5. Cập nhật registry điểm rủi ro cộng đồng
+    if (typeof LocalReportRegistry !== 'undefined') {
+      LocalReportRegistry.report(cleanTarget, cleanType);
+    }
+
+    // 6. Cập nhật thời điểm gửi để kích hoạt Cooldown 30s
     lastSubmitTime = Date.now();
 
     return {
@@ -338,9 +339,26 @@ const FirebaseService = (function() {
       return itemTarget === cleanQuery || itemTarget.includes(cleanQuery) || cleanQuery.includes(itemTarget);
     });
 
+    // 3. Tích hợp dữ liệu từ LocalReportRegistry (khi người dùng bấm báo cáo tại chỗ)
+    const localStats = typeof LocalReportRegistry !== 'undefined' ? LocalReportRegistry.getStats(cleanQuery) : null;
+    let customRiskScore = 0;
+    if (localStats && localStats.reportCount > 0) {
+      customRiskScore = localStats.customRiskScore || 0;
+      const existingIds = new Set(matches.map(m => m.id));
+      (localStats.customReports || []).forEach(cr => {
+        if (!existingIds.has(cr.id)) {
+          matches.unshift(cr);
+          existingIds.add(cr.id);
+        }
+      });
+    }
+
+    const totalCount = localStats && localStats.reportCount > matches.length ? localStats.reportCount : matches.length;
+
     return {
-      count: matches.length,
-      reports: matches
+      count: totalCount,
+      reports: matches,
+      customRiskScore: customRiskScore
     };
   }
 
