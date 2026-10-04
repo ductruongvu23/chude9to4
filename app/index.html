@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/lookup.css">
   <link rel="stylesheet" href="css/intake.css">
+  <link rel="stylesheet" href="css/analyzer.css">
 </head>
 <body>
 
@@ -54,6 +55,7 @@
     <!-- Clean Tab Navigation - Mobile Smooth Scroll -->
     <nav class="app-tab-nav">
       <button class="active" data-tab="lookup" onclick="switchAppTab('lookup')">🔍 Tra Cứu SĐT & Email</button>
+      <button data-tab="analyzer" onclick="switchAppTab('analyzer')">🤖 Phân Tích Tin Nhắn (AI Local)</button>
       <button data-tab="intake" onclick="switchAppTab('intake')">📝 Tiếp Nhận Báo Cáo</button>
       <button data-tab="system" onclick="switchAppTab('system')">🌐 Sơ Đồ Tư Duy Hệ Thống</button>
     </nav>
@@ -94,7 +96,129 @@
       </div>
     </section>
 
-    <!-- TAB 2: TIẾP NHẬN PHẢN ÁNH (BÁO CÁO) -->
+    <!-- TAB 2: PHÂN TÍCH TIN NHẮN BẰNG AI CỤC BỘ (LOCAL AI) -->
+    <section id="tab-analyzer" class="tab-section">
+      <div class="lookup-card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <h2 class="lookup-title">🤖 Trợ Lý AI Phân Tích Tin Nhắn & Ảnh Chụp Đáng Ngờ</h2>
+            <p class="lookup-desc">Dán nội dung tin nhắn hoặc tải ảnh chụp màn hình để AI bóc tách thủ đoạn thao túng tâm lý, STK cá nhân & liên kết độc hại</p>
+          </div>
+          <span style="background-color: var(--accent-light); color: var(--accent-primary); border: 1px solid var(--accent-primary); font-size: 0.72rem; font-weight: 800; padding: 4px 10px; border-radius: 999px;">
+            🔒 100% CỤC BỘ • BẢO VỆ DỮ LIỆU NĐ 13/2023
+          </span>
+        </div>
+
+        <div class="analyzer-container" style="margin-top: 14px;">
+          <!-- Method Selector Tabs -->
+          <div class="analyzer-method-tabs">
+            <button class="analyzer-method-btn active" data-method="text" onclick="switchAnalyzerMethod('text')">
+              ✍️ Dán Văn Bản Tin Nhắn
+            </button>
+            <button class="analyzer-method-btn" data-method="image" onclick="switchAnalyzerMethod('image')">
+              🖼️ Tải Ảnh Chụp Màn Hình (OCR)
+            </button>
+          </div>
+
+          <!-- Image Upload Area (Ẩn mặc định, hiện khi chọn tải ảnh) -->
+          <div id="analyzerUploadArea" style="display: none;">
+            <div class="image-dropzone" id="imageDropzone">
+              <input type="file" id="imageFileInput" accept="image/*" style="display: none;">
+              <span class="image-dropzone-icon">📷</span>
+              <div class="image-dropzone-title">Kéo thả ảnh chụp màn hình vào đây hoặc bấm để chọn ảnh</div>
+              <div class="image-dropzone-desc">Hỗ trợ định dạng PNG, JPG, JPEG, WEBP (Ảnh chụp SMS, màn hình chat Zalo, Telegram, Facebook...)</div>
+            </div>
+
+            <div class="image-preview-wrapper" id="imagePreviewWrapper" style="display: none;">
+              <img id="imagePreviewThumb" class="image-preview-thumb" src="" alt="Thumbnail ảnh chụp">
+              <div class="image-preview-info">
+                <div class="image-preview-name" id="imagePreviewName">screenshot.png</div>
+                <div class="image-preview-meta" id="imagePreviewMeta">142 KB</div>
+              </div>
+              <button class="btn-remove-image" onclick="removeSelectedImage()">✕ Gỡ ảnh</button>
+            </div>
+
+            <div class="ocr-progress-bar" id="ocrProgressBar">
+              <span class="ocr-spinner"></span>
+              <span id="ocrStatusText">Đang trích xuất văn bản từ ảnh...</span>
+            </div>
+          </div>
+
+          <!-- Textarea Input Area -->
+          <div class="analyzer-textarea-group">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <label for="analyzerMessageText" style="font-size: 0.82rem; font-weight: 700; color: var(--text-main);">
+                Nội dung tin nhắn cần thẩm định:
+              </label>
+              <button onclick="document.getElementById('analyzerMessageText').value=''; document.getElementById('analyzerResultsContainer').classList.remove('active');" style="background: none; border: none; color: var(--text-dim); font-size: 0.75rem; cursor: pointer; text-decoration: underline;">
+                Xóa nội dung
+              </button>
+            </div>
+            <textarea id="analyzerMessageText" class="analyzer-textarea" placeholder="Dán nội dung tin nhắn SMS, tin nhắn Zalo, Telegram, Facebook Messenger hoặc thông báo học phí đáng ngờ vào đây..."></textarea>
+
+            <!-- Quick Preset Chips -->
+            <div class="sample-presets-bar">
+              <span class="sample-presets-label">Mẫu thử nghiệm:</span>
+              <button class="btn-sample-chip" onclick="loadScamSample('tuition')">🏫 Học phí gấp (Techcombank)</button>
+              <button class="btn-sample-chip" onclick="loadScamSample('job')">💼 Tuyển CTV giật đơn (Shopee)</button>
+              <button class="btn-sample-chip" onclick="loadScamSample('vneid')">👮 Công an định danh VNeID</button>
+              <button class="btn-sample-chip" onclick="loadScamSample('sim')">📶 Khóa SIM 2 giờ</button>
+              <button class="btn-sample-chip" onclick="loadScamSample('hospital')">🏥 Con đang cấp cứu viện</button>
+              <button class="btn-sample-chip" onclick="loadScamSample('safe')">✅ Tin nhắn an toàn (Thầy cô)</button>
+            </div>
+          </div>
+
+          <!-- Local AI Configuration Panel (Collapsible) -->
+          <div class="local-ai-config-panel">
+            <div class="local-ai-config-header" onclick="toggleLocalAiConfig()">
+              <div class="local-ai-config-title">
+                <span>⚙️ Cấu Hình Mô Hình AI Cục Bộ (Local Model / Ollama)</span>
+                <span class="local-ai-config-badge">Privacy First</span>
+              </div>
+              <span id="localAiConfigArrow" style="color: var(--text-dim); font-size: 0.8rem;">▼</span>
+            </div>
+
+            <div class="local-ai-config-body" id="localAiConfigBody" style="display: none;">
+              <div class="local-ai-config-field">
+                <label>Chế độ Động cơ AI:</label>
+                <select id="localAiModeSelect">
+                  <option value="embedded" selected>Động cơ NLP Cục bộ nhúng sẵn (Offline 100% - Khuyên dùng)</option>
+                  <option value="ollama">Kết nối Local LLM (Ollama / LM Studio qua API)</option>
+                </select>
+              </div>
+
+              <div class="local-ai-config-field">
+                <label>Endpoint Máy chủ Cục bộ (Localhost):</label>
+                <input type="text" id="localAiEndpointInput" value="http://localhost:11434" placeholder="http://localhost:11434">
+              </div>
+
+              <div style="display: flex; gap: 8px;">
+                <button class="btn-test-local-ai" onclick="testLocalAiConnection()">Kiểm Tra Kết Nối</button>
+              </div>
+
+              <div id="localAiConnectionStatus" style="grid-column: 1 / -1; font-size: 0.76rem; color: var(--text-dim); margin-top: 2px;">
+                Mặc định: Sử dụng Động cơ NLP Cục bộ nhúng sẵn, hoạt động tức thời không cần kết nối mạng hoặc server phụ trợ.
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Row -->
+          <div class="analyzer-actions-row">
+            <button id="runAnalyzerBtn" class="btn-run-analyzer" onclick="runScamAnalysis()">
+              🚀 Phân Tích Bằng AI Cục Bộ
+            </button>
+            <span style="font-size: 0.78rem; color: var(--text-dim);">
+              ⚡ Tốc độ xử lý: ~0.1 giây &bull; Không gửi dữ liệu người dùng ra bên ngoài
+            </span>
+          </div>
+
+          <!-- Dynamic Analysis Results Container -->
+          <div id="analyzerResultsContainer" class="analyzer-results-container"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: TIẾP NHẬN PHẢN ÁNH (BÁO CÁO) -->
     <section id="tab-intake" class="tab-section">
       <div class="intake-layout">
         <!-- Form Tiếp Nhận -->
@@ -202,6 +326,7 @@
   <script src="js/storage.js"></script>
   <script src="js/lookup.js"></script>
   <script src="js/intake.js"></script>
+  <script src="js/analyzer.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

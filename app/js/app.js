@@ -6,6 +6,9 @@
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initIntakeView();
+  if (typeof initAnalyzerView === 'function') {
+    initAnalyzerView();
+  }
 
   // Quick lookup helper: change placeholder based on radio selection
   const radios = document.querySelectorAll('input[name="lookupType"]');
@@ -27,6 +30,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Run initial default lookup
   executeLookup();
+
+  // URL parameters handling (tab, sample, analyze)
+  const urlParams = new URLSearchParams(window.location.search);
+  const requestedTab = urlParams.get('tab');
+  if (requestedTab) {
+    switchAppTab(requestedTab);
+  }
+  const requestedSample = urlParams.get('sample');
+  if (requestedSample && typeof loadScamSample === 'function') {
+    loadScamSample(requestedSample);
+  }
+  if (urlParams.get('analyze') === 'true' && typeof runScamAnalysis === 'function') {
+    setTimeout(() => runScamAnalysis(), 250);
+  }
 });
 
 // Chuyển Tab
