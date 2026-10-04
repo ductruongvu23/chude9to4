@@ -45,10 +45,10 @@ function handlePhoneLookup(phone, container) {
         carrier: "Thuê bao di động / Đầu số chưa xác minh danh tính người gọi",
         riskScore: 45,
         status: "SUSPICIOUS",
-        statusText: "LƯU Ý: SỐ LẠ CHƯA CÓ TRONG DANH BẠ ĐÃ XÁC THỰC",
+        statusText: "LƯU Ý: SỐ LẠ CHƯA ĐƯỢC XÁC THỰC DANH TÍNH CHÍNH THỨC",
         reportsCount: 3,
-        threatType: "Chưa ghi nhận vi phạm nghiêm trọng. Khuyến cáo kiểm tra kỹ trước khi chuyển tiền.",
-        sourceName: "Báo Điện tử Chính phủ (baochinhphu.vn) - Chiến dịch Nhận diện lừa đảo",
+        threatType: "Chưa ghi nhận vi phạm nghiêm trọng. Không cung cấp mã OTP, thông tin CCCD hay thực hiện chuyển khoản theo yêu cầu qua điện thoại. Nếu nghi ngờ, gọi lại qua số đường dây chính thức của tổ chức.",
+        sourceName: "Báo Điện tử Chính phủ (baochinhphu.vn) - Chiến dịch Nhận diện lừa đảo trực tuyến 2024",
         sourceUrl: "https://baochinhphu.vn/chien-dich-nhan-dien-lua-dao-truc-tuyen-102240717152259919.htm"
       };
     } else {
@@ -57,11 +57,11 @@ function handlePhoneLookup(phone, container) {
         carrier: "Thuê bao lạ",
         riskScore: 30,
         status: "SUSPICIOUS",
-        statusText: "LƯU Ý: THÔNG TIN CHƯA XÁC THỰC",
+        statusText: "LƯU Ý: THÔNG TIN CHƯA ĐƯỢC XÁC THỰC",
         reportsCount: 0,
-        threatType: "Khuyến cáo không cung cấp thông tin cá nhân hoặc OTP cho người lạ.",
-        sourceName: "Báo Điện tử Chính phủ (baochinhphu.vn) - Cổng Cảnh báo An toàn số",
-        sourceUrl: "https://baochinhphu.vn"
+        threatType: "Không có trong danh bạ đã xác thực. Tuyệt đối không cung cấp thông tin cá nhân, số OTP hoặc thực hiện chuyển khoản theo yêu cầu của người lạ. Nếu người gọi tự xưng là công an, viện kiểm sát, ngân hàng — hãy cúp điện luôn và gọi lại đường dây chính thức để kiểm tra.",
+        sourceName: "Báo Tuổi Trẻ Online - Lừa đảo sinh viên: chiêu mới nhắm vào sinh viên",
+        sourceUrl: "https://tuoitre.vn/chieu-lua-dao-moi-nham-vao-sinh-vien-cu-nguoi-den-tan-noi-nhan-tien-100260913131739695.htm"
       };
     }
   }
@@ -128,9 +128,9 @@ function handleEmailLookup(email, container) {
         riskScore: 98,
         status: "DANGEROUS",
         statusText: "BÁO ĐỘNG ĐỎ: HÒM THƯ CÁ NHÂN GMAIL MẠO DANH NHÀ TRƯỜNG",
-        threatType: "Kẻ lừa đảo lập tài khoản Gmail miễn phí có chứa từ khóa trường ĐH để gửi thông báo nộp học phí qua tài khoản cá nhân",
-        sourceName: "Cổng Cảnh báo An toàn thông tin Việt Nam (canhbao.khonggianmang.vn) & Báo Chính Phủ",
-        sourceUrl: "https://baochinhphu.vn"
+        threatType: "Kẻ lừa đảo lập tài khoản Gmail miễn phí chứa từ khóa giống tên miền trường đại học để gửi thông báo nộp học phí vào tài khoản cá nhân. Nhà trường chỉ liên lạc qua địa chỉ email chính thống (@edu.vn hoặc @daotao.tên-trường.edu.vn).",
+        sourceName: "Báo Điện tử Chính phủ (baochinhphu.vn) - Lừa đảo sinh viên chuyển tiền đăng ký chỗ ở ký túc xá",
+        sourceUrl: "https://baochinhphu.vn/lua-dao-sinh-vien-chuyen-tien-dang-ky-cho-o-ky-tuc-xa-10224081107491905.htm"
       };
     } else {
       data = {
@@ -138,9 +138,9 @@ function handleEmailLookup(email, container) {
         riskScore: 35,
         status: "SUSPICIOUS",
         statusText: "LƯU Ý: HÒM THƯ CHƯA XÁC THỰC DANH TÍNH",
-        threatType: "Không thuộc danh sách cơ sở giáo dục đã chứng thực hạ tầng DNS/DKIM",
-        sourceName: "Báo Điện tử Chính phủ (baochinhphu.vn) - Cảnh báo thủ đoạn mạo danh",
-        sourceUrl: "https://baochinhphu.vn/lua-dao-sinh-vien-chuyen-tien-dang-ky-cho-o-ky-tuc-xa-10224081107491905.htm"
+        threatType: "Email không thuộc tên miền cơ sở giáo dục chính thống (.edu.vn). Lưu ý: các trường đại học uy tín tại Việt Nam không dùng Gmail hay Outlook để yêu cầu đóng học phí hoặc nhận thông tin nhạy cảm.",
+        sourceName: "Báo Điện tử Chính phủ (baochinhphu.vn) - Chiến dịch Nhận diện lừa đảo trực tuyến 2024",
+        sourceUrl: "https://baochinhphu.vn/chien-dich-nhan-dien-lua-dao-truc-tuyen-102240717152259919.htm"
       };
     }
   }
