@@ -8,6 +8,12 @@ import time
 import json
 import urllib.request
 
+if sys.stdout.encoding != 'utf-8':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    except Exception:
+        pass
+
 ROOT = r'c:\Users\VDT\Documents\bai_to_4'
 
 class Handler(http.server.SimpleHTTPRequestHandler):
