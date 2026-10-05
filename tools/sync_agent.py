@@ -82,7 +82,10 @@ else:
     else:
         print(f"    ⚠️ CẢNH BÁO KIỂM THỬ: CSP: {len(csp_errors)}, JS: {len(js_errors)}")
 
-server.shutdown()
+try:
+    server.server_close()
+except Exception:
+    pass
 
 # -------------------------------------------------------------
 # BƯỚC 3: ĐỒNG BỘ TỰ ĐỘNG SANG BAI_TO_5
