@@ -42,7 +42,7 @@
         </button>
         <div id="downloadMenu" style="display: none; position: absolute; top: 100%; right: 0; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); box-shadow: var(--shadow-lg); min-width: 310px; z-index: 1000; margin-top: 4px; padding: 4px 0;">
           <a href="Slide_To4_DeTai9_Canva_PitchDeck.pptx" download="Slide_To4_DeTai9_Canva_PitchDeck.pptx" style="display: block; padding: 8px 14px; font-size: 0.82rem; color: #10B981; text-decoration: none; border-bottom: 1px solid var(--border-color); font-weight: 700; background: rgba(16, 185, 129, 0.08);">
-            📊 Tải File PowerPoint (.pptx) - 17 Slides Chuẩn
+            📊 Tải File PowerPoint (.pptx) - 16 Slides Chuẩn
           </a>
           <a href="Slide_To4_ThietKe5_Canva_Cyber.pdf" download="Slide_To4_ThietKe5_Canva_Cyber.pdf" style="display: block; padding: 8px 14px; font-size: 0.8rem; color: var(--accent-primary); text-decoration: none; border-bottom: 1px solid var(--border-color); font-weight: 700;">
             ⭐ Bản 5: Canva Cyber Pitch Deck (15 Slides)
@@ -756,82 +756,8 @@
         </div>
       </section>
 
-      <!-- SLIDE 13: YÊU CẦU CHỨC NĂNG & PHI CHỨC NĂNG -->
+      <!-- SLIDE 13: ĐÁNH GIÁ RỦI RO HỆ THỐNG -->
       <section class="slide-item" data-slide="13" data-speaker="Thành viên 3">
-        <div class="slide-inner">
-          <div>
-            <span class="section-tag">NHIỆM VỤ 4 (TIẾP) • ĐẶC TẢ KỸ THUẬT CHUẨN HÓA</span>
-            <h2 class="slide-title">Yêu Cầu Chức Năng (FR) & Phi Chức Năng (NFR)</h2>
-            <p class="slide-desc">Chuẩn hóa kiến trúc giải pháp công nghệ đáp ứng toàn diện các tiêu chí kỹ thuật và pháp lý</p>
-          </div>
-
-          <div class="grid-2">
-            <div class="spec-box">
-              <h3>⚙️ Yêu Cầu Chức Năng (Functional Requirements)</h3>
-              <div class="req-list">
-                <div class="req-item">
-                  <span class="req-badge">FR-1</span>
-                  <div><strong>Tra cứu đa nguồn SĐT, Email, STK:</strong> Đối chiếu kho blacklist quốc gia; kiểm tra định dạng tên miền chính thống <code>.edu.vn</code> và đối soát tài khoản học phí.</div>
-                </div>
-                <div class="req-item">
-                  <span class="req-badge">FR-2</span>
-                  <div><strong>Trợ lý AI phân tích tin nhắn &amp; ảnh chụp:</strong> Nhận diện ngữ cảnh đe dọa nợ học phí/việc làm, bóc tách dấu hiệu lừa đảo và trích xuất link độc hại.</div>
-                </div>
-                <div class="req-item">
-                  <span class="req-badge">FR-3</span>
-                  <div><strong>Tiếp nhận phản ánh &amp; Cấp Ticket ID:</strong> Tự động sinh mã định danh duy nhất (e.g. <code>TK-2026-XXXX</code>), lưu vết thời gian và phân loại mức độ rủi ro.</div>
-                </div>
-                <div class="req-item">
-                  <span class="req-badge">FR-4</span>
-                  <div><strong>Quản lý CSDL SQL chuẩn:</strong> Lưu trữ dữ liệu vi phạm vào file <code>scam_phone_database.sql</code>, hỗ trợ truy vấn và trích xuất dữ liệu đối soát minh bạch.</div>
-                </div>
-                <div class="req-item">
-                  <span class="req-badge">FR-5</span>
-                  <div><strong>Kích hoạt quy trình Giờ vàng:</strong> Cung cấp danh bạ hotline khẩn cấp 24/7 của ngân hàng, biểu mẫu tố giác và cú pháp phản ánh 156/5656.</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="spec-box highlight">
-              <h3>🔒 Yêu Cầu Phi Chức Năng (Non-Functional Requirements)</h3>
-              <div class="req-list">
-                <div class="req-item">
-                  <span class="req-badge nfr">NFR-1</span>
-                  <div><strong>Hiệu năng &amp; Độ trễ thời gian thực:</strong> Tốc độ truy vấn CSDL SQL &lt; 50ms; AI NLP phân tích văn bản &lt; 2.0s; tải trang ban đầu &lt; 1.5s.</div>
-                </div>
-                <div class="req-item">
-                  <span class="req-badge nfr">NFR-2</span>
-                  <div><strong>Bảo mật quyền riêng tư (NĐ 13/2023/NĐ-CP):</strong> Kiến trúc Privacy-by-Design, AI xử lý Offline/Local; tự động che mờ thông tin cá nhân (Auto-masking PII).</div>
-                </div>
-                <div class="req-item">
-                  <span class="req-badge nfr">NFR-3</span>
-                  <div><strong>Độ chính xác &amp; Tin cậy cao:</strong> Tỷ lệ phát hiện đúng (Recall) &ge; 96% với thủ đoạn học phí/việc làm; Tỷ lệ báo động sai (False Positive) &lt; 2%.</div>
-                </div>
-                <div class="req-item">
-                  <span class="req-badge nfr">NFR-4</span>
-                  <div><strong>Tính khả dụng &amp; 100% Responsive:</strong> Tương thích hoàn hảo từ màn hình di động (360px - 430px) đến Desktop; hỗ trợ chế độ Sáng / Tối (Light/Dark).</div>
-                </div>
-                <div class="req-item">
-                  <span class="req-badge nfr">NFR-5</span>
-                  <div><strong>Khả năng tương thích &amp; Mở rộng:</strong> Module hóa linh hoạt, chuẩn bị sẵn sàng RESTful API để kết nối trực tiếp cổng thông tin đào tạo trường đại học.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="slide-source-caption">
-            <span>📌 <strong>Nguồn pháp lý &amp; tiêu chuẩn:</strong> Nghị định 13/2023/NĐ-CP về Bảo vệ Dữ liệu Cá nhân (17/4/2023, hiệu lực 1/7/2023) — (<a href="https://vanban.chinhphu.vn/?pageid=27160&docid=207185" target="_blank" rel="noopener noreferrer">vanban.chinhphu.vn - NĐ 13/2023/NĐ-CP ↗</a>) &bull; Báo Chính phủ — Phần mềm phát hiện dấu hiệu lừa đảo qua điện thoại (<a href="https://baochinhphu.vn/ra-mat-phan-mem-phat-hien-dau-hieu-lua-dao-qua-dien-thoai-102240730125149283.htm" target="_blank" rel="noopener noreferrer">baochinhphu.vn ↗</a>)</span>
-          </div>
-        </div>
-        <div class="speaker-notes-content" style="display:none;">
-          <strong>Diễn giả: Thành viên 3 (8:00 - 8:45)</strong><br>
-          - Bóc tách chi tiết 5 Yêu cầu Chức năng (FR1-FR5) và 5 Yêu cầu Phi chức năng (NFR1-NFR5).<br>
-          - Nhấn mạnh cam kết quyền riêng tư (Privacy-by-design) tuân thủ nghiêm ngặt Nghị định 13/2023/NĐ-CP và tốc độ xử lý dưới 50ms.
-        </div>
-      </section>
-
-      <!-- SLIDE 14: ĐÁNH GIÁ RỦI RO HỆ THỐNG -->
-      <section class="slide-item" data-slide="14" data-speaker="Thành viên 3">
         <div class="slide-inner">
           <div>
             <span class="section-tag">NHIỆM VỤ 4 (TIẾP) • MA TRẬN ĐÁNH GIÁ VÀ KIỂM SOÁT RỦI RO</span>
@@ -932,8 +858,8 @@
         </div>
       </section>
 
-            <!-- SLIDE 15: DEMO CỔNG TRA CỨU & TIẾP NHẬN TỔ 4 (KÈM Mã QR) -->
-      <section class="slide-item" data-slide="15" data-speaker="Thành viên 4">
+            <!-- SLIDE 14: DEMO CỔNG TRA CỨU & TIẾP NHẬN TỔ 4 (KÈM Mã QR) -->
+      <section class="slide-item" data-slide="14" data-speaker="Thành viên 4">
         <div class="slide-inner">
           <div>
             <span class="section-tag">SẢN PHẨM THỰC TẾ • TỔ 4</span>
@@ -1007,8 +933,8 @@
         </div>
       </section>
 
-      <!-- SLIDE 16: BIỆN PHÁP KHI BỊ LỪA ĐẢO - QUY TRÌNH "GIỜ VÀNG" 15-30 PHÚT ĐẦU -->
-      <section class="slide-item" data-slide="16" data-speaker="Thành viên 4">
+      <!-- SLIDE 15: BIỆN PHÁP KHI BỊ LỪA ĐẢO - QUY TRÌNH "GIỜ VÀNG" 15-30 PHÚT ĐẦU -->
+      <section class="slide-item" data-slide="15" data-speaker="Thành viên 4">
         <div class="slide-inner">
           <div>
             <span class="section-tag">XỬ LÝ KHỦNG HOẢNG • QUY TRÌNH "GIỜ VÀNG" 15-30 PHÚT ĐẦU</span>
@@ -1074,8 +1000,8 @@
         </div>
       </section>
 
-      <!-- SLIDE 17: TỔNG KẾT & PHẢN BIỆN -->
-      <section class="slide-item" data-slide="17" data-speaker="Thành viên 4">
+      <!-- SLIDE 16: TỔNG KẾT & PHẢN BIỆN -->
+      <section class="slide-item" data-slide="16" data-speaker="Thành viên 4">
         <div class="slide-inner">
           <div>
             <span class="section-tag">KẾT LUẬN & THÔNG ĐIỆP HỆ THỐNG</span>
@@ -1130,7 +1056,7 @@
   <!-- Slide Footer Navigation -->
   <footer class="presentation-footer">
     <div class="footer-left">
-      <span class="slide-counter"><strong id="currentSlideNum">1</strong> / <span id="totalSlidesNum">17</span></span>
+      <span class="slide-counter"><strong id="currentSlideNum">1</strong> / <span id="totalSlidesNum">16</span></span>
       <div class="progress-bar-wrap">
         <div class="progress-bar-fill" id="progressBar"></div>
       </div>
@@ -1184,7 +1110,7 @@
   <!-- Floating Presentation Dock (Canva & PowerPoint Present Mode) -->
   <div id="presentationDock" class="presentation-dock">
     <button class="dock-btn" onclick="prevSlide()" title="Slide trước (◀ hoặc Phím mũi tên trái)">◀ Trước</button>
-    <div class="dock-counter"><span id="dockCurrentNum">1</span> / <span id="dockTotalNum">17</span></div>
+    <div class="dock-counter"><span id="dockCurrentNum">1</span> / <span id="dockTotalNum">16</span></div>
     <button class="dock-btn" onclick="nextSlide()" title="Slide sau (▶, Space hoặc Phím mũi tên phải)">Sau ▶</button>
     <div class="dock-divider"></div>
     <button class="dock-btn" onclick="togglePresenterMode()" title="Ghi chú người nói (P)">🎙️ Ghi chú</button>
