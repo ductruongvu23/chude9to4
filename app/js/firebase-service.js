@@ -1,87 +1,84 @@
 // ===================================================================
-// FIREBASE CLOUD SERVICE MODULE (STUDENT CYBERGUARD - TỔ 4)
-// Chức năng:
-// 1. Quản lý kết nối Firebase Cloud Firestore & Anonymous Authentication
-// 2. Lắng nghe dữ liệu thời gian thực (onSnapshot) cho Sổ tiếp nhận hồ sơ
-// 3. Đếm số lượng phản ánh cộng đồng thực tế phục vụ tra cứu minh bạch
-// 4. Rate-limiting chống spam (Khóa nút cooldown 30 giây)
-// 5. Đảm bảo ẩn danh tuyệt đối 100% (Không lưu trữ danh tính người gửi)
+// CLOUD DATABASE SERVICE MODULE - Google Sheets Backend
+// Thay thế Firebase bằng Google Sheets API qua Apps Script Web App
+// Toàn bộ máy đều thấy cùng dữ liệu - đồng bộ thật sự
 // ===================================================================
 
-const FirebaseService = (function() {
-  // CẤU HÌNH DỰ ÁN FIREBASE (Thay thế bằng thông số từ Firebase Console của bạn)
-  const firebaseConfig = {
-    apiKey: "AIzaSyDemoMockCyberGuardKey_To4SystemsThinking",
-    authDomain: "cyberguard-to4.firebaseapp.com",
-    projectId: "cyberguard-to4",
-    storageBucket: "cyberguard-to4.appspot.com",
-    messagingSenderId: "104920264091",
-    appId: "1:104920264091:web:a9b8c7d6e5f4"
-  };
+const FirebaseService = (function () {
+  // ============================================================
+  // CẤU HÌNH GOOGLE SHEETS BACKEND
+  // Sau khi deploy Apps Script, paste URL vào đây:
+  // ============================================================
+  const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbyaYe5lkRtG3PmE_hn_a4OlXrVRBAD3ZGyaM9EmEjEKiBJCMh8XiHLSnpQY5ckRntX6dQ/exec";
+  // Ví dụ: "https://script.google.com/macros/s/AKfycb.../exec"
 
-  let db = null;
-  let auth = null;
-  let isLiveFirebase = false;
-  let currentUser = null;
+  let isSheetsLive = false;
   let activeListeners = [];
+  let cachedReports = [];
 
   // Quản lý Cooldown chống spam (30s)
   const COOLDOWN_SECONDS = 30;
   let lastSubmitTime = 0;
 
-  // Cache dữ liệu nội bộ phản ánh cộng đồng (dùng cho truy vấn nhanh & fallback)
-  let cachedReports = [];
-
   // =================================================================
-  // 1. KHỞI TẠO FIREBASE & ANONYMOUS AUTHENTICATION
+  // 1. KIỂM TRA KẾT NỐI VÀ KHỞI TẠO
   // =================================================================
   async function init() {
-    console.log("[FirebaseService] Đang khởi tạo hệ thống bảo mật & kết nối đám mây...");
-    
-    // Kiểm tra xem Firebase SDK đã được nhúng vào trang chưa
-    if (typeof firebase !== 'undefined' && firebase.initializeApp) {
-      try {
-        if (!firebase.apps.length) {
-          firebase.initializeApp(firebaseConfig);
-        }
-        auth = firebase.auth();
-        db = firebase.firestore();
+    console.log("[CloudDB] Đang kết nối Google Sheets backend...");
 
-        // Tự động gọi signInAnonymously() trong nền để cấp Token bảo mật không thu thập PII
-        const authResult = await auth.signInAnonymously();
-        currentUser = authResult.user;
-        isLiveFirebase = true;
-        console.log(`[FirebaseService] ✅ Đăng nhập ẩn danh thành công. Anonymous UID: ${currentUser.uid}`);
-        updateCloudStatusBadge(true, "Dữ liệu: Trực tuyến");
-      } catch (err) {
-        console.warn("[FirebaseService] ⚠️ Kích hoạt cơ sở dữ liệu đồng bộ độc lập:", err.message);
-        setupLocalFallbackStore();
-        updateCloudStatusBadge(true, "Dữ liệu: Sẵn sàng");
-      }
-    } else {
-      setupLocalFallbackStore();
-      updateCloudStatusBadge(true, "Dữ liệu: Sẵn sàng");
+    if (!SHEETS_API_URL || SHEETS_API_URL === "PASTE_YOUR_APPS_SCRIPT_URL_HERE") {
+      console.warn("[CloudDB] ⚠️ Chưa cấu hình Google Sheets URL. Sử dụng dữ liệu tích hợp sẵn.");
+      setupLocalFallback();
+      updateCloudStatusBadge(false, "Dữ liệu: Cục bộ");
+      loadLocalFallbackData();
+      return;
     }
 
-    // Khởi tạo bộ đệm từ Storage
-    loadLocalFallbackData();
+    try {
+      // Ping để kiểm tra kết nối
+      const resp = await fetch(`${SHEETS_API_URL}?action=getAll`, {
+        method: "GET",
+        mode: "cors",
+        signal: AbortSignal.timeout(5000)
+      });
+
+      if (resp.ok) {
+        const json = await resp.json();
+        if (json.success) {
+          isSheetsLive = true;
+          cachedReports = json.reports || [];
+          saveLocalFallbackData();
+          console.log(`[CloudDB] ✅ Kết nối Google Sheets thành công. ${cachedReports.length} báo cáo được tải.`);
+          updateCloudStatusBadge(true, "Dữ liệu: Đồng bộ Sheets");
+          notifySubscribers();
+        } else {
+          throw new Error("API trả về success: false");
+        }
+      } else {
+        throw new Error(`HTTP ${resp.status}`);
+      }
+    } catch (err) {
+      console.warn("[CloudDB] Không kết nối được Sheets, dùng dữ liệu cục bộ:", err.message);
+      setupLocalFallback();
+      loadLocalFallbackData();
+      updateCloudStatusBadge(false, "Dữ liệu: Cục bộ");
+    }
   }
 
   function updateCloudStatusBadge(isActive, label) {
     const badge = document.getElementById('cloudStatusBadge');
     if (badge) {
-      badge.textContent = isActive ? `🟢 ${label}` : `🔴 Mất kết nối`;
-      badge.style.borderColor = isActive ? '#10b981' : '#f43f5e';
-      badge.style.color = isActive ? '#10b981' : '#f43f5e';
+      badge.textContent = isActive ? `🟢 ${label}` : `🟡 ${label}`;
+      badge.style.borderColor = isActive ? '#10b981' : '#f59e0b';
+      badge.style.color = isActive ? '#10b981' : '#f59e0b';
     }
   }
 
   // =================================================================
-  // 2. HỆ THỐNG MÔ PHỎNG NỘI BỘ (FALLBACK KHI OFFLINE HOẶC MÁY MỚI)
+  // 2. FALLBACK CỤC BỘ (Khi chưa cấu hình Sheets hoặc offline)
   // =================================================================
-  function setupLocalFallbackStore() {
-    isLiveFirebase = false;
-    // Lắng nghe sự kiện storage liên tab để cập nhật thời gian thực
+  function setupLocalFallback() {
+    isSheetsLive = false;
     window.addEventListener('storage', (e) => {
       if (e.key === 'to4_firestore_reports' || e.key === 'to4_custom_number_stats') {
         loadLocalFallbackData();
@@ -94,13 +91,12 @@ const FirebaseService = (function() {
     try {
       const stored = localStorage.getItem('to4_firestore_reports');
       const seedList = typeof SYSTEM_SEED_REPORTS !== 'undefined' ? SYSTEM_SEED_REPORTS : [];
-      
+
       if (stored) {
         const userSaved = JSON.parse(stored);
-        // Hợp nhất dữ liệu người dùng với seed database (tránh trùng ID)
         const idMap = new Set();
         const merged = [];
-        
+
         userSaved.forEach(item => {
           if (!idMap.has(item.id)) {
             idMap.add(item.id);
@@ -117,21 +113,11 @@ const FirebaseService = (function() {
 
         cachedReports = merged;
       } else {
-        // Lần đầu mở trang: Nạp toàn bộ danh mục mẫu thực tế tích hợp sẵn
-        cachedReports = seedList.length > 0 ? [...seedList] : [
-          {
-            id: "HS-TDHT-9104",
-            target: "02366888766",
-            scamType: "Mạo danh ngân hàng",
-            content: "Đối tượng tự xưng nhân viên Vietcombank thông báo tài khoản có dấu hiệu khả nghi, đòi mã OTP.",
-            status: "Cảnh báo cao",
-            createdAt: Date.now() - 3 * 60 * 1000
-          }
-        ];
+        cachedReports = seedList.length > 0 ? [...seedList] : [];
         saveLocalFallbackData();
       }
     } catch (e) {
-      console.error("[FirebaseService] Lỗi nạp dữ liệu local:", e);
+      console.error("[CloudDB] Lỗi nạp local:", e);
       cachedReports = typeof SYSTEM_SEED_REPORTS !== 'undefined' ? [...SYSTEM_SEED_REPORTS] : [];
     }
   }
@@ -140,26 +126,21 @@ const FirebaseService = (function() {
     try {
       localStorage.setItem('to4_firestore_reports', JSON.stringify(cachedReports));
     } catch (e) {
-      console.error("[FirebaseService] Không thể lưu localStorage:", e);
+      console.error("[CloudDB] Lỗi lưu local:", e);
     }
   }
 
   function notifySubscribers() {
     activeListeners.forEach(cb => {
-      try {
-        cb(cachedReports);
-      } catch (err) {
-        console.error("[FirebaseService] Lỗi thông báo subscriber:", err);
-      }
+      try { cb(cachedReports); } catch (err) { /* ignore */ }
     });
   }
 
   // =================================================================
-  // 3. RATE LIMITING & CHỐNG SPAM (30 GIÂY COOLDOWN)
+  // 3. RATE LIMITING (30s cooldown)
   // =================================================================
   function getCooldownRemaining() {
-    const elapsed = Math.floor((Date.now() - lastSubmitTime) / 1000);
-    return Math.max(0, COOLDOWN_SECONDS - elapsed);
+    return Math.max(0, COOLDOWN_SECONDS - Math.floor((Date.now() - lastSubmitTime) / 1000));
   }
 
   function canSubmit() {
@@ -167,17 +148,14 @@ const FirebaseService = (function() {
   }
 
   // =================================================================
-  // 4. GỬI PHẢN ÁNH MỚI (LƯU VÀO COLLECTION `reports`)
-  // Ràng buộc nghiêm ngặt: 100% ẨN DANH, KHÔNG THU THẬP PII
+  // 4. GỬI BÁO CÁO MỚI - LƯU VÀO GOOGLE SHEETS
   // =================================================================
   async function submitReport({ target, scamType, content }) {
-    // 1. Kiểm tra Cooldown chống spam
     const remaining = getCooldownRemaining();
     if (remaining > 0) {
-      throw new Error(`Bạn đang gửi quá nhanh! Vui lòng chờ ${remaining} giây nữa trước khi gửi phản ánh tiếp theo.`);
+      throw new Error(`Bạn đang gửi quá nhanh! Vui lòng chờ ${remaining} giây nữa.`);
     }
 
-    // 2. Validate dữ liệu đầu vào (phòng chống tấn công Injection)
     const cleanTarget = String(target || '').trim();
     const cleanType = String(scamType || '').trim();
     const cleanContent = String(content || '').trim();
@@ -192,214 +170,143 @@ const FirebaseService = (function() {
       throw new Error("Nội dung phản ánh phải từ 5 đến 1500 ký tự!");
     }
 
-    // 3. Tạo Mã hồ sơ ngẫu nhiên chuẩn hóa (Ví dụ: HS-TDHT-XXXX)
     const randomSuffix = Math.floor(1000 + Math.random() * 9000);
     const reportId = `HS-TDHT-${randomSuffix}`;
-
-    // Chuẩn hóa trạng thái ban đầu
     const status = "Đang xác minh";
 
-    // 4. Lưu trực tiếp vào Firebase Firestore hoặc Fallback
-    if (isLiveFirebase && db) {
+    // Ghi vào Google Sheets
+    if (isSheetsLive && SHEETS_API_URL && SHEETS_API_URL !== "PASTE_YOUR_APPS_SCRIPT_URL_HERE") {
       try {
-        const docRef = await db.collection("reports").add({
-          id: reportId,
-          target: cleanTarget,
-          scamType: cleanType,
-          content: cleanContent,
-          status: status,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        const resp = await fetch(SHEETS_API_URL, {
+          method: "POST",
+          mode: "cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: reportId,
+            target: cleanTarget,
+            scamType: cleanType,
+            content: cleanContent,
+            status: status
+          }),
+          signal: AbortSignal.timeout(8000)
         });
-        console.log(`[FirebaseService] ✅ Đã ghi nhận báo cáo vào Firestore document: ${docRef.id}`);
+        const json = await resp.json();
+        if (!json.success) {
+          throw new Error(json.error || "Lưu Sheets thất bại");
+        }
+        console.log(`[CloudDB] ✅ Đã ghi báo cáo vào Google Sheets: ${reportId}`);
       } catch (err) {
-        console.warn("[FirebaseService] Gửi Firestore thất bại, lưu fallback:", err.message);
+        console.warn("[CloudDB] Ghi Sheets thất bại, lưu local:", err.message);
         writeToLocalFallback(reportId, cleanTarget, cleanType, cleanContent, status);
       }
     } else {
       writeToLocalFallback(reportId, cleanTarget, cleanType, cleanContent, status);
     }
 
-    // 5. Cập nhật registry điểm rủi ro cộng đồng
     if (typeof LocalReportRegistry !== 'undefined') {
       LocalReportRegistry.report(cleanTarget, cleanType);
     }
 
-    // 6. Cập nhật thời điểm gửi để kích hoạt Cooldown 30s
     lastSubmitTime = Date.now();
 
-    return {
-      success: true,
-      reportId: reportId,
-      target: cleanTarget
-    };
+    return { success: true, reportId, target: cleanTarget };
   }
 
   function writeToLocalFallback(id, target, scamType, content, status) {
-    const newDoc = {
-      id: id,
-      target: target,
-      scamType: scamType,
-      content: content,
-      status: status,
-      createdAt: Date.now()
-    };
+    const newDoc = { id, target, scamType, content, status, createdAt: Date.now() };
     cachedReports.unshift(newDoc);
     saveLocalFallbackData();
     notifySubscribers();
   }
 
   // =================================================================
-  // 5. LẮNG NGHE DỮ LIỆU THỜI GIAN THỰC (onSnapshot)
-  // Tự động cập nhật bảng Sổ Tiếp Nhận khi có phản ánh mới
+  // 5. ĐĂNG KÝ LẮNG NGHE (Subscribe)
   // =================================================================
   function subscribeToReports(callback) {
     activeListeners.push(callback);
+    if (cachedReports.length > 0) callback(cachedReports);
 
-    // Bắn dữ liệu hiện có ngay lập tức
-    if (cachedReports.length > 0) {
-      callback(cachedReports);
-    }
-
-    if (isLiveFirebase && db) {
-      try {
-        const unsubscribe = db.collection("reports")
-          .orderBy("createdAt", "desc")
-          .limit(50)
-          .onSnapshot(
-            snapshot => {
-              const liveReports = [];
-              snapshot.forEach(doc => {
-                const data = doc.data();
-                liveReports.push({
-                  id: data.id || doc.id,
-                  target: data.target,
-                  scamType: data.scamType,
-                  content: data.content,
-                  status: data.status || "Đang xác minh",
-                  createdAt: data.createdAt ? (data.createdAt.toMillis ? data.createdAt.toMillis() : data.createdAt) : Date.now()
-                });
-              });
-              cachedReports = liveReports;
-              saveLocalFallbackData();
-              callback(liveReports);
-            },
-            err => {
-              console.warn("[FirebaseService] onSnapshot Firestore bị gián đoạn, sử dụng dữ liệu cục bộ:", err.message);
-              callback(cachedReports);
-            }
-          );
-        return unsubscribe;
-      } catch (err) {
-        console.warn("[FirebaseService] Không thể thiết lập listener Firestore trực tiếp:", err.message);
-      }
-    }
-
-    // Trả về hàm hủy đăng ký
     return () => {
       activeListeners = activeListeners.filter(cb => cb !== callback);
     };
   }
 
   // =================================================================
-  // 6. TRUY VẤN SỐ LƯỢNG PHẢN ÁNH THỰC TẾ CỘNG ĐỒNG (THỐNG KÊ MINH BẠCH)
-  // Đếm chính xác số phản ánh trùng khớp trong Firestore reports
+  // 6. ĐẾM SỐ BÁO CÁO - QUERY TỪ GOOGLE SHEETS
   // =================================================================
   async function getCommunityReportsCount(targetQuery) {
     if (!targetQuery) return { count: 0, reports: [] };
 
     const cleanQuery = targetQuery.replace(/[\s.\-()]/g, '').toLowerCase();
 
-    // 1. Nếu đang có kết nối trực tiếp Firestore, thử query
-    if (isLiveFirebase && db) {
+    // Query từ Google Sheets nếu đang kết nối
+    if (isSheetsLive && SHEETS_API_URL && SHEETS_API_URL !== "PASTE_YOUR_APPS_SCRIPT_URL_HERE") {
       try {
-        // Query theo target chính xác hoặc tìm kiếm trong cache thời gian thực
-        const snapshot = await db.collection("reports").get();
-        const matches = [];
-        snapshot.forEach(doc => {
-          const d = doc.data();
-          const itemTarget = String(d.target || '').replace(/[\s.\-()]/g, '').toLowerCase();
-          if (itemTarget === cleanQuery || itemTarget.includes(cleanQuery) || cleanQuery.includes(itemTarget)) {
-            matches.push({
-              id: d.id || doc.id,
-              scamType: d.scamType,
-              createdAt: d.createdAt ? (d.createdAt.toMillis ? d.createdAt.toMillis() : d.createdAt) : Date.now(),
-              status: d.status
-            });
+        const resp = await fetch(
+          `${SHEETS_API_URL}?action=count&target=${encodeURIComponent(cleanQuery)}`,
+          {
+            method: "GET",
+            mode: "cors",
+            signal: AbortSignal.timeout(5000)
           }
-        });
-        return { count: matches.length, reports: matches };
+        );
+        const json = await resp.json();
+        if (json.success) {
+          // Cộng thêm dữ liệu local từ LocalReportRegistry
+          const localStats = typeof LocalReportRegistry !== 'undefined'
+            ? LocalReportRegistry.getStats(cleanQuery) : null;
+          const localCount = localStats ? localStats.reportCount : 0;
+          const totalCount = (json.count || 0) + localCount;
+
+          return {
+            count: totalCount,
+            reports: json.reports || [],
+            customRiskScore: localStats ? (localStats.customRiskScore || 0) : 0
+          };
+        }
       } catch (e) {
-        console.warn("[FirebaseService] Query Firestore thất bại, đối soát từ cache:", e.message);
+        console.warn("[CloudDB] Query Sheets thất bại, dùng cache:", e.message);
       }
     }
 
-    // 2. Tìm kiếm trong cache hiện tại
+    // Fallback: tìm trong cache
     const matches = cachedReports.filter(r => {
       const itemTarget = String(r.target || '').replace(/[\s.\-()]/g, '').toLowerCase();
       return itemTarget === cleanQuery || itemTarget.includes(cleanQuery) || cleanQuery.includes(itemTarget);
     });
 
-    // 3. Tích hợp dữ liệu từ LocalReportRegistry (khi người dùng bấm báo cáo tại chỗ)
-    const localStats = typeof LocalReportRegistry !== 'undefined' ? LocalReportRegistry.getStats(cleanQuery) : null;
+    const localStats = typeof LocalReportRegistry !== 'undefined'
+      ? LocalReportRegistry.getStats(cleanQuery) : null;
     let customRiskScore = 0;
     if (localStats && localStats.reportCount > 0) {
       customRiskScore = localStats.customRiskScore || 0;
-      const existingIds = new Set(matches.map(m => m.id));
-      (localStats.customReports || []).forEach(cr => {
-        if (!existingIds.has(cr.id)) {
-          matches.unshift(cr);
-          existingIds.add(cr.id);
-        }
-      });
     }
 
-    const totalCount = localStats && localStats.reportCount > matches.length ? localStats.reportCount : matches.length;
+    const localCount = localStats ? localStats.reportCount : 0;
+    const totalCount = Math.max(matches.length, localCount);
 
-    return {
-      count: totalCount,
-      reports: matches,
-      customRiskScore: customRiskScore
-    };
+    return { count: totalCount, reports: matches, customRiskScore };
   }
 
   // =================================================================
-  // 7. FORMAT THỜI GIAN TƯƠNG ĐỐI (Ví dụ: "vừa xong", "x phút trước")
+  // 7. FORMAT THỜI GIAN TƯƠNG ĐỐI
   // =================================================================
   function formatRelativeTime(timestamp) {
     if (!timestamp) return "Mới đây";
-    
-    let ms = 0;
-    if (typeof timestamp === 'number') {
-      ms = timestamp;
-    } else if (timestamp.toMillis && typeof timestamp.toMillis === 'function') {
-      ms = timestamp.toMillis();
-    } else if (timestamp instanceof Date) {
-      ms = timestamp.getTime();
-    } else {
-      ms = Number(timestamp) || Date.now();
-    }
-
+    let ms = typeof timestamp === 'number' ? timestamp : (Number(timestamp) || Date.now());
     const diffSeconds = Math.floor((Date.now() - ms) / 1000);
 
     if (diffSeconds < 45) return "Vừa xong";
-    if (diffSeconds < 3600) {
-      const m = Math.floor(diffSeconds / 60);
-      return `${m} phút trước`;
-    }
-    if (diffSeconds < 86400) {
-      const h = Math.floor(diffSeconds / 3600);
-      return `${h} giờ trước`;
-    }
+    if (diffSeconds < 3600) return `${Math.floor(diffSeconds / 60)} phút trước`;
+    if (diffSeconds < 86400) return `${Math.floor(diffSeconds / 3600)} giờ trước`;
     const d = Math.floor(diffSeconds / 86400);
     if (d === 1) return "Hôm qua";
     if (d < 30) return `${d} ngày trước`;
-    
-    // Ngày tháng cụ thể
     const date = new Date(ms);
     return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
   }
 
-  // Expose public API
+  // Public API
   return {
     init,
     submitReport,
@@ -408,6 +315,6 @@ const FirebaseService = (function() {
     formatRelativeTime,
     getCooldownRemaining,
     canSubmit,
-    isLive: () => isLiveFirebase
+    isLive: () => isSheetsLive
   };
 })();
