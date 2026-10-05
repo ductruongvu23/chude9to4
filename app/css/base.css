@@ -52,43 +52,47 @@
   --transition-speed: 0.25s;
 }
 
-/* DARK THEME (Chế độ tối) */
+/* DARK THEME (Chế độ tối - Dark Cinematic) */
 [data-theme="dark"] {
-  --bg-page: #090d16;
-  --bg-surface: #111827;
-  --bg-subtle: #1e293b;
-  --border-color: #334155;
-  --border-focus: #3b82f6;
+  --bg-page: #060911;
+  --bg-surface: rgba(15, 23, 42, 0.75);
+  --bg-subtle: rgba(30, 41, 59, 0.7);
+  --border-color: rgba(255, 255, 255, 0.09);
+  --border-focus: #38bdf8;
 
   --text-main: #f8fafc;
   --text-muted: #cbd5e1;
-  --text-dim: #94a3b8;
+  --text-dim: #718096;
 
   --primary: #3b82f6;
   --primary-hover: #60a5fa;
 
+  --accent-cyan: #38bdf8;
+  --accent-violet: #a78bfa;
+  --accent-emerald: #34d399;
+
   --danger: #ef4444;
-  --danger-bg: #291114;
-  --danger-border: #7f1d1d;
+  --danger-bg: rgba(239, 68, 68, 0.12);
+  --danger-border: rgba(239, 68, 68, 0.35);
   --danger-text: #fca5a5;
 
   --success: #22c55e;
-  --success-bg: #08281a;
-  --success-border: #14532d;
+  --success-bg: rgba(34, 197, 94, 0.12);
+  --success-border: rgba(34, 197, 94, 0.35);
   --success-text: #86efac;
 
   --warning: #f59e0b;
-  --warning-bg: #271a07;
-  --warning-border: #78350f;
+  --warning-bg: rgba(245, 158, 11, 0.12);
+  --warning-border: rgba(245, 158, 11, 0.35);
   --warning-text: #fcd34d;
 
-  --neutral-bg: #1e293b;
-  --neutral-border: #334155;
+  --neutral-bg: rgba(30, 41, 59, 0.6);
+  --neutral-border: rgba(255, 255, 255, 0.08);
   --neutral-text: #cbd5e1;
 
-  --header-bg: #050811;
-  --header-border: #1e293b;
-  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --header-bg: rgba(6, 9, 17, 0.85);
+  --header-border: rgba(255, 255, 255, 0.08);
+  --card-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
 * {
@@ -106,11 +110,18 @@ body {
   flex-direction: column;
   line-height: 1.5;
   transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+  background-image: 
+    radial-gradient(1200px 500px at 50% -50px, rgba(37, 99, 235, 0.13) 0%, transparent 70%),
+    radial-gradient(700px 350px at 90% 20%, rgba(139, 92, 246, 0.07) 0%, transparent 65%),
+    radial-gradient(700px 350px at 10% 40%, rgba(6, 182, 212, 0.05) 0%, transparent 65%);
+  background-attachment: fixed;
 }
 
 /* Header */
 .portal-header {
   background-color: var(--header-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   color: #ffffff;
   border-bottom: 1px solid var(--header-border);
   padding: 12px 20px;
@@ -135,27 +146,30 @@ body {
 }
 
 .header-brand h1 {
-  font-size: 1.1rem;
+  font-size: 1.12rem;
   font-weight: 700;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
   color: #ffffff;
+  letter-spacing: -0.01em;
 }
 
 .badge-team {
-  background-color: #2563eb;
+  background: linear-gradient(135deg, #2563eb, #0ea5e9);
   color: #ffffff;
   font-size: 0.72rem;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 4px;
+  font-weight: 800;
+  padding: 2px 9px;
+  border-radius: 9999px;
+  letter-spacing: 0.05em;
+  box-shadow: 0 0 10px rgba(14, 165, 233, 0.4);
 }
 
 .header-brand p {
   font-size: 0.78rem;
-  color: #94a3b8;
+  color: var(--text-dim);
   margin-top: 2px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -173,9 +187,9 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.06);
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   padding: 6px 12px;
   border-radius: var(--radius-sm);
   font-size: 0.8rem;
@@ -186,8 +200,9 @@ body {
 }
 
 .btn-header-link:hover {
-  background-color: #2563eb;
-  border-color: #2563eb;
+  background-color: rgba(37, 99, 235, 0.2);
+  border-color: #3b82f6;
+  color: #ffffff;
 }
 
 .btn-header-badge {
@@ -195,7 +210,7 @@ body {
   align-items: center;
   gap: 6px;
   background-color: rgba(16, 185, 129, 0.12);
-  color: #10b981;
+  color: #34d399;
   border: 1px solid rgba(16, 185, 129, 0.35);
   padding: 6px 12px;
   border-radius: var(--radius-sm);
@@ -211,9 +226,9 @@ body {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  background-color: rgba(255, 255, 255, 0.12);
+  background-color: rgba(255, 255, 255, 0.08);
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 6px 12px;
   border-radius: var(--radius-sm);
   font-size: 0.8rem;
@@ -224,7 +239,8 @@ body {
 }
 
 .btn-theme-toggle:hover {
-  background-color: rgba(255, 255, 255, 0.22);
+  background-color: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 /* Container */
@@ -236,18 +252,26 @@ body {
   width: 100%;
 }
 
-/* Clean Tab Navigation - Mobile Smooth Scroll */
+/* Clean Tab Navigation - Modern Pill / Glow Segment */
 .app-tab-nav {
   display: flex;
   justify-content: center;
-  border-bottom: 2px solid var(--border-color);
-  margin-bottom: 24px;
-  gap: 8px;
+  align-items: center;
+  margin: 0 auto 30px auto;
+  gap: 6px;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 5px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  width: fit-content;
+  max-width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   white-space: nowrap;
-  padding-bottom: 2px;
 }
 
 .app-tab-nav::-webkit-scrollbar {
@@ -257,26 +281,26 @@ body {
 .app-tab-nav button {
   background: transparent;
   border: none;
-  border-bottom: 3px solid transparent;
-  padding: 10px 16px;
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--text-muted);
+  padding: 9px 20px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-dim);
   cursor: pointer;
-  margin-bottom: -2px;
-  transition: all 0.2s;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   flex-shrink: 0;
-  border-radius: 4px 4px 0 0;
+  border-radius: 9999px;
 }
 
 .app-tab-nav button:hover {
-  color: var(--primary);
-  background-color: var(--bg-subtle);
+  color: var(--text-main);
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 .app-tab-nav button.active {
-  color: var(--primary);
-  border-bottom-color: var(--primary);
+  background: linear-gradient(135deg, #2563eb, #0284c7);
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 2px 14px rgba(37, 99, 235, 0.45);
 }
 
 /* Tab Section */

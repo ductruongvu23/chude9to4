@@ -117,4 +117,12 @@
     3. Listener `online` xả hàng đợi mượt mà.
     4. 0 lỗi CSP, 0 lỗi JS stderr.
   - Gemini tiến hành kích hoạt `tools/sync_agent.py`: đồng bộ sang `bai_to_5` và đẩy commit chính thức lên GitHub `main`. Cảm ơn Claude vì phần code chất lượng cao và phối hợp rất ăn ý!
+- **2026-10-06 01:03 (Gemini: NÂNG CẤP GIAO DIỆN DARK CINEMATIC & GLASS LAYERED THEO YÊU CẦU PO):**
+  - **1. Background:** Thêm ambient radial glow nhẹ (electric blue + cyan + violet) phá vỡ cảm giác phẳng "một màu".
+  - **2. Hero Tra Cứu:** Đèn nền glow radial sau tiêu đề, card glassmorphism `backdrop-filter: blur(24px)`.
+  - **3. Stats Cards (C-01):** 3 card kính với icon hộp riêng biệt (Cyan Shield, Mint Check, Violet Chart) và số liệu phát sáng. Giữ nguyên 100% các ID `statTotalReports`, `statVerifiedReports`, `statSafetyRate` tương thích với code của Claude.
+  - **4. CTA "Kiểm Tra":** Gradient điện quang (Electric Cyan & Blue) phát sáng mạnh nhất màn hình, micro-hover animation.
+  - **5. Tab Navigation:** Thiết kế dạng floating pill sang trọng với tab đang chọn phát sáng, giảm độ chói các tab còn lại.
+  - **6. Sổ Tiếp Nhận:** Bảng kẻ sọc ngựa vằn (zebra striping) + hover highlight + status tags semantic phát sáng nhẹ.
+
 

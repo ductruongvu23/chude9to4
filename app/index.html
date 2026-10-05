@@ -24,10 +24,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   
   <!-- Modular CSS with Cache-Busting -->
-  <link rel="stylesheet" href="css/base.css?v=20261006_1">
-  <link rel="stylesheet" href="css/lookup.css?v=20261006_1">
-  <link rel="stylesheet" href="css/intake.css?v=20261006_1">
-  <link rel="stylesheet" href="css/analyzer.css?v=20261006_1">
+  <link rel="stylesheet" href="css/base.css?v=20261006_2">
+  <link rel="stylesheet" href="css/lookup.css?v=20261006_2">
+  <link rel="stylesheet" href="css/intake.css?v=20261006_2">
+  <link rel="stylesheet" href="css/analyzer.css?v=20261006_2">
 
 </head>
 <body>
@@ -70,17 +70,26 @@
 
         <!-- Hero Stats Summary (Task C-01) -->
         <div class="lookup-stats-grid">
-          <div class="lookup-stat-item">
-            <span class="lookup-stat-label">🛡️ Tổng báo cáo</span>
-            <span class="lookup-stat-val" id="statTotalReports">--</span>
+          <div class="lookup-stat-item stat-item-total">
+            <div class="stat-icon-wrap icon-cyan">🛡️</div>
+            <div class="stat-content">
+              <span class="lookup-stat-label">Tổng báo cáo</span>
+              <span class="lookup-stat-val text-total" id="statTotalReports">--</span>
+            </div>
           </div>
-          <div class="lookup-stat-item">
-            <span class="lookup-stat-label">✅ Đã xác minh</span>
-            <span class="lookup-stat-val text-verified" id="statVerifiedReports">--</span>
+          <div class="lookup-stat-item stat-item-verified">
+            <div class="stat-icon-wrap icon-emerald">✅</div>
+            <div class="stat-content">
+              <span class="lookup-stat-label">Đã xác minh</span>
+              <span class="lookup-stat-val text-verified" id="statVerifiedReports">--</span>
+            </div>
           </div>
-          <div class="lookup-stat-item">
-            <span class="lookup-stat-label">📈 Tỷ lệ xử lý an toàn</span>
-            <span class="lookup-stat-val text-rate" id="statSafetyRate">--</span>
+          <div class="lookup-stat-item stat-item-rate">
+            <div class="stat-icon-wrap icon-violet">📈</div>
+            <div class="stat-content">
+              <span class="lookup-stat-label">Tỷ lệ an toàn</span>
+              <span class="lookup-stat-val text-rate" id="statSafetyRate">--</span>
+            </div>
           </div>
         </div>
 
