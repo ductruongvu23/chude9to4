@@ -81,7 +81,7 @@ const FirebaseService = (function () {
   function normalizeReport(raw) {
     if (!raw || typeof raw !== 'object') return null;
     const id = cleanText(raw.id, LIMITS.id);
-    const target = cleanText(raw.target, LIMITS.target);
+    const target = restorePhoneZero(raw.target);
     if (!id || !target) return null;
     const status = cleanText(raw.status, 40);
     return {
@@ -99,9 +99,19 @@ const FirebaseService = (function () {
     return list.map(normalizeReport).filter(Boolean);
   }
 
-  // Chống chèn công thức khi giá trị được ghi vào ô Google Sheets
+  // Google Sheets tự đổi "0912345678" thành số 912345678 (mất số 0 đầu).
+  // Các dòng cũ đã lưu dạng số -> khôi phục lại số 0 cho SĐT Việt Nam (9-10 chữ số).
+  function restorePhoneZero(value) {
+    const text = cleanText(value, LIMITS.target);
+    if (typeof value === 'number' && /^[1-9]\d{8,9}$/.test(text)) return '0' + text;
+    return text;
+  }
+
+  // Ghi vào ô Google Sheets an toàn:
+  // - Chống chèn công thức (giá trị bắt đầu bằng = + - @)
+  // - Giữ chuỗi toàn chữ số ở dạng văn bản để không mất số 0 đầu
   function sheetSafe(value) {
-    return /^[=+\-@\t\r]/.test(value) ? `'${value}` : value;
+    return /^[=+\-@\t\r]/.test(value) || /^\d+$/.test(value) ? `'${value}` : value;
   }
 
   function generateReportId() {

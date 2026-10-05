@@ -92,9 +92,24 @@ interactive_html = """<!DOCTYPE html>
   </form>
   <tbody id="intakeTableBody"></tbody>
   <div id="cloudStatusBadge"></div>
-
   <div id="testResults"></div>
 
+  <script>
+    // Task G-01: Mock window.fetch BEFORE FirebaseService loads
+    // Guarantees test submits NEVER touch or pollute production Google Sheets!
+    const originalFetch = window.fetch;
+    window.fetch = async function(url, options) {
+      if (typeof url === 'string' && url.includes('script.google.com')) {
+        console.log('[QA Mock] Intercepted fetch to Google Sheets:', options ? options.method : 'GET');
+        return {
+          ok: true,
+          json: async () => ({ success: true, result: 'mocked_ok' }),
+          text: async () => JSON.stringify({ success: true })
+        };
+      }
+      return originalFetch.apply(this, arguments);
+    };
+  </script>
   <script src="/app/js/storage.js"></script>
   <script src="/app/js/firebase-service.js"></script>
   <script src="/app/js/lookup.js"></script>
