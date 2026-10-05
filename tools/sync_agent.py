@@ -39,7 +39,14 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
 server = socketserver.ThreadingTCPServer(('127.0.0.1', 0), Handler)
 port = server.server_address[1]
-t = threading.Thread(target=server.serve_forever, daemon=True)
+
+def run_server():
+    try:
+        server.serve_forever()
+    except Exception:
+        pass
+
+t = threading.Thread(target=run_server, daemon=True)
 t.start()
 print(f"[*] 1/4. Server ảo nội bộ đang chạy trên cổng {port}...")
 
