@@ -20,6 +20,21 @@ const FirebaseService = (function () {
   const COOLDOWN_SECONDS = 30;
   let lastSubmitTime = 0;
 
+  // Helper tạo timeout tương thích 100% mọi trình duyệt (Safari iOS, Android, PC)
+  function getSignal(ms = 10000) {
+    if (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') {
+      try {
+        return AbortSignal.timeout(ms);
+      } catch (e) { /* fallback */ }
+    }
+    if (typeof AbortController !== 'undefined') {
+      const controller = new AbortController();
+      setTimeout(() => controller.abort(), ms);
+      return controller.signal;
+    }
+    return undefined;
+  }
+
   // =================================================================
   // 1. KIỂM TRA KẾT NỐI VÀ KHỞI TẠO
   // =================================================================
@@ -35,12 +50,15 @@ const FirebaseService = (function () {
     }
 
     try {
-      // Ping để kiểm tra kết nối
-      const resp = await fetch(`${SHEETS_API_URL}?action=getAll`, {
+      // Ping để kiểm tra kết nối với timeout rộng rãi 12s cho mạng 4G/di động
+      const fetchOpts = {
         method: "GET",
-        mode: "cors",
-        signal: AbortSignal.timeout(5000)
-      });
+        mode: "cors"
+      };
+      const signal = getSignal(12000);
+      if (signal) fetchOpts.signal = signal;
+
+      const resp = await fetch(`${SHEETS_API_URL}?action=getAll`, fetchOpts);
 
       if (resp.ok) {
         const json = await resp.json();
@@ -51,12 +69,10 @@ const FirebaseService = (function () {
           console.log(`[CloudDB] ✅ Kết nối Google Sheets thành công. ${cachedReports.length} báo cáo được tải.`);
           updateCloudStatusBadge(true, "Dữ liệu: Đồng bộ Sheets");
           notifySubscribers();
-        } else {
-          throw new Error("API trả về success: false");
+          return;
         }
-      } else {
-        throw new Error(`HTTP ${resp.status}`);
       }
+      throw new Error("Không thể nạp dữ liệu từ Sheets");
     } catch (err) {
       console.warn("[CloudDB] Không kết nối được Sheets, dùng dữ liệu cục bộ:", err.message);
       setupLocalFallback();
@@ -175,9 +191,9 @@ const FirebaseService = (function () {
     const status = "Đang xác minh";
 
     // Ghi vào Google Sheets
-    if (isSheetsLive && SHEETS_API_URL && SHEETS_API_URL !== "PASTE_YOUR_APPS_SCRIPT_URL_HERE") {
+    if (SHEETS_API_URL && SHEETS_API_URL !== "PASTE_YOUR_APPS_SCRIPT_URL_HERE") {
       try {
-        const resp = await fetch(SHEETS_API_URL, {
+        const fetchOpts = {
           method: "POST",
           mode: "cors",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -187,13 +203,18 @@ const FirebaseService = (function () {
             scamType: cleanType,
             content: cleanContent,
             status: status
-          }),
-          signal: AbortSignal.timeout(8000)
-        });
+          })
+        };
+        const signal = getSignal(15000);
+        if (signal) fetchOpts.signal = signal;
+
+        const resp = await fetch(SHEETS_API_URL, fetchOpts);
         const json = await resp.json();
         if (!json.success) {
           throw new Error(json.error || "Lưu Sheets thất bại");
         }
+        isSheetsLive = true;
+        updateCloudStatusBadge(true, "Dữ liệu: Đồng bộ Sheets");
         console.log(`[CloudDB] ✅ Đã ghi báo cáo vào Google Sheets: ${reportId}`);
       } catch (err) {
         console.warn("[CloudDB] Ghi Sheets thất bại, lưu local:", err.message);
@@ -242,17 +263,21 @@ const FirebaseService = (function () {
     // Query từ Google Sheets
     if (SHEETS_API_URL && SHEETS_API_URL !== "PASTE_YOUR_APPS_SCRIPT_URL_HERE") {
       try {
+        const fetchOpts = {
+          method: "GET",
+          mode: "cors"
+        };
+        const signal = getSignal(12000);
+        if (signal) fetchOpts.signal = signal;
+
         const resp = await fetch(
           `${SHEETS_API_URL}?action=count&target=${encodeURIComponent(cleanQuery)}`,
-          {
-            method: "GET",
-            mode: "cors",
-            signal: AbortSignal.timeout(6000)
-          }
+          fetchOpts
         );
         const json = await resp.json();
         if (json.success) {
           isSheetsLive = true;
+          updateCloudStatusBadge(true, "Dữ liệu: Đồng bộ Sheets");
           const sheetCount = json.count || 0;
           const localStats = typeof LocalReportRegistry !== 'undefined'
             ? LocalReportRegistry.getStats(cleanQuery) : null;
