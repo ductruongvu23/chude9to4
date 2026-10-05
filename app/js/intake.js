@@ -50,11 +50,11 @@ function renderIntakeTable(reports) {
 
     return `
       <tr>
-        <td><strong style="font-family: var(--font-mono); color: var(--primary);">${escapeHtml(r.id)}</strong></td>
-        <td><code style="font-size: 0.85rem;">${escapeHtml(r.target)}</code></td>
-        <td style="font-size: 0.82rem; max-width: 220px; white-space: normal;">${escapeHtml(r.scamType)}</td>
-        <td><span class="${statusBadgeClass}">${escapeHtml(status)}</span></td>
-        <td class="text-muted" style="font-size: 0.8rem; white-space: nowrap;">${relativeTime}</td>
+        <td data-label="Mã hồ sơ:"><strong class="ticket-badge" style="color: var(--primary); white-space: nowrap;">${escapeHtml(r.id)}</strong></td>
+        <td data-label="Đối tượng:"><code style="font-size: 0.88rem; word-break: break-all;">${escapeHtml(r.target)}</code></td>
+        <td data-label="Thủ đoạn:" class="cell-scam-type"><span style="font-size: 0.85rem; line-height: 1.4;">${escapeHtml(r.scamType)}</span></td>
+        <td data-label="Trạng thái:"><span class="${statusBadgeClass}">${escapeHtml(status)}</span></td>
+        <td data-label="Thời gian:" class="text-muted"><span style="font-size: 0.82rem; white-space: nowrap;">${relativeTime}</span></td>
       </tr>
     `;
   }).join('');
