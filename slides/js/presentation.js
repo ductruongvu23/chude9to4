@@ -3,7 +3,7 @@
 // ===================================================================
 
 let currentSlideIndex = 1;
-let totalSlides = 16;
+let totalSlides = 17;
 let timerInterval = null;
 let timerSeconds = 0;
 let isTimerRunning = false;
@@ -24,6 +24,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Invalidate stale 16-slide cache if upgrading to 17-slide structure
+  const slideVersion = 'v17_16x9';
+  if (localStorage.getItem('to4_slide_version') !== slideVersion) {
+    ['cyber', 'canva', 'swiss', 'dark', 'academic', 'default'].forEach(t => {
+      localStorage.removeItem('to4_saved_slides_' + t);
+    });
+    localStorage.setItem('to4_slide_version', slideVersion);
+  }
+
   // Restore saved slide edits if any
   const savedEdits = localStorage.getItem('to4_saved_slides_' + (document.body.getAttribute('data-theme') || 'default'));
   if (savedEdits) {
@@ -41,6 +50,10 @@ document.addEventListener('DOMContentLoaded', () => {
   updateSlideView();
   fitSlidesToScreen();
   window.addEventListener('resize', fitSlidesToScreen);
+  window.addEventListener('load', fitSlidesToScreen);
+  window.addEventListener('orientationchange', fitSlidesToScreen);
+  document.addEventListener('fullscreenchange', () => { setTimeout(fitSlidesToScreen, 100); });
+  document.addEventListener('webkitfullscreenchange', () => { setTimeout(fitSlidesToScreen, 100); });
 
   // Keyboard navigation
   document.addEventListener('keydown', (e) => {

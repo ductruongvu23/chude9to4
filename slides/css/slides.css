@@ -121,6 +121,7 @@ body {
   min-height: 900px;
   max-width: 1600px;
   max-height: 900px;
+  aspect-ratio: 16 / 9;
   background-color: var(--bg-canvas);
   border: 1.5px solid var(--border-color);
   border-radius: var(--radius-lg);
@@ -138,6 +139,7 @@ body {
   inset: 0;
   width: 1600px;
   height: 900px;
+  aspect-ratio: 16 / 9;
   opacity: 0;
   visibility: hidden;
   transform: scale(0.98);
@@ -410,6 +412,117 @@ body {
 }
 
 /* Pipeline */
+/* Definition Hero Card & Impersonation Cards (Phần 1: Lừa đảo trực tuyến là gì) */
+.definition-hero-card {
+  background: linear-gradient(135deg, rgba(0, 210, 255, 0.12) 0%, var(--bg-card) 100%);
+  border: 1.5px solid var(--border-color);
+  border-left: 6px solid var(--accent-primary);
+  border-radius: var(--radius-md);
+  padding: 22px 28px;
+  margin: 10px 0 14px 0;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.definition-hero-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.definition-pill {
+  background: var(--accent-primary);
+  color: #040D1A;
+  font-weight: 800;
+  font-size: 0.82rem;
+  padding: 4px 12px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.definition-text {
+  font-size: 1.35rem;
+  color: var(--text-main);
+  line-height: 1.6;
+  font-weight: 600;
+  margin: 8px 0 0 0;
+}
+
+.impersonation-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 8px 0 10px 0;
+  flex: 1;
+  align-items: stretch;
+}
+
+.impersonation-card {
+  background-color: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.impersonation-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--accent-primary);
+}
+
+.impersonation-card.target-peer { border-top: 4px solid #00D2FF; }
+.impersonation-card.target-bank { border-top: 4px solid #38BDF8; }
+.impersonation-card.target-police { border-top: 4px solid #FF4B4B; }
+.impersonation-card.target-corp { border-top: 4px solid #10B981; }
+
+.impersonation-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.impersonation-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.impersonation-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.impersonation-badge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.impersonation-desc {
+  font-size: 0.98rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.impersonation-footer {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-color);
+  font-size: 0.85rem;
+  color: var(--text-main);
+  line-height: 1.45;
+}
+
 .system-pipeline {
   display: flex;
   align-items: stretch;
@@ -2135,6 +2248,13 @@ body.is-presentation-mode .slide-viewport {
 }
 
 body.is-presentation-mode .slides-container {
+  width: 1600px !important;
+  height: 900px !important;
+  min-width: 1600px !important;
+  min-height: 900px !important;
+  max-width: 1600px !important;
+  max-height: 900px !important;
+  aspect-ratio: 16 / 9 !important;
   border-radius: 0 !important;
   border: none !important;
   box-shadow: 0 0 100px rgba(0, 0, 0, 0.95) !important;
