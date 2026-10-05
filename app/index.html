@@ -68,6 +68,22 @@
         <h2 class="lookup-title">🔍 Tra Cứu Số Điện Thoại & Email Nghi Vấn</h2>
         <p class="lookup-desc">Kiểm tra tức thời mức độ khả nghi, cảnh báo lừa đảo và số lượt phản ánh từ cộng đồng.</p>
 
+        <!-- Hero Stats Summary (Task C-01) -->
+        <div class="lookup-stats-grid">
+          <div class="lookup-stat-item">
+            <span class="lookup-stat-label">🛡️ Tổng báo cáo</span>
+            <span class="lookup-stat-val" id="statTotalReports">--</span>
+          </div>
+          <div class="lookup-stat-item">
+            <span class="lookup-stat-label">✅ Đã xác minh</span>
+            <span class="lookup-stat-val text-verified" id="statVerifiedReports">--</span>
+          </div>
+          <div class="lookup-stat-item">
+            <span class="lookup-stat-label">📈 Tỷ lệ xử lý an toàn</span>
+            <span class="lookup-stat-val text-rate" id="statSafetyRate">--</span>
+          </div>
+        </div>
+
         <!-- Clean Omni Search Input (Tối giản, không để sẵn ví dụ) -->
         <div class="search-input-group">
           <input type="text" id="lookupInput" placeholder="Nhập số điện thoại, số tài khoản hoặc email cần kiểm tra..." autocomplete="off">
@@ -183,6 +199,9 @@
             </div>
 
             <button type="submit" class="btn-submit-intake">📥 Nộp Phản Ánh & Cấp Mã Hồ Sơ</button>
+            <button type="button" id="btnDownloadReceipt" class="btn-download-receipt" style="display: none;">
+              📄 Tải Biên Nhận Báo Cáo (.txt)
+            </button>
           </form>
         </div>
 

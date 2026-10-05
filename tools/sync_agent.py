@@ -81,13 +81,15 @@ else:
     
     has_input = 'id="lookupInput"' in res.stdout
     has_form = 'id="intakeForm"' in res.stdout
+    has_stats = 'id="statTotalReports"' in res.stdout
+    has_receipt_btn = 'id="btnDownloadReceipt"' in res.stdout
     
-    qa_passed = len(csp_errors) == 0 and len(js_errors) == 0 and has_input and has_form
+    qa_passed = len(csp_errors) == 0 and len(js_errors) == 0 and has_input and has_form and has_stats and has_receipt_btn
     
     if qa_passed:
-        print("    ✅ KIỂM THỬ THÀNH CÔNG: 0 lỗi CSP, 0 lỗi JS, DOM hoàn chỉnh!")
+        print("    ✅ KIỂM THỬ THÀNH CÔNG: 0 lỗi CSP, 0 lỗi JS, DOM & UI anchors hoàn chỉnh!")
     else:
-        print(f"    ⚠️ CẢNH BÁO KIỂM THỬ: CSP: {len(csp_errors)}, JS: {len(js_errors)}")
+        print(f"    ⚠️ CẢNH BÁO KIỂM THỬ: CSP: {len(csp_errors)}, JS: {len(js_errors)}, DOM OK: {has_input and has_form and has_stats and has_receipt_btn}")
 
 try:
     server.server_close()
@@ -113,9 +115,14 @@ except Exception as e:
     print(f"    ⚠️ Lỗi đồng bộ sang bai_to_5: {e}")
 
 # -------------------------------------------------------------
-# BƯỚC 4: GIT COMMIT & PUSH TỰ ĐỘNG
+# BƯỚC 4: GIT COMMIT & PUSH TỰ ĐỘNG (CHỈ KHI KIỂM THỬ ĐẠT 100%)
 # -------------------------------------------------------------
-print("[*] 4/4. Đang kiểm tra thay đổi và tự động đẩy lên GitHub...")
+print("[*] 4/4. Đang kiểm tra thay đổi và tiến hành commit...")
+if not qa_passed:
+    print("    ❌ KIỂM THỬ THẤT BẠI! ĐÃ HỦY BỎ BƯỚC COMMIT & PUSH ĐỂ BẢO VỆ REPO.")
+    print("    👉 Vui lòng sửa lỗi kiểm thử ở trên trước khi đẩy code lên Git.")
+    sys.exit(1)
+
 status_res = subprocess.run(['git', '-C', ROOT_4, 'status', '--porcelain'], capture_output=True, text=True, encoding='utf-8')
 changes = status_res.stdout.strip()
 
@@ -123,8 +130,8 @@ if not changes:
     print("    ℹ️ Không có thay đổi mới nào cần commit. Trạng thái Git đã sạch!")
 else:
     now_str = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    subprocess.run(['git', '-C', ROOT_4, 'add', '-A'], check=True)
-    commit_msg = f"sync: automated QA verified & synced by Antigravity [{now_str}]"
+    subprocess.run(['git', '-C', ROOT_4, 'add', 'app', 'tools', 'AGENT_SYNC.md', 'CLAUDE.md', 'sync.bat', 'index.html'], check=True)
+    commit_msg = f"sync: automated QA verified & synced [{now_str}]"
     subprocess.run(['git', '-C', ROOT_4, 'commit', '-m', commit_msg], check=True)
     push_res = subprocess.run(['git', '-C', ROOT_4, 'push', 'origin', 'main'], capture_output=True, text=True, encoding='utf-8')
     if push_res.returncode == 0:

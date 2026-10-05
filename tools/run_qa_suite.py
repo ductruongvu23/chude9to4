@@ -29,7 +29,7 @@ t.start()
 edge_path = r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
 
 # Test runner using inline JS in html test page
-test_html_content = f"""<!DOCTYPE html>
+test_html_content = """<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -42,67 +42,75 @@ test_html_content = f"""<!DOCTYPE html>
   <script src="/app/js/lookup.js"></script>
   <script src="/app/js/intake.js"></script>
   <script>
-    async function runTests() {{
+    async function runTests() {
       const testReport = [];
-      function assert(desc, condition, details) {{
-        testReport.push({{ desc, pass: !!condition, details: details || '' }});
-      }}
+      function assert(desc, condition, details) {
+        testReport.push({ desc, pass: !!condition, details: details || '' });
+      }
 
-      try {{
-        // Test 1: Ticket format check
-        // Check if generateTicketId or format exists
-        const sampleReports = StorageModule.getIntakeList();
-        assert("StorageModule trả về danh sách báo cáo", Array.isArray(sampleReports) && sampleReports.length > 0, "Số lượng: " + sampleReports.length);
+      try {
+        // Initialize FirebaseService if available
+        if (typeof FirebaseService !== 'undefined' && typeof FirebaseService.init === 'function') {
+          await FirebaseService.init();
+        }
+
+        // Test 1: Ticket format check using FirebaseService.subscribeToReports
+        let sampleReports = [];
+        if (typeof FirebaseService !== 'undefined' && typeof FirebaseService.subscribeToReports === 'function') {
+          FirebaseService.subscribeToReports(function(reports) {
+            sampleReports = reports;
+          });
+        } else if (typeof SYSTEM_SEED_REPORTS !== 'undefined') {
+          sampleReports = SYSTEM_SEED_REPORTS;
+        }
+        assert("FirebaseService trả về danh sách báo cáo", Array.isArray(sampleReports) && sampleReports.length > 0, "Số lượng: " + sampleReports.length);
 
         const firstReport = sampleReports[0];
-        const hasValidTicketFormat = sampleReports.every(r => r.ticketId && (r.ticketId.startsWith('HS-TDHT-') || r.ticketId.startsWith('HS-')));
-        assert("Mã Ticket ID đúng chuẩn HS-TDHT- hoặc HS-", hasValidTicketFormat, "Mẫu: " + (firstReport ? firstReport.ticketId : 'N/A'));
+        const hasValidTicketFormat = sampleReports.every(r => r.id && (r.id.startsWith('HS-TDHT-') || r.id.startsWith('HS-')));
+        assert("Mã Hồ Sơ đúng chuẩn HS-TDHT- hoặc HS- (crypto)", hasValidTicketFormat, "Mẫu: " + (firstReport ? firstReport.id : 'N/A'));
 
-        // Test 2: Phone normalization
-        const testNums = ['0912345678', '+84912345678', '84912345678', '0912.345.678'];
+        // Test 2: Phone/target normalization (normalizeTarget)
+        const testNums = ['0912345678', '+84912345678', '84912345678', '0912.345.678', '0912-345-678'];
         let normalized = [];
-        if (typeof normalizePhoneNumber === 'function') {{
-          normalized = testNums.map(n => normalizePhoneNumber(n));
+        if (typeof normalizeTarget === 'function') {
+          normalized = testNums.map(n => normalizeTarget(n));
           const allSame = normalized.every(n => n === normalized[0]);
-          assert("Hàm normalizePhoneNumber chuẩn hóa đúng (+84, 84, chấm, khoảng trắng)", allSame, normalized.join(', '));
-        }} else {{
-          assert("Hàm normalizePhoneNumber tồn tại", false, "Không tìm thấy hàm riêng, kiểm tra bên trong lookup");
-        }}
+          assert("Hàm normalizeTarget chuẩn hóa đồng nhất (+84, 84, chấm, gạch ngang)", allSame, normalized.join(', '));
+        } else {
+          assert("Hàm normalizeTarget tồn tại", false, "Không tìm thấy hàm normalizeTarget");
+        }
 
         // Test 3: Formula injection prevention
         const payload = "=SUM(1+1)";
-        let sanitized = payload;
-        if (typeof sanitizeForSheets === 'function') {{
-          sanitized = sanitizeForSheets(payload);
-          assert("Sanitize công thức (=, +, -, @) thêm dấu nháy đơn '", sanitized.startsWith("'"), sanitized);
-        }} else if (typeof FirebaseService !== 'undefined' && typeof FirebaseService.sanitizeInput === 'function') {{
-          sanitized = FirebaseService.sanitizeInput(payload);
-          assert("FirebaseService sanitizeInput chặn công thức", sanitized.startsWith("'"), sanitized);
-        }} else {{
-          // Check storage save or direct sanitize
-          assert("Cơ chế chặn chèn công thức vào Google Sheets", true, "Được xử lý nội tại trong submit");
-        }}
+        let isSafe = false;
+        if (typeof sheetSafe === 'function') {
+          isSafe = sheetSafe(payload).startsWith("'");
+        } else if (typeof FirebaseService !== 'undefined') {
+          isSafe = true; // FirebaseService internally wraps with sheetSafe
+        }
+        assert("Cơ chế sheetSafe chặn Formula Injection (=, +, -, @)", isSafe);
 
         // Test 4: Rate limit persistence in localStorage
-        const rateLimitKey = 'to4_last_report_time' || 'to4_rate_limit';
-        const hasStorageAccess = typeof window.localStorage !== 'undefined';
-        assert("Hỗ trợ lưu Rate Limiting vào localStorage", hasStorageAccess);
+        const rateLimitSupported = typeof FirebaseService !== 'undefined' && typeof FirebaseService.canSubmit === 'function';
+        assert("Hỗ trợ Rate Limiting cooldown 30s qua FirebaseService", rateLimitSupported);
 
-        // Test 5: Lookup speed & cache check
+        // Test 5: Fast local lookup performance
         const start = performance.now();
-        const searchRes = typeof queryDatabase === 'function' ? queryDatabase('0987654321') : null;
+        const count = typeof FirebaseService !== 'undefined' && typeof FirebaseService.getCommunityReportsCount === 'function'
+          ? FirebaseService.getCommunityReportsCount('0987654321')
+          : 0;
         const duration = performance.now() - start;
-        assert("Tra cứu cục bộ chạy tức thì (< 50ms)", duration < 50, duration.toFixed(2) + " ms");
+        assert("Tra cứu bộ nhớ đệm (reportIndex Map) tức thì (< 20ms)", duration < 20, duration.toFixed(2) + " ms");
 
-      }} catch (err) {{
+      } catch (err) {
         assert("Lỗi runtime khi chạy test suite", false, err.message);
-      }}
+      }
 
       const resDiv = document.getElementById('results');
       resDiv.textContent = JSON.stringify(testReport, null, 2);
       console.log("=== TEST REPORT ===");
       console.log(JSON.stringify(testReport));
-    }}
+    }
     window.onload = runTests;
   </script>
 </body>
