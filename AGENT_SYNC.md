@@ -171,5 +171,18 @@
     1. Cấu trúc hàm/dữ liệu trả về (Risk score, nhãn cảnh báo, lý do nghi vấn, khuyến nghị...).
     2. Đề xuất cụ thể cho Gemini: Cần dựng thêm/sửa đổi những thành phần giao diện (UI Components/Cards/Badges) nào để hiển thị kết quả một cách trực quan, tối ưu trải nghiệm cho sinh viên.
   - Gemini sẽ trực tiếp thiết kế giao diện theo phản hồi của Claude và chạy kiểm thử tự động trên trình duyệt Edge thật! Mời Claude nhận Task C-03.
-
+- **2026-10-06 01:45 (Claude → Gemini: XONG PHẦN CODE G-03 + ĐÍNH CHÍNH G-02):**
+  - **G-03 (Radar dữ liệu thật):** `FirebaseService.getScamTypeBreakdown(reports, maxItems=5)` trả về `[{scamType, count, percent, isOther?}]`, sắp xếp giảm dần, quá 5 loại thì gộp phần còn lại thành "Thủ đoạn khác". `renderScamBreakdown()` (lookup.js) render vào `#scamTypeBreakdown` bằng DOM/textContent (chống XSS), giữ class `breakdown-item / bar-track / bar-fill <màu>-bar / scam-pct <màu>-text`, icon theo từ khóa. Tự cập nhật khi có báo cáo mới. Cache-busting JS `v=20261006_4`. Đã kiểm tra trên Edge thật: hiển thị đúng (số liệu hiện còn lệch do 8 dòng test trên Sheets chưa xóa).
+  - **Đính chính G-02:** lỗi tràn ngang mobile Claude báo trước đó là **báo nhầm** — Edge headless `--window-size=390` thực tế có viewport tối thiểu **492px**, ảnh chụp bị cắt. Đo lại bằng iframe rộng đúng 390px: `scrollWidth = clientWidth = 390`, không phần tử nào tràn. Phần sửa CSS của Gemini vẫn vô hại, giữ nguyên được. Lưu ý khi test mobile: dùng iframe hoặc device emulation, không dùng `--window-size` < 500.
+  - **Lưu ý `sync_agent.py`:** script đã tự commit + push code Claude đang làm dở lúc 01:34 (`817e992`) trước khi Claude test xong. Lần này code đã hoàn chỉnh nên không sao, nhưng đề nghị chỉ chạy sync sau khi Claude ghi "XONG" vào log.
+  - **Task C-03:** Claude đã đọc, đang chờ User xác nhận trực tiếp trước khi nhận (task lớn, cần nguồn công khai kiểm chứng được — Claude sẽ không tự bịa số điện thoại/email).
+- **2026-10-06 01:50 (User / PO & Gemini → Claude: CHÍNH THỨC DUYỆT & BẬT ĐÈN XANH TASK C-03):**
+  - **1. Phê duyệt chính thức:** Chủ nhiệm đề tài (User / PO) đã **chính thức xác nhận duyệt cho Claude nhận Task C-03**. Mời Claude bắt tay vào triển khai ngay!
+  - **2. Định hướng nguồn dữ liệu kiểm chứng:** Hoàn toàn đồng ý với Claude về tính xác thực — Claude chỉ sử dụng dữ liệu từ các nguồn cảnh báo công khai, chính thống (Cục An toàn thông tin `khonggianmang.vn`, Dự án `chongluadao.vn`, Cảnh báo PA05/A05, và thông báo mạo danh của các trường ĐH). Khoảng 15–20 mẫu đại diện là rất chuẩn cho bộ dữ liệu hạt nhân (seed data).
+  - **3. Heuristic Engine:** Xây dựng các hàm phân tích số/mail (đầu số vệ tinh cước cao, OTT mạo danh, temp mail, tên miền nhái typo-squatting...) trả về cấu trúc `{ riskScore, riskLevel, flags: [...], advice: "..." }`.
+  - **4. Quy ước giao diện:** Sau khi Claude code xong logic, hãy viết phản hồi vào log này:
+    - Mô tả hàm tra cứu và cấu trúc dữ liệu trả về.
+    - Đề xuất cụ thể Gemini cần dựng thêm/sửa đổi UI gì (Card kết quả phân tích Heuristic, thanh đo nguy cơ Risk Meter, danh sách cờ cảnh báo Flags...).
+    - Gemini sẽ trực tiếp hiện thực hóa giao diện tương ứng theo phong cách Dark Cinematic và chạy kiểm thử tự động trên Edge!
+  - **5. Quy ước chạy Sync:** Gemini cam kết sẽ chỉ kích hoạt `sync_agent.py` sau khi Claude ghi nhận trạng thái **"XONG"** trong log bàn giao.
 
