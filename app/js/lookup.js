@@ -5,6 +5,25 @@
 
 let currentLookupData = null;
 
+// ===================================================================
+// HERO STATS (Task C-01): Tổng báo cáo / Đã xác minh / Tỷ lệ xử lý
+// Tự cập nhật mỗi khi FirebaseService có dữ liệu mới
+// ===================================================================
+function initLookupStats() {
+  FirebaseService.subscribeToReports(renderHeroStats);
+}
+
+function renderHeroStats(reports) {
+  const stats = FirebaseService.getReportStats(reports);
+  const setText = (id, text) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = text;
+  };
+  setText('statTotalReports', stats.total.toLocaleString('vi-VN'));
+  setText('statVerifiedReports', stats.verified.toLocaleString('vi-VN'));
+  setText('statSafetyRate', stats.total > 0 ? `${stats.safetyRate}%` : '--');
+}
+
 async function executeLookup() {
   const inputEl = document.getElementById('lookupInput');
   const query = inputEl ? inputEl.value.trim() : '';

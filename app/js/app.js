@@ -39,6 +39,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   await firebaseReady;
 
   initIntakeView();
+  if (typeof initLookupStats === 'function') {
+    initLookupStats();
+  }
   if (typeof initAnalyzerView === 'function') {
     initAnalyzerView();
   }

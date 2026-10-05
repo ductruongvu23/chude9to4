@@ -195,6 +195,9 @@ const FirebaseService = (function () {
       }
     });
 
+    // Có mạng trở lại -> đồng bộ ngay để xả hàng chờ báo cáo ngoại tuyến
+    window.addEventListener('online', () => refreshFromSheets());
+
     if (!SHEETS_CONFIGURED) {
       console.warn("[CloudDB] ⚠️ Chưa cấu hình Google Sheets URL. Sử dụng dữ liệu tích hợp sẵn.");
       updateCloudStatusBadge(false, "Dữ liệu: Cục bộ");
@@ -380,7 +383,16 @@ const FirebaseService = (function () {
       LocalReportRegistry.report(cleanTarget, cleanType);
     }
 
-    return { success: true, reportId: report.id, target: cleanTarget, savedToCloud };
+    return {
+      success: true,
+      reportId: report.id,
+      target: report.target,
+      scamType: report.scamType,
+      content: report.content,
+      status: report.status,
+      createdAt: report.createdAt,
+      savedToCloud
+    };
   }
 
   // =================================================================
@@ -423,7 +435,23 @@ const FirebaseService = (function () {
   }
 
   // =================================================================
-  // 7. FORMAT THỜI GIAN TƯƠNG ĐỐI
+  // 7. THỐNG KÊ TỔNG QUAN (Hero Stats - Task C-01)
+  // "Đã xác minh" = hồ sơ đã được xử lý (Đã xác minh hoặc Cảnh báo cao),
+  // tỷ lệ xử lý = số hồ sơ đã xử lý / tổng số hồ sơ.
+  // =================================================================
+  function getReportStats(reports = cachedReports) {
+    const total = reports.length;
+    const verified = reports.filter(r => r.status !== 'Đang xác minh').length;
+    return {
+      total,
+      verified,
+      pending: total - verified,
+      safetyRate: total > 0 ? Math.round((verified / total) * 100) : 0
+    };
+  }
+
+  // =================================================================
+  // 8. FORMAT THỜI GIAN TƯƠNG ĐỐI
   // =================================================================
   function formatRelativeTime(timestamp) {
     const ms = toTimestamp(timestamp);
@@ -447,6 +475,7 @@ const FirebaseService = (function () {
     submitReport,
     subscribeToReports,
     getCommunityReportsCount,
+    getReportStats,
     formatRelativeTime,
     getCooldownRemaining,
     canSubmit,

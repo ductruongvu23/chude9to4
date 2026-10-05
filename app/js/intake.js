@@ -10,6 +10,7 @@
 
 let intakeCooldownInterval = null;
 const INTAKE_MAX_ROWS = 100; // Giới hạn số dòng hiển thị để bảng render nhanh trên điện thoại
+let lastSubmittedReceipt = null; // Hồ sơ vừa gửi, dùng để tạo biên nhận (Task C-02)
 
 function initIntakeView() {
   console.log("[IntakeModule] Khởi tạo giao diện tiếp nhận phản ánh & kết nối Firebase...");
@@ -21,6 +22,11 @@ function initIntakeView() {
 
   // Kiểm tra nếu có cooldown đang dở dang
   checkAndResumeCooldown();
+
+  const receiptBtn = document.getElementById('btnDownloadReceipt');
+  if (receiptBtn) {
+    receiptBtn.addEventListener('click', downloadIntakeReceipt);
+  }
 }
 
 function renderIntakeTable(reports) {
@@ -84,6 +90,9 @@ async function handleIntakeFormSubmit(e) {
     return;
   }
 
+  // Ẩn biên nhận của hồ sơ trước khi gửi hồ sơ mới
+  setReceiptButtonVisible(false);
+
   // Khóa nút tạm thời khi đang gửi
   if (submitBtn) {
     submitBtn.disabled = true;
@@ -99,6 +108,10 @@ async function handleIntakeFormSubmit(e) {
 
     // Reset form
     document.getElementById('intakeForm').reset();
+
+    // Cho phép tải biên nhận của hồ sơ vừa gửi
+    lastSubmittedReceipt = result;
+    setReceiptButtonVisible(true);
 
     // Kích hoạt đồng hồ đếm ngược Cooldown 30s
     startCooldownTimer(30);
@@ -152,6 +165,61 @@ function checkAndResumeCooldown() {
   if (remaining > 0) {
     startCooldownTimer(remaining);
   }
+}
+
+// ===================================================================
+// BIÊN NHẬN TỐ GIÁC (Task C-02)
+// Tạo file .txt tóm tắt hồ sơ để sinh viên đính kèm khi trình báo công an.
+// Tạo hoàn toàn trên máy, không gửi dữ liệu đi đâu.
+// ===================================================================
+function setReceiptButtonVisible(visible) {
+  const btn = document.getElementById('btnDownloadReceipt');
+  if (btn) btn.style.display = visible ? '' : 'none';
+}
+
+function buildReceiptText(r) {
+  const time = new Date(r.createdAt).toLocaleString('vi-VN', {
+    timeZone: 'Asia/Ho_Chi_Minh',
+    hour12: false
+  });
+  return [
+    'BIÊN NHẬN TIẾP NHẬN PHẢN ÁNH LỪA ĐẢO TRỰC TUYẾN',
+    'Cổng Tra Cứu & Tiếp Nhận Báo Cáo Lừa Đảo - Tổ 4 (Tư duy hệ thống)',
+    '==============================================================',
+    '',
+    `Mã hồ sơ:            ${r.reportId}`,
+    `Thời gian tiếp nhận: ${time} (GMT+7)`,
+    `Đối tượng nghi vấn:  ${r.target}`,
+    `Thủ đoạn:            ${r.scamType}`,
+    `Trạng thái:          ${r.status}`,
+    `Lưu trữ:             ${r.savedToCloud ? 'Đã đồng bộ lên hệ thống chung' : 'Lưu tạm trên thiết bị, sẽ tự gửi khi có mạng'}`,
+    '',
+    'Nội dung phản ánh:',
+    r.content,
+    '',
+    '--------------------------------------------------------------',
+    'LƯU Ý:',
+    '- Đây là biên nhận của cổng thông tin sinh viên, KHÔNG phải văn bản',
+    '  tiếp nhận tố giác của cơ quan công an.',
+    '- Khi trình báo, hãy mang theo biên nhận này cùng bằng chứng gốc',
+    '  (ảnh chụp tin nhắn, lịch sử cuộc gọi, sao kê chuyển khoản) đến',
+    '  công an phường/xã nơi cư trú hoặc gọi 113 trong trường hợp khẩn cấp.',
+    ''
+  ].join('\r\n');
+}
+
+function downloadIntakeReceipt() {
+  if (!lastSubmittedReceipt) return;
+  // BOM để Notepad trên Windows hiển thị đúng tiếng Việt
+  const blob = new Blob(['﻿' +buildReceiptText(lastSubmittedReceipt)], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `bien-nhan-${lastSubmittedReceipt.reportId}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 function escapeHtml(text) {
