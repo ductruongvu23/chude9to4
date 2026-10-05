@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canva Pitch Deck (15 Slides): Đề tài 9 - Lừa đảo trực tuyến nhắm vào sinh viên (Tổ 4)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=JetBrains+Mono:wght@500;700&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="css/slides.css">
+  <link rel="stylesheet" href="css/themes.css">
+
+  <style>
+    /* ===================================================================
+       CANVA CYBER SECURITY PITCH DECK STYLING (15 SLIDES SPECIFICATION)
+       =================================================================== */
+    body[data-theme="canva"] {
+      --canva-bg: #0B192C;
+      --canva-dark: #040D1A;
+      --canva-card-bg: #FFFFFF;
+      --canva-card-text: #0B192C;
+      --canva-cyan: #00D2FF;
+      --canva-blue: #0284C7;
+      --canva-accent-light: #E0F2FE;
+      --canva-silver-grad: linear-gradient(135deg, #FFFFFF 0%, #E2E8F0 50%, #94A3B8 100%);
+      --canva-silver-border: 1.5px solid rgba(226, 232, 240, 0.45);
+      --canva-glow: 0 0 25px rgba(0, 210, 255, 0.35);
+
+      --bg-page: #040D1A;
+      --bg-canvas: #0B192C;
+      --bg-card: rgba(11, 25, 44, 0.9);
+      --border-color: rgba(0, 210, 255, 0.25);
+      --text-main: #FFFFFF;
+      --text-muted: #CBD5E1;
+      --text-dim: #94A3B8;
+      --accent-primary: #00D2FF;
+      --accent-danger: #FF4B4B;
+    }
+
+    body[data-theme="canva"] .slide-viewport {
+      background: radial-gradient(circle at 90% 10%, rgba(0, 210, 255, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 10% 90%, rgba(2, 132, 199, 0.15) 0%, transparent 50%),
+        linear-gradient(135deg, #040D1A 0%, #0B192C 100%);
+    }
+
+    body[data-theme="canva"] .slide-item {
+      background: #0B192C url('assets/canva_cyber_bg.jpg') no-repeat center center / cover !important;
+      border: 1.5px solid rgba(0, 210, 255, 0.3);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8), inset 0 0 30px rgba(0, 210, 255, 0.05);
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* Ambient Circuit & Polygon Overlay */
+    body[data-theme="canva"] .slide-item::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(125deg, rgba(11, 25, 44, 0.94) 0%, rgba(4, 13, 26, 0.92) 50%, rgba(11, 25, 44, 0.88) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    body[data-theme="canva"] .slide-inner {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Silver Metallic Diagonal Ribbon */
+    .canva-ribbon-header {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid;
+      border-image: linear-gradient(90deg, #00D2FF 0%, #E2E8F0 40%, transparent 100%) 1;
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+    }
+
+    .canva-pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(90deg, rgba(0, 210, 255, 0.2), rgba(2, 132, 199, 0.1));
+      border: 1px solid #00D2FF;
+      color: #00D2FF;
+      font-size: 0.95rem;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: 999px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      box-shadow: 0 0 12px rgba(0, 210, 255, 0.25);
+    }
+
+    .canva-title {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      margin: 6px 0 4px 0;
+      text-transform: uppercase;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+    }
+
+    .canva-desc {
+      font-size: 1.18rem;
+      color: #94A3B8;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* Crisp White Canva Card with Dark Text (Page 2, 4, 10 style) */
+    .canva-card-white {
+      background: #FFFFFF;
+      color: #0B192C;
+      border-radius: 10px;
+      padding: 20px 24px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      border-left: 5px solid var(--accent-primary);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .canva-card-white:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(0, 210, 255, 0.3);
+    }
+
+    .canva-card-white h3,
+    .canva-card-white h4 {
+      color: #0B192C;
+      margin: 0 0 6px 0;
+      font-weight: 800;
+      font-size: 1.35rem;
+    }
+
+    .canva-card-white p {
+      color: #334155;
+      font-size: 1.05rem;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    /* Tech Dark Card with Cyan Glow */
+    .canva-card-dark {
+      background: rgba(11, 25, 44, 0.85);
+      border: 1.5px solid rgba(0, 210, 255, 0.25);
+      border-radius: 10px;
+      padding: 20px 24px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .canva-card-dark.danger {
+      border-left: 5px solid #FF4B4B;
+      background: rgba(30, 10, 20, 0.7);
+    }
+
+    .canva-card-dark.warning {
+      border-left: 5px solid #F59E0B;
+    }
+
+    .canva-card-dark.success {
+      border-left: 5px solid #10B981;
+    }
+
+    .canva-card-dark h3,
+    .canva-card-dark h4 {
+      color: #FFFFFF;
+      margin: 0 0 6px 0;
+      font-weight: 800;
+      font-size: 1.35rem;
+    }
+
+    .canva-card-dark p {
+      color: #CBD5E1;
+      font-size: 1.05rem;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    /* Hexagon Badge */
+    .canva-hex-icon {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, #00D2FF 0%, #0284C7 100%);
+      color: #FFFFFF;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.1rem;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      box-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+      flex-shrink: 0;
+    }
+
+    /* Goal Banner */
+    .canva-banner {
+      background: linear-gradient(90deg, rgba(0, 210, 255, 0.15) 0%, rgba(11, 25, 44, 0.8) 100%);
+      border: 1.5px solid rgba(0, 210, 255, 0.35);
+      border-left: 5px solid #00D2FF;
+      border-radius: 6px;
+      padding: 12px 18px;
+      font-size: 1.08rem;
+      color: #E2E8F0;
+      line-height: 1.5;
+      margin: 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .canva-banner.danger {
+      background: linear-gradient(90deg, rgba(255, 75, 75, 0.18) 0%, rgba(11, 25, 44, 0.8) 100%);
+      border-color: rgba(255, 75, 75, 0.4);
+      border-left-color: #FF4B4B;
+    }
+
+    /* Slide 1 Cover Canva Style */
+    .canva-cover-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 24px;
+      align-items: center;
+      height: 100%;
+    }
+
+    .canva-cover-left {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      justify-content: center;
+    }
+
+    .canva-cover-right {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .canva-cover-polygon-frame {
+      position: relative;
+      border: 2px solid #00D2FF;
+      box-shadow: 0 0 30px rgba(0, 210, 255, 0.4);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #040D1A;
+      width: 100%;
+      max-height: 310px;
+    }
+
+    .canva-cover-polygon-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Large Software & QR Box in Canva Slide 10 */
+    .canva-demo-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 16px;
+      align-items: stretch;
+      margin: 6px 0;
+      flex: 1;
+    }
+
+    .canva-qr-box {
+      background: linear-gradient(135deg, rgba(0, 210, 255, 0.12) 0%, rgba(2, 132, 199, 0.22) 100%);
+      border: 2px solid #00D2FF;
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 0 25px rgba(0, 210, 255, 0.25);
+    }
+
+    .canva-qr-img {
+      width: 135px;
+      height: 135px;
+      background: #FFFFFF;
+      padding: 6px;
+      border-radius: 10px;
+      border: 2px solid #00D2FF;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      flex-shrink: 0;
+      image-rendering: crisp-edges;
+    }
+  </style>
+</head>
+
+<body data-theme="canva">
+
+  <!-- Top Header -->
+  <header class="presentation-header">
+    <div class="header-left">
+      <div class="badge-topic">BẢN 5 • CANVA CYBER SECURITY PITCH DECK (15 SLIDES)</div>
+      <h1 class="header-title">Đề Tài 9: Lừa Đảo Trực Tuyến Nhắm Vào Sinh Viên (Tổ 4)</h1>
+    </div>
+
+    <div class="header-controls">
+      <!-- Theme Switcher -->
+      <div class="theme-selector-wrap">
+        <select id="themeSelect" onchange="window.location.href=this.value;">
+          <option value="theme_swiss.html">Bản 1: Minimalist Swiss (Sáng tối giản)</option>
+          <option value="theme_dark.html">Bản 2: Minimal Dark (Tối giản thanh lịch)</option>
+          <option value="theme_academic.html">Bản 3: Academic Editorial (Học thuật)</option>
+          <option value="theme_cyber.html">Bản 4: Modern Cyber Defense</option>
+          <option value="theme_canva_cyber.html" selected>Bản 5: Canva Cyber Pitch Deck (15 Slides)</option>
+        </select>
+      </div>
+
+      <button class="btn-ctrl" onclick="togglePresenterMode()" title="Ghi chú người nói & Hẹn giờ">
+        🎙️ Ghi chú
+      </button>
+
+      <div class="download-dropdown-wrap" style="position: relative; display: inline-block;">
+        <button class="btn-ctrl" onclick="toggleDownloadMenu()" title="Tải về file PDF hoặc PPTX">
+          📥 Tải PDF / PPTX ▼
+        </button>
+        <div id="downloadMenu"
+          style="display: none; position: absolute; top: 100%; right: 0; background: #0B192C; border: 1px solid #00D2FF; border-radius: 6px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); min-width: 310px; z-index: 1000; margin-top: 4px; padding: 4px 0;">
+          <a href="Slide_To4_DeTai9_Canva_PitchDeck.pptx" download="Slide_To4_DeTai9_Canva_PitchDeck.pptx"
+            style="display: block; padding: 8px 14px; font-size: 0.82rem; color: #10B981; text-decoration: none; border-bottom: 1px solid rgba(0,210,255,0.2); font-weight: 700; background: rgba(16, 185, 129, 0.1);">
+            📊 Tải File PowerPoint (.pptx) - 16 Slides Chuẩn
+          </a>
+          <a href="Slide_To4_ThietKe5_Canva_Cyber.pdf" download="Slide_To4_ThietKe5_Canva_Cyber.pdf"
+            style="display: block; padding: 8px 14px; font-size: 0.8rem; color: #00D2FF; text-decoration: none; border-bottom: 1px solid rgba(0,210,255,0.2); font-weight: 700;">
+            ⭐ Bản 5: Canva Cyber Pitch Deck (15 Slides)
+          </a>
+          <a href="Slide_To4_ThietKe1_Swiss_Tech.pdf" download="Slide_To4_ThietKe1_Swiss_Tech.pdf"
+            style="display: block; padding: 8px 14px; font-size: 0.8rem; color: #E2E8F0; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 600;">
+            📄 Bản 1: Swiss Tech (Sáng tối giản)
+          </a>
+          <a href="Slide_To4_ThietKe2_Minimal_Dark.pdf" download="Slide_To4_ThietKe2_Minimal_Dark.pdf"
+            style="display: block; padding: 8px 14px; font-size: 0.8rem; color: #E2E8F0; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 600;">
+            📄 Bản 2: Minimal Dark (Tối giản thanh lịch)
+          </a>
+          <a href="Slide_To4_ThietKe3_Academic_Editorial.pdf" download="Slide_To4_ThietKe3_Academic_Editorial.pdf"
+            style="display: block; padding: 8px 14px; font-size: 0.8rem; color: #E2E8F0; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 600;">
+            📄 Bản 3: Academic Editorial (Học thuật)
+          </a>
+          <a href="Slide_To4_ThietKe4_Cyber_Defense.pdf" download="Slide_To4_ThietKe4_Cyber_Defense.pdf"
+            style="display: block; padding: 8px 14px; font-size: 0.8rem; color: #E2E8F0; text-decoration: none; font-weight: 600;">
+            📄 Bản 4: Modern Cyber Defense
+          </a>
+        </div>
+      </div>
+
+      <button class="btn-ctrl" onclick="openPrintModal()" title="In trực tiếp từ trình duyệt">
+        🖨️ In
+      </button>
+
+      <a href="../app/index.html" target="_blank" class="btn-ctrl btn-highlight">
+        🚀 Mở Cổng Tra Cứu
+      </a>
+
+      <button class="btn-ctrl" onclick="toggleFullScreen()" title="Toàn màn hình (F11)">
+        ⛶ Phóng to
+      </button>
+    </div>
+  </header>
+
+  <!-- Slides Viewport (16:9 Canvas) -->
+  <main class="slide-viewport">
+    <div id="slidesContainer" class="slides-container">
+
+      <!-- SLIDE 1: COVER / TITLE SLIDE (CANVA PAGE 1) -->
+      <section class="slide-item active" data-slide="1" data-speaker="Thành viên 1">
+        <div class="slide-inner">
+          <div class="canva-cover-grid">
+            <div class="canva-cover-left">
+              <div class="canva-pill-badge">🛡️ HỌC PHẦN: TƯ DUY HỆ THỐNG • TỔ 4</div>
+              <h1 class="canva-title" style="font-size: 1.85rem; line-height: 1.25;">
+                Phòng Chống Lừa Đảo Trực Tuyến Nhắm Vào Sinh Viên
+              </h1>
+              <p style="font-size: 0.95rem; color: #00D2FF; font-weight: 700; margin: 0;">
+                Đề Tài 9: Nhận diện hệ thống đối kháng &amp; Tái lập tính nhất thể bằng công nghệ
+              </p>
+
+              <div
+                style="background: rgba(4, 13, 26, 0.7); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 8px; padding: 10px 14px; margin-top: 8px;">
+                <div style="font-size: 0.78rem; color: #94A3B8; margin-bottom: 4px;">HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN
+                  THÔNG (PTIT)</div>
+                <div style="font-size: 0.82rem; color: #FFFFFF; font-weight: 600;">Giảng viên hướng dẫn: Bộ môn Tư duy
+                  Hệ thống</div>
+                <div style="font-size: 0.82rem; color: #E2E8F0; margin-top: 2px;">Nhóm sinh viên thực hiện: <strong>Tổ
+                    4</strong> (4 Thành viên)</div>
+              </div>
+
+              <div style="display: flex; gap: 8px; margin-top: 4px;">
+                <span class="diagram-flow-badge" style="color: #00D2FF; border-color: #00D2FF;">15 Slides Chuẩn
+                  Canva</span>
+                <span class="diagram-flow-badge">Tư Duy Hệ Thống</span>
+                <span class="diagram-flow-badge">Sản Phẩm Web App Realtime</span>
+              </div>
+            </div>
+
+            <div class="canva-cover-right">
+              <div class="canva-cover-polygon-frame">
+                <img src="assets/canva_cyber_bg.jpg" alt="Canva Cyber Security Pitch Deck Globe">
+              </div>
+              <div style="font-size: 0.72rem; color: #94A3B8; text-align: center; margin-top: 8px;">
+                Canva Modern Cyber Pitch Deck Edition &bull; Mẫu chuẩn 15 trang
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 1 (0:00 - 1:00)</strong><br>
+          - Kính chào Thầy Cô và các bạn. Nhóm Tổ 4 xin trình bày Đề tài 9: Lừa đảo trực tuyến nhắm vào sinh viên dưới
+          lăng kính Tư duy hệ thống.<br>
+          - Bản thiết kế này mô phỏng chính xác phong cách Canva Cyber Security Pitch Deck gồm 15 trang chuẩn mực.
+        </div>
+      </section>
+
+      <!-- SLIDE 2: THE PROBLEM / THỰC TRẠNG (CANVA PAGE 2) -->
+      <section class="slide-item" data-slide="2" data-speaker="Thành viên 1">
+        <div class="slide-inner">
+          <div class="canva-ribbon-header">
+            <div>
+              <div class="canva-pill-badge">BỐI CẢNH &amp; THỰC TRẠNG • THE PROBLEM</div>
+              <h2 class="canva-title">Thực Trạng Lừa Đảo Trực Tuyến Nhắm Vào Sinh Viên</h2>
+              <p class="canva-desc">Sự bùng nổ của tội phạm công nghệ cao và lỗ hổng chuyển giao môi trường sống của
+                sinh viên</p>
+            </div>
+          </div>
+
+          <div class="canva-banner danger">
+            <span>⚠️ <strong>Cảnh báo khẩn cấp từ Cục ATTT:</strong> Sinh viên bước từ "hệ thống kín" gia đình sang "hệ
+              thống mở" xã hội với khoảng trống kinh nghiệm và áp lực kinh tế tự lập, trở thành mục tiêu săn mồi hàng
+              đầu.</span>
+          </div>
+
+          <div class="grid-3" style="margin-top: 10px;">
+            <div class="canva-card-white">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                <div class="canva-hex-icon">1</div>
+                <h3 style="font-size: 0.95rem; color: #0B192C;">82% Vụ Nhắm Vào Cá Nhân</h3>
+              </div>
+              <p>Hơn 82% cuộc tấn công lừa đảo trực tuyến tại Việt Nam nhắm trực tiếp vào người dùng cá nhân, trong đó
+                tân sinh viên chiếm tỷ lệ tổn thương cao nhất do chưa quen quy trình đào tạo.</p>
+            </div>
+
+            <div class="canva-card-white">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                <div class="canva-hex-icon" style="background: linear-gradient(135deg, #FF4B4B 0%, #B91C1C 100%);">2
+                </div>
+                <h3 style="font-size: 0.95rem; color: #0B192C;">18.900 Tỷ Đồng Thiệt Hại</h3>
+              </div>
+              <p>Báo cáo thường niên của Hiệp hội An ninh mạng Quốc gia (NCA) ghi nhận mức thiệt hại khổng lồ, phần lớn
+                dòng tiền bị tẩu tán qua mạng lưới tài khoản rác (mule account) và tiền mã hóa.</p>
+            </div>
+
+            <div class="canva-card-white">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                <div class="canva-hex-icon" style="background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);">3
+                </div>
+                <h3 style="font-size: 0.95rem; color: #0B192C;">Deepfake &amp; Thao Túng Tâm Lý</h3>
+              </div>
+              <p>Tội phạm không tấn công vào tường lửa ngân hàng mà đánh sập bức tường phòng thủ tâm lý của nạn nhân:
+                giả danh Công an, Nhà trường hối thúc chuyển tiền trong hoảng loạn.</p>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn chính thức:</strong> Báo Điện tử Chính phủ (<a
+                href="https://baochinhphu.vn/chien-dich-nhan-dien-lua-dao-truc-tuyen-102240717152259919.htm"
+                target="_blank">baochinhphu.vn ↗</a>) &bull; Báo cáo Hiệp hội An ninh mạng Quốc gia (NCA)</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 1 (1:00 - 1:45)</strong><br>
+          - Nêu 3 chỉ số thực trạng cốt lõi: 82% vụ nhắm vào cá nhân, 18.900 tỷ thiệt hại và vũ khí Deepfake.<br>
+          - Giải thích góc nhìn hệ thống: Sinh viên chuyển tiếp môi trường sống từ bao bọc của gia đình sang độc lập.
+        </div>
+      </section>
+
+      <!-- SLIDE 3: BẰNG CHỨNG THỰC TẾ (CANVA PAGE 3) -->
+      <section class="slide-item" data-slide="3" data-speaker="Thành viên 1">
+        <div class="slide-inner">
+          <div class="canva-ribbon-header">
+            <div>
+              <div class="canva-pill-badge">BẰNG CHỨNG THỰC TẾ • CASE EVIDENCE</div>
+              <h2 class="canva-title">Bằng Chứng Thực Tế Tại Việt Nam: Hai Bẫy Lừa Điển Hình</h2>
+              <p class="canva-desc">Thực tế các vụ việc sinh viên bị lừa tiền học phí và bẫy tuyển cộng tác viên giật
+                đơn</p>
+            </div>
+          </div>
+
+          <div class="diagram-split-container">
+            <div class="diagram-content-col">
+              <div class="canva-card-dark danger">
+                <h4>📱 Bẫy 1: Mạo Danh Phòng Đào Tạo Thu Học Phí</h4>
+                <p><strong>Thủ đoạn:</strong> Gửi SMS giả mạo đe dọa nộp 3.250.000đ học phí "trước 17h hôm nay" nếu
+                  không sẽ bị đình chỉ và xóa tên khỏi danh sách thi. Hướng dòng tiền về STK Techcombank cá nhân.</p>
+              </div>
+
+              <div class="canva-card-dark warning">
+                <h4>💼 Bẫy 2: Việc Nhẹ Lương Cao (Tuyển CTV Shopee/TikTok)</h4>
+                <p><strong>Thủ đoạn:</strong> Dẫn dụ xem video, giật đơn hưởng hoa hồng 300k - 500k/ngày. Thả mồi nhỏ
+                  50k nhận tiền thật ở nhiệm vụ đầu để tạo niềm tin giả, sau đó giam tiền cọc lớn hàng triệu đồng.</p>
+              </div>
+
+              <div class="canva-card-dark success">
+                <h4>🎯 3 Thủ Thuật Thao Túng Tâm Lý Cốt Lõi</h4>
+                <p><strong>① Giả mạo thẩm quyền</strong> (Trường học, Công an) &bull; <strong>② Áp lực thời gian
+                    gấp</strong> (cấm suy nghĩ) &bull; <strong>③ Cô lập thông tin</strong> ("Bí mật nghiệp vụ, không kể
+                  người thân").</p>
+              </div>
+            </div>
+
+            <div class="diagram-img-frame">
+              <img src="../assets/images/vn_scam_sms_tuition.jpg" alt="Tin nhắn SMS mạo danh Phòng Đào tạo thu học phí">
+              <div class="caption">📌 Bằng chứng tin nhắn SMS mạo danh thu học phí thực tế tại trường học</div>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn tham chiếu:</strong> Báo Tuổi Trẻ (<a
+                href="https://tuoitre.vn/chieu-lua-dao-moi-nham-vao-sinh-vien-cu-nguoi-den-tan-noi-nhan-tien-100260913131739695.htm"
+                target="_blank">tuoitre.vn ↗</a>) &bull; Cổng Thông tin Bộ Công An</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 1 (1:45 - 2:30)</strong><br>
+          - Minh chứng qua 2 bằng chứng thực tế tại Việt Nam: SMS dọa nợ học phí và Bẫy tuyển CTV Shopee.<br>
+          - Bóc trần 3 thủ thuật thao túng: quyền lực giả, thời gian gấp và cô lập nạn nhân.
+        </div>
+      </section>
+
+      <!-- SLIDE 4: SƠ ĐỒ PHÂN HỆ ĐƯỜNG DÂY LỪA ĐẢO (CANVA PAGE 4 - SƠ ĐỒ 1) -->
+      <section class="slide-item" data-slide="4" data-speaker="Thành viên 1">
+        <div class="slide-inner">
+          <div class="canva-ribbon-header">
+            <div>
+              <div class="canva-pill-badge">NHIỆM VỤ 1 • SƠ ĐỒ PHÂN HỆ HỆ THỐNG</div>
+              <h2 class="canva-title">Sơ Đồ Phân Hệ Đường Dây Lừa Đảo Trực Tuyến</h2>
+              <p class="canva-desc">Phát hiện &amp; nhận diện đường dây lừa đảo hoạt động có tổ chức chặt chẽ — Không
+                hoạt động tự phát</p>
+            </div>
+          </div>
+
+          <div class="diagram-split-container">
+            <!-- CỘT TRÁI: HÌNH ẢNH SƠ ĐỒ 1 CỦA NGƯỜI DÙNG -->
+            <div class="diagram-img-frame">
+              <img src="assets/so_do_phan_he_lua_dao.png" alt="Sơ đồ phân hệ hệ thống đường dây lừa đảo trực tuyến">
+              <div class="caption">📌 Sơ đồ 3 Phân hệ: Thu thập dữ liệu ➔ Tạo lòng tin ➔ Chuyển tiền &amp; Rửa tiền
+              </div>
+            </div>
+
+            <!-- CỘT PHẢI: BÓC TÁCH CHI TIẾT 3 PHÂN HỆ & 4 TÁC ĐỘNG -->
+            <div class="diagram-content-col">
+              <div class="canva-card-dark danger">
+                <div class="diagram-step-header">
+                  <span style="font-size: 0.82rem; font-weight: 800; color: #FF4B4B;">Phân hệ 1: Thu Thập Dữ Liệu</span>
+                  <span class="diagram-flow-badge">MXH ➔ Dữ liệu thô ➔ Tiền xử lý</span>
+                </div>
+                <p>Thu thập các đoạn hội thoại, tin nhắn từ nhiều nguồn (MXH, diễn đàn SV, dữ liệu rò rỉ). Làm sạch, lọc
+                  trùng và chuẩn hóa tệp mục tiêu sinh viên tiềm năng.</p>
+              </div>
+
+              <div class="canva-card-dark warning">
+                <div class="diagram-step-header">
+                  <span style="font-size: 0.82rem; font-weight: 800; color: #F59E0B;">Phân hệ 2: Tạo Lòng Tin</span>
+                  <span class="diagram-flow-badge">Giả mạo ➔ Deepfake ➔ Hoa hồng nhỏ</span>
+                </div>
+                <p>Giả mạo danh tính uy tín (Nhà trường, Cơ quan Công an), sử dụng công nghệ Deepfake hoặc trả các khoản
+                  hoa hồng nhỏ (50k - 100k) ban đầu để tạo sự tin tưởng tuyệt đối.</p>
+              </div>
+
+              <div class="canva-card-dark danger">
+                <div class="diagram-step-header">
+                  <span style="font-size: 0.82rem; font-weight: 800; color: #FF4B4B;">Phân hệ 3: Chuyển Tiền &amp; Rửa
+                    Tiền</span>
+                  <span class="diagram-flow-badge">TK rác ➔ Sàn ảo ➔ Xóa sạch vết</span>
+                </div>
+                <p>Hướng dẫn chuyển tiền qua các tài khoản ngân hàng mua bán trái phép, tài khoản trung gian hoặc các
+                  sàn tiền ảo (P2P), sau đó xóa sạch hoàn toàn dấu vết dòng tiền.</p>
+              </div>
+
+              <div class="canva-card-white" style="border-left: 4px solid #8B5CF6; padding: 8px 12px;">
+                <h4 style="font-size: 0.82rem; color: #6D28D9; margin-bottom: 2px;">Kết Quả Cuối Cùng &amp; 4 Tác Động
+                  Nặng Nề</h4>
+                <p style="font-size: 0.74rem; color: #0B192C; line-height: 1.35;">
+                  <strong>Nạn nhân mất tiền và khó truy vết.</strong> 4 Tác động cốt lõi: <strong>① Mất tài sản</strong>
+                  • <strong>② Ảnh hưởng tâm lý nặng nề</strong> • <strong>③ Khó lấy lại tiền</strong> • <strong>④ Tăng
+                    nguy cơ tái phạm</strong>.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn tham chiếu:</strong> Quyết định 2345/QĐ-NHNN &bull; Cẩm nang nhận diện lừa đảo Cục An
+              toàn thông tin</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 1 (2:30 - 3:15)</strong><br>
+          - Bóc tách đường dây lừa đảo theo đúng sơ đồ hệ thống: Thu thập dữ liệu -> Tạo lòng tin -> Chuyển tiền & rửa
+          tiền.<br>
+          - Kết quả cuối cùng: Nạn nhân mất tiền, khó truy vết và chịu 4 tác động nặng nề.
+        </div>
+      </section>
+
+      <!-- SLIDE 5: VÒNG LẶP THÍCH NGHI & FEEDBACK LOOP (CANVA PAGE 5) -->
+      <section class="slide-item" data-slide="5" data-speaker="Thành viên 1">
+        <div class="slide-inner">
+          <div class="canva-ribbon-header">
+            <div>
+              <div class="canva-pill-badge">NHIỆM VỤ 1 • TÍNH THÍCH NGHI &amp; PHẢN HỒI</div>
+              <h2 class="canva-title">Tính Thích Nghi &amp; Vòng Lặp Phản Hồi (Feedback Loops)</h2>
+              <p class="canva-desc">Hệ thống lừa đảo liên tục điều chỉnh hành vi khi nhận tín hiệu siết chặt từ xã hội
+              </p>
+            </div>
+          </div>
+
+          <div class="canva-banner">
+            <span>🔄 <strong>Khái niệm Tư duy Hệ thống:</strong> Vòng lặp phản hồi tăng cường (Reinforcing Loop) giúp
+              đường dây lừa đảo học hỏi và biến tướng câu từ để vượt qua các bộ lọc phòng thủ tĩnh.</span>
+          </div>
+
+          <div class="grid-3" style="margin-top: 10px;">
+            <div class="canva-card-dark">
+              <div style="font-size: 1.5rem; margin-bottom: 4px;">📅</div>
+              <h3 style="font-size: 0.95rem; color: #00D2FF;">1. Theo Mùa Vụ</h3>
+              <p>Tháng 9: Đánh vào bẫy học phí, ký túc xá, tìm phòng trọ sinh viên.<br>Tháng 12 - Tết: Đánh vào việc làm
+                thêm thời vụ, vé xe khách giá rẻ và quà tặng tri ân giả.</p>
+            </div>
+
+            <div class="canva-card-dark">
+              <div style="font-size: 1.5rem; margin-bottom: 4px;">📲</div>
+              <h3 style="font-size: 0.95rem; color: #00D2FF;">2. Theo Công Nghệ</h3>
+              <p>Nhà mạng siết SIM rác &amp; SMS ➔ chuyển sang lập group Telegram tự hủy.<br>Nạn nhân cảnh giác với số
+                lạ ➔ sử dụng cuộc gọi Deepfake AI giả giọng người quen.</p>
+            </div>
+
+            <div class="canva-card-dark">
+              <div style="font-size: 1.5rem; margin-bottom: 4px;">⚖️</div>
+              <h3 style="font-size: 0.95rem; color: #00D2FF;">3. Theo Luật Pháp</h3>
+              <p>Ngân hàng bắt buộc quét khuôn mặt sinh trắc học trên 10 triệu (QĐ 2345) ➔ Lập tức chia nhỏ các lệnh
+                chuyển tiền thành 9.5 triệu đồng để tẩu tán né kiểm soát.</p>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn tham chiếu:</strong> Quyết định 2345/QĐ-NHNN &bull; Báo Chính Phủ — Chiến dịch nhận
+              diện lừa đảo 2024</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 1 (3:15 - 4:00)</strong><br>
+          - Phân tích 3 vòng lặp thích nghi: theo mùa vụ, theo công nghệ và lách quy định pháp luật.<br>
+          - Chuyển giao phần trình bày cho Thành viên 2 sang Nhiệm vụ 2 & 3.
+        </div>
+      </section>
+
+      <!-- SLIDE 6: SƠ ĐỒ HỆ THỐNG PHÒNG VỆ & 3 ĐIỂM YẾU LIÊN KẾT (CANVA PAGE 6 - SƠ ĐỒ 2) -->
+      <section class="slide-item" data-slide="6" data-speaker="Thành viên 2">
+        <div class="slide-inner">
+          <div class="canva-ribbon-header">
+            <div>
+              <div class="canva-pill-badge">NHIỆM VỤ 2 • SƠ ĐỒ PHÒNG VỆ &amp; ĐIỂM YẾU LIÊN KẾT</div>
+              <h2 class="canva-title">Sơ Đồ Hệ Thống Phòng Vệ &amp; 3 Điểm Yếu Liên Kết</h2>
+              <p class="canva-desc">Sức mạnh hệ thống không phụ thuộc số lượng phân hệ, mà quyết định bởi độ bền vững
+                của các liên kết</p>
+            </div>
+          </div>
+
+          <div class="diagram-split-container">
+            <!-- CỘT TRÁI: HÌNH ẢNH SƠ ĐỒ 2 CỦA NGƯỜI DÙNG -->
+            <div class="diagram-img-frame">
+              <img src="assets/so_do_phong_ve_diem_yeu.png" alt="Sơ đồ hệ thống phòng vệ và điểm yếu liên kết">
+              <div class="caption">📌 Sơ đồ 6 tác nhân phòng vệ &amp; 3 điểm yếu liên kết trọng yếu</div>
+            </div>
+
+            <!-- CỘT PHẢI: CHI TIẾT 3 ĐIỂM YẾU & KẾT LUẬN -->
+            <div class="diagram-content-col">
+              <div class="canva-card-dark danger">
+                <div class="diagram-step-header">
+                  <span style="font-size: 0.82rem; font-weight: 800; color: #FF4B4B;">⚠️ 1. ĐIỂM YẾU: Gia đình ↔ Sinh
+                    viên</span>
+                  <span class="diagram-flow-badge" style="color: #FF4B4B;">Khoảng trống thông tin</span>
+                </div>
+                <p><strong>Khoảng cách địa lý + tâm lý ngại chia sẻ ➔ Khoảng trống thông tin.</strong> Sinh viên sợ bố
+                  mẹ la mắng, muốn tự lập. Kẻ lừa đảo cô lập nạn nhân bằng câu dặn "Bí mật nghiệp vụ, cấm kể cho gia
+                  đình".</p>
+              </div>
+
+              <div class="canva-card-dark warning">
+                <div class="diagram-step-header">
+                  <span style="font-size: 0.82rem; font-weight: 800; color: #F59E0B;">⚠️ 2. ĐIỂM YẾU: Nhà trường ↔ Sinh
+                    viên</span>
+                  <span class="diagram-flow-badge" style="color: #F59E0B;">Dễ nhầm thông báo</span>
+                </div>
+                <p><strong>Thông tin chính thức đến chậm ➔ Dễ nhầm thông báo thật / giả.</strong> Kênh đào tạo 1 chiều,
+                  thiếu đường dây nóng xác minh STK 24/7. Nhận tin nhắn dọa xóa tên lúc 11h đêm sinh viên không biết hỏi
+                  ai.</p>
+              </div>
+
+              <div class="canva-card-dark danger">
+                <div class="diagram-step-header">
+                  <span style="font-size: 0.82rem; font-weight: 800; color: #FF4B4B;">⚠️ 3. ĐIỂM YẾU: Ngân hàng / Nhà
+                    mạng ↔ Công an</span>
+                  <span class="diagram-flow-badge" style="color: #FF4B4B;">Chậm phong tỏa</span>
+                </div>
+                <p><strong>Chia sẻ dữ liệu chưa đủ thời gian thực ➔ Chậm phong tỏa dòng tiền.</strong> Dòng tiền tội
+                  phạm bốc hơi trong 3-5 phút, nhưng quy trình công văn hành chính xác minh phong tỏa tài khoản mất 24h
+                  đến vài ngày.</p>
+              </div>
+
+              <!-- BANNER KẾT LUẬN TỪ SƠ ĐỒ CHUẨN CỦA USER -->
+              <div class="canva-banner" style="margin: 0; background: rgba(0, 210, 255, 0.15); border-color: #00D2FF;">
+                <span style="font-size: 1.3rem;">🌐</span>
+                <div style="font-size: 0.78rem; font-weight: 800; color: #00D2FF;">
+                  Cảnh báo còn rời rạc ➔ Cần một mạng lưới liên kết nhất thể (System Wholeness)
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn tham chiếu:</strong> Cổng tiếp nhận phản ánh 156 (<a
+                href="https://thongbaorac.ais.gov.vn" target="_blank">thongbaorac.ais.gov.vn ↗</a>) &bull; Bộ Công
+              An</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 2 (4:00 - 4:45)</strong><br>
+          - Trình bày Sơ đồ Hệ thống Phòng vệ và bóc tách 3 điểm yếu liên kết.<br>
+          - Nhấn mạnh thông điệp từ sơ đồ: Cảnh báo rời rạc sẽ thất bại, cần mạng lưới liên kết nhất thể.
+        </div>
+      </section>
+
+      <!-- SLIDE 7: NGUYÊN LÝ TÍNH NHẤT THỂ (CANVA PAGE 7) -->
+      <section class="slide-item" data-slide="7" data-speaker="Thành viên 2">
+        <div class="slide-inner">
+          <div class="canva-ribbon-header">
+            <div>
+              <div class="canva-pill-badge">NHIỆM VỤ 3 • NGUYÊN LÝ TÍNH NHẤT THỂ (WHOLENESS)</div>
+              <h2 class="canva-title">Nguyên Lý Tính Nhất Thể: Vì Sao Cảnh Báo Rời Rạc Thất Bại?</h2>
+              <p class="canva-desc">Thuộc tính mới nổi (Emergent Properties), Ốc đảo dữ liệu và Công thức hiệp đồng 1 +
+                1 &gt; 2</p>
+            </div>
+          </div>
+
+          <div class="diagram-split-container">
+            <div class="canva-card-dark"
+              style="display: flex; flex-direction: column; justify-content: center; gap: 8px;">
+              <div class="canva-pill-badge" style="width: fit-content;">ĐỊNH LÝ TÍNH NHẤT THỂ (WHOLENESS)</div>
+              <p style="font-size: 0.88rem; font-style: italic; color: #E2E8F0; line-height: 1.5;">
+                "Một hệ thống là một chỉnh thể hữu cơ, trong đó các thuộc tính tổng thể (Emergent Properties) không thể
+                suy ra bằng cách cộng gộp số học các phần tử riêng rẽ."
+              </p>
+              <div
+                style="font-family: monospace; font-size: 0.88rem; font-weight: 800; color: #FF4B4B; background: rgba(255, 75, 75, 0.1); padding: 6px 10px; border-radius: 4px; border: 1px solid rgba(255, 75, 75, 0.3);\">
+                Hiệu quả phòng vệ &ne; Cảnh báo Trường + SMS Nhà mạng + Pop-up Ngân hàng
+              </div>
+              <p style="font-size: 0.74rem; color: #94A3B8;">
+                Năng lực tự bảo vệ xã hội chỉ xuất hiện khi các phân hệ chia sẻ luồng thông tin hai chiều đồng bộ
+                (Closed-loop Feedback). Khi phân rã thành ốc đảo, thuộc tính này biến mất hoàn toàn.
+              </p>
+            </div>
+
+            <div class="diagram-content-col">
+              <div class="canva-card-white">
+                <h4 style="font-size: 0.82rem; color: #0284C7;">1. Ốc đảo dữ liệu (Data Silos)</h4>
+                <p>Mỗi phân hệ vận hành độc lập: Ngân hàng thấy chuyển tiền, Nhà mạng thấy cuộc gọi, Trường thấy thông
+                  báo nộp học phí. Không bên nào nắm trọn bức tranh toàn cảnh của vụ lừa.</p>
+              </div>
+
+              <div class="canva-card-white">
+                <h4 style="font-size: 0.82rem; color: #0284C7;">2. Khai thác khoảng trống ranh giới</h4>
+                <p>Tội phạm mạng không tấn công vào tường lửa ngân hàng; chúng khai thác chính ranh giới chuyển tiếp
+                  thiếu kiểm soát giữa sinh viên và các bên liên quan.</p>
+              </div>
+
+              <div class="canva-card-white">
+                <h4 style="font-size: 0.82rem; color: #0284C7;">3. Quá tải cảnh báo (Warning Fatigue)</h4>
+                <p>Quá nhiều thông báo chung chung không đúng lúc khiến sinh viên nảy sinh tâm lý trơ phản ứng
+                  (Habituation), sinh viên bấm "Bỏ qua" khi đối mặt với bẫy lừa thật.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn học thuật:</strong> Donella H. Meadows — "Thinking in Systems: A Primer"
+              (2008)</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 2 (4:45 - 5:30)</strong><br>
+          - Giới thiệu định lý Tính nhất thể Donella Meadows.<br>
+          - Giải thích 3 căn nguyên vì sao cảnh báo đơn lẻ thất bại: Ốc đảo dữ liệu, khoảng trống ranh giới và quá tải
+          cảnh báo.
+        </div>
+      </section>
+
+      <!-- SLIDE 8: CƠ ĐỒ TƯ DUY HỆ THỐNG TOÀN CẢNH (CANVA PAGE 8 - MINDMAP) -->
+      <section class="slide-item" data-slide="8" data-speaker="Thành viên 2">
+        <div class="slide-inner">
+          <div class="canva-ribbon-header">
+            <div>
+              <div class="canva-pill-badge">NHIỆM VỤ 1, 2, 3 • CƠ ĐỒ TƯ DUY HỆ THỐNG</div>
+              <h2 class="canva-title">Cơ Đồ Tư Duy: Mạng Lưới Phòng Vệ &amp; Tác Nhân Liên Kết</h2>
+              <p class="canva-desc">Tổng hợp toàn diện mối quan hệ giữa Hệ thống đối kháng và Hệ thống phòng vệ đa tầng
+              </p>
+            </div>
+          </div>
+
+          <div class="mindmap-grid" style="margin-top: 6px;">
+            <!-- CỘT 1 -->
+            <div class="mindmap-col">
+              <div class="canva-card-dark danger">
+                <h4 style="color: #FF4B4B;">🎯 1. Phân Hệ Đối Kháng</h4>
+                <p><strong>• Săn mục tiêu:</strong> Thu thập data rò rỉ group tân SV, mạng xã hội.<br>
+                  <strong>• Tạo lòng tin:</strong> Giả mạo trường/công an, thả mồi 50k, Deepfake.<br>
+                  <strong>• Tẩu tán:</strong> TK rác (mule), né QĐ 2345, rửa crypto trong 3 phút.
+                </p>
+              </div>
+              <div class="canva-card-dark danger">
+                <h4 style="color: #FF4B4B;">🔄 2. Vòng Lặp Thích Nghi</h4>
+                <p><strong>• Mùa vụ:</strong> Tháng 9 học phí, Tết việc làm thêm.<br>
+                  <strong>• Công nghệ:</strong> Chuyển sang Telegram/VoIP.<br>
+                  <strong>• Luật:</strong> Chia nhỏ lệnh &lt; 10 triệu đồng.
+                </p>
+              </div>
+            </div>
+
+            <!-- CỘT 2 -->
+            <div class="mindmap-col">
+              <div class="canva-card-white" style="border-left: 4px solid #00D2FF; text-align: center;">
+                <h4 style="color: #0B192C; font-size: 0.85rem;">🎓 SINH VIÊN (TRUNG TÂM PHÒNG THỦ)</h4>
+                <p style="font-size: 0.72rem; color: #64748B;">Mắt xích dễ tổn thương nhất do thiếu trải nghiệm</p>
+                <div
+                  style="text-align: left; margin-top: 6px; font-size: 0.7rem; color: #334155; display: flex; flex-direction: column; gap: 4px;">
+                  <div>⚡ <strong>Gia đình:</strong> Sợ bị la mắng, cô lập thông tin.</div>
+                  <div>⚡ <strong>Nhà trường:</strong> Kênh 1 chiều, thiếu xác minh 24/7.</div>
+                  <div>⚡ <strong>Công an / Ngân hàng:</strong> Độ trễ hành chính vài ngày.</div>
+                </div>
+              </div>
+              <div class="canva-card-dark success" style="text-align: center;">
+                <h4 style="color: #10B981;">⚖️ Tính Nhất Thể (1 + 1 &gt; 2)</h4>
+                <p>Phá vỡ ốc đảo dữ liệu &bull; Luồng phản hồi 2 chiều &bull; Bảo vệ tức thời</p>
+              </div>
+            </div>
+
+            <!-- CỘT 3 -->
+            <div class="mindmap-col">
+              <div class="canva-card-dark">
+                <h4 style="color: #00D2FF;">🛡️ 3. Cổng Tra Cứu (Tiền Kiểm)</h4>
+                <p><strong>• Đối soát đa nguồn:</strong> SĐT, Email chuẩn <code>.edu.vn</code>, STK.<br>
+                  <strong>• Trợ lý AI Offline:</strong> Bóc tách kịch bản giục nộp tiền.<br>
+                  <strong>• Firebase Realtime:</strong> Chia sẻ cảnh báo chéo.
+                </p>
+              </div>
+              <div class="canva-card-dark success">
+                <h4 style="color: #10B981;">🚨 4. Quy Trình Giờ Vàng (Hậu Kiểm)</h4>
+                <p><strong>• 0 - 15 phút:</strong> Cắt mạng, khóa ngân hàng.<br>
+                  <strong>• 15 - 30 phút:</strong> Gỡ app độc, đổi pass, báo Công an/156.<br>
+                  <strong>• Báo cáo Cổng Tổ 4:</strong> Cảnh báo cộng đồng.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn tổng hợp:</strong> Donella H. Meadows &bull; Bộ Công An &bull; QĐ 2345/QĐ-NHNN</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 2 (5:30 - 6:15)</strong><br>
+          - Giới thiệu Cơ đồ tư duy hệ thống: Khái quát hóa trọn vẹn 4 trụ cột kiến thức của đề tài.<br>
+          - Chuyển giao phần trình bày cho Thành viên 3 sang Giải pháp Cổng tra cứu Tổ 4.
+        </div>
+      </section>
+
+      <!-- SLIDE 9: GIẢI PHÁP TỔNG THỂ CỔNG TRA CỨU TỔ 4 (CANVA PAGE 9) -->
+      <section class="slide-item" data-slide="9" data-speaker="Thành viên 3">
+        <div class="slide-inner">
+          <div class="canva-ribbon-header">
+            <div>
+              <div class="canva-pill-badge">NHIỆM VỤ 4 • GIẢI PHÁP HỆ THỐNG CÔNG NGHỆ</div>
+              <h2 class="canva-title">Giải Pháp Cổng Tra Cứu &amp; Tiếp Nhận Tổ 4</h2>
+              <p class="canva-desc">Mục tiêu tối thượng và 4 phân hệ kỹ thuật tái lập tính nhất thể bảo vệ tân sinh viên
+              </p>
+            </div>
+          </div>
+
+          <div class="canva-banner">
+            <span>🎯 <strong>MỤC TIÊU HỆ THỐNG TỔ 4:</strong> Xóa bỏ hoàn toàn ốc đảo dữ liệu (Data Silos), tái lập tính
+              nhất thể bằng công cụ đối soát tiền kiểm thời gian thực (&lt; 1s), tiếp nhận phản ánh cộng sinh, trợ lý AI
+              bóc tách tin nhắn lừa đảo và kích hoạt kịch bản Giờ Vàng.</span>
+          </div>
+
+          <div class="grid-4" style="gap: 10px; margin-top: 8px;">
+            <div class="canva-card-white">
+              <h4 style="font-size: 0.85rem; color: #0284C7;">1. Tiền Kiểm Đa Nguồn</h4>
+              <p>Tra cứu SĐT trong CSDL 100+ số lừa đảo của Bộ Công An, đối chiếu tên miền trường chuẩn
+                <code>.edu.vn</code> và kiểm tra STK lạ.</p>
+            </div>
+
+            <div class="canva-card-white">
+              <h4 style="font-size: 0.85rem; color: #0284C7;">2. Trợ Lý AI Offline</h4>
+              <p>Mô hình AI phân tích ngữ nghĩa SMS/Zalo, nhận diện bẫy nợ học phí và đe dọa xóa tên SV, hoạt động
+                offline bảo mật dữ liệu riêng tư.</p>
+            </div>
+
+            <div class="canva-card-white">
+              <h4 style="font-size: 0.85rem; color: #0284C7;">3. CSDL Firebase Realtime</h4>
+              <p>Tiếp nhận phản ánh, tự động cấp mã Ticket ID, đồng bộ đám mây Firestore với Anonymous Auth và chia sẻ
+                cảnh báo chéo cho sinh viên.</p>
+            </div>
+
+            <div class="canva-card-white">
+              <h4 style="font-size: 0.85rem; color: #0284C7;">4. Kịch Bản Giờ Vàng</h4>
+              <p>Checklist 6 bước hành động khẩn cấp trong 15-30 phút đầu: ngắt kết nối mạng, phong tỏa ngân hàng và báo
+                Công an ngăn chặn thất thoát.</p>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn tham chiếu:</strong> Dự án Chống Lừa Đảo Việt Nam (<a href="https://chongluadao.vn"
+                target="_blank">chongluadao.vn ↗</a>) &bull; Báo Chính Phủ</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 3 (6:15 - 7:00)</strong><br>
+          - Giới thiệu giải pháp công nghệ Cổng tra cứu Tổ 4 gồm 4 phân hệ kỹ thuật.<br>
+          - Giải quyết triệt để 3 điểm yếu liên kết đã chỉ ra ở Slide 6.
+        </div>
+      </section>
+
+      <!-- SLIDE 10: DEMO SẢN PHẨM & MÃ qr_web_app.pngQR SIÊU TO (CANVA PAGE 10) -->
+      <section class="slide-item" data-slide="10" data-speaker="Thành viên 4">
+        <div class="slide-inner">
+          <div class="canva-ribbon-header">
+            <div>
+              <div class="canva-pill-badge">SẢN PHẨM THỰC TẾ • DEMO ỨNG DỤNG &amp; MÃ QR</div>
+              <h2 class="canva-title">Trải Nghiệm Cổng Tra Cứu Trực Tuyến &amp; Quét Mã QR</h2>
+              <p class="canva-desc">Hình ảnh phần mềm trực quan to rõ và mã QR tương tác trực tiếp bằng Smartphone</p>
+            </div>
+          </div>
+
+          <div class="canva-demo-grid">
+            <!-- CỘT TRÁI: 2 ẢNH PHẦN MỀM SIÊU TO -->
+            <div class="showcase-media-col">
+              <div class="showcase-media-grid">
+                <div class="canva-card-dark" style="padding: 6px;">
+                  <img src="assets/app_portal_preview.png" alt="Cổng Tra Cứu SĐT Tổ 4"
+                    style="width:100%; max-height:220px; object-fit:cover; border-radius:4px; display:block;">
+                  <div style="font-size:0.72rem; color:#00D2FF; text-align:center; font-weight:700; margin-top:5px;">
+                    🔍 Cổng Tra Cứu SĐT &amp; Đối Soát Email Chuẩn .edu.vn
+                  </div>
+                </div>
+                <div class="canva-card-dark" style="padding: 6px;">
+                  <img src="assets/app_ai_analyzer.png" alt="Trợ lý AI bóc tách tin nhắn"
+                    style="width:100%; max-height:220px; object-fit:cover; border-radius:4px; display:block;">
+                  <div style="font-size:0.72rem; color:#00D2FF; text-align:center; font-weight:700; margin-top:5px;">
+                    🤖 Trợ Lý AI Offline Bóc Tách Kịch Bản Giục Nộp Tiền
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CỘT PHẢI: MÃ QR SIÊU TO VÀ TÍNH NĂNG -->
+            <div class="showcase-info-col">
+              <div class="feature-pill-grid">
+                <div class="canva-card-white" style="padding: 6px 10px;">
+                  <h4 style="font-size: 0.78rem; color: #0B192C;">🔍 Tiền Kiểm &lt; 1s</h4>
+                  <p style="font-size: 0.68rem;">Tra cứu ngay 100+ số Bộ Công An &amp; domain trường.</p>
+                </div>
+                <div class="canva-card-white" style="padding: 6px 10px;">
+                  <h4 style="font-size: 0.78rem; color: #0B192C;">🤖 Local AI</h4>
+                  <p style="font-size: 0.68rem;">Phân tích tin nhắn đe dọa, bảo mật dữ liệu tuyệt đối.</p>
+                </div>
+                <div class="canva-card-white" style="padding: 6px 10px;">
+                  <h4 style="font-size: 0.78rem; color: #0B192C;">📋 Firebase Realtime</h4>
+                  <p style="font-size: 0.68rem;">Cấp Ticket ID tự động, đồng bộ cảnh báo cộng đồng.</p>
+                </div>
+                <div class="canva-card-white" style="padding: 6px 10px;">
+                  <h4 style="font-size: 0.78rem; color: #0B192C;">📱 Mobile First</h4>
+                  <p style="font-size: 0.68rem;">Giao diện tối ưu Smartphone, hỗ trợ Dark Mode.</p>
+                </div>
+              </div>
+
+              <!-- HỘP MÃ QR SIÊU TO DỄ QUÉT TỪ XA -->
+              <div class="canva-qr-box">
+                <img class="canva-qr-img" src="assets/qr_web_app.png" alt="Mã QR Quét Cổng Tra Cứu Tổ 4">
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                  <div class="canva-pill-badge"
+                    style="background: #00D2FF; color: #0B192C; width: fit-content; font-weight: 900;">
+                    📷 QUÉT BẰNG CAMERA ĐIỆN THOẠI
+                  </div>
+                  <strong style="font-size: 0.88rem; color: #FFFFFF;">Dùng Thử Ứng Dụng Ngay Trên Smartphone</strong>
+                  <p style="font-size: 0.72rem; color: #CBD5E1; margin: 0;">Quét mã QR trên màn hình hoặc truy cập đường
+                    link:</p>
+                  <a href="https://ductruongvu23.github.io/chude9to4/app/index.html" target="_blank"
+                    rel="noopener noreferrer"
+                    style="font-size: 0.72rem; font-weight: 700; color: #00D2FF; text-decoration: underline; word-break: break-all;">
+                    ductruongvu23.github.io/chude9to4/app/index.html ↗
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Trải nghiệm trực tiếp:</strong> Cổng Tra Cứu &amp; Tiếp Nhận Lừa Đảo — Tổ 4 (<a
+                href="../app/index.html" target="_blank">Mở App tại ../app/index.html ↗</a>)</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 4 (7:00 - 7:45)</strong><br>
+          - Giới thiệu 2 ảnh giao diện phần mềm to rõ nét: Cổng tra cứu SĐT và Trợ lý AI Offline.<br>
+          - Mời Thầy Cô và các bạn quét mã QR siêu to trực tiếp bằng camera điện thoại để trải nghiệm.
+        </div>
+      </section>
+
+      <!-- SLIDE 11: ĐẶC TẢ YÊU CẦU CHỨC NĂNG & PHI CHỨC NĂNG (CANVA PAGE 11) -->
+      <section class="slide-item" data-slide="11" data-speaker="Thành viên 3">
+        <div class="slide-inner">
+          <div class="canva-ribbon-header">
+            <div>
+              <div class="canva-pill-badge">KỸ THUẬT HỆ THỐNG • SPECIFICATIONS</div>
+              <h2 class="canva-title">Bảng Đặc Tả Yêu Cầu Chức Năng (FR) &amp; Phi Chức Năng (NFR)</h2>
+              <p class="canva-desc">Các chuẩn mực kỹ thuật đảm bảo hiệu năng cao, bảo mật dữ liệu và sẵn sàng mở rộng
+              </p>
+            </div>
+          </div>
+
+          <div class="diagram-split-container">
+            <div class="canva-card-white" style="border-left: 4px solid #0284C7;">
+              <h3 style="font-size: 0.95rem; color: #0284C7; margin-bottom: 8px;">⚙️ Yêu Cầu Chức Năng (Functional
+                Requirements)</h3>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div><strong>FR1. Tra cứu đa nguồn:</strong> Đối soát SĐT trong CSDL 100+ số, xác thực domain trường
+                  <code>.edu.vn</code> và STK lạ.</div>
+                <div><strong>FR2. Trợ lý AI Bóc tách:</strong> Nhận diện câu từ áp lực thời gian, đe dọa nợ học phí và
+                  gán nhãn mức độ rủi ro.</div>
+                <div><strong>FR3. Tiếp nhận phản ánh:</strong> Cấp Ticket ID ngẫu nhiên, lưu trữ đám mây Firestore với
+                  Anonymous Auth.</div>
+                <div><strong>FR4. Điều phối Giờ Vàng:</strong> Checklist 6 bước ứng phó khẩn cấp hướng dẫn trực quan
+                  từng phút.</div>
+              </div>
+            </div>
+
+            <div class="canva-card-dark" style="border-left: 4px solid #00D2FF;">
+              <h3 style="font-size: 0.95rem; color: #00D2FF; margin-bottom: 8px;">🚀 Yêu Cầu Phi Chức Năng
+                (Non-Functional Requirements)</h3>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div><strong>NFR1. Tốc độ phản hồi:</strong> Thời gian đối soát &lt; 1 giây, tải ứng dụng ban đầu &lt; 2
+                  giây trên mạng 4G.</div>
+                <div><strong>NFR2. Quyền riêng tư (Zero-PII):</strong> Tuân thủ Nghị định 13/2023/NĐ-CP, Local AI ẩn
+                  danh dữ liệu tại trình duyệt.</div>
+                <div><strong>NFR3. Tối ưu di động 100%:</strong> Giao diện Responsive chuẩn Touch UX, hỗ trợ Light/Dark
+                  mode thích ứng.</div>
+                <div><strong>NFR4. Offline-First:</strong> Hoạt động ngoại tuyến khi mất sóng, sẵn sàng nâng cấp thành
+                  PWA.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn quy chuẩn:</strong> Nghị định 13/2023/NĐ-CP về Bảo vệ dữ liệu cá nhân</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 3 (7:45 - 8:30)</strong><br>
+          - Báo cáo chi tiết 4 Yêu cầu Chức năng (FR1-FR4) và 4 Yêu cầu Phi chức năng (NFR1-NFR4).<br>
+          - Nhấn mạnh tiêu chuẩn phản hồi dưới 1 giây và nguyên tắc Zero-PII bảo vệ sinh viên.
+        </div>
+      </section>
+
+      <!-- SLIDE 12: MA TRẬN RỦI RO & KIỂM SOÁT (CANVA PAGE 12) -->
+      <section class="slide-item" data-slide="12" data-speaker="Thành viên 3">
+        <div class="slide-inner">
+          <div class="canva-ribbon-header">
+            <div>
+              <div class="canva-pill-badge">QUẢN TRỊ HỆ THỐNG • RISK MATRIX</div>
+              <h2 class="canva-title">Ma Trận Đánh Giá &amp; Kiểm Soát Rủi Ro Hệ Thống</h2>
+              <p class="canva-desc">Nhận diện 5 rủi ro vận hành và thiết lập giải pháp kiểm soát chủ động</p>
+            </div>
+          </div>
+
+          <div class="risk-matrix-grid" style="margin-top: 6px;">
+            <div class="risk-card-item risk-high">
+              <div class="risk-header-row">
+                <span class="risk-title">1. Ỷ Lại Công Nghệ</span>
+                <span class="risk-badge high">Cao</span>
+              </div>
+              <p class="risk-desc">Sinh viên tin tưởng tuyệt đối vào công cụ, mất cảnh giác với các phương thức lừa đảo
+                gặp trực tiếp.</p>
+              <div class="risk-mitigation"><strong>Kiểm soát:</strong> Tích hợp cẩm nang "Tư duy phản biện", giáo dục
+                nguyên tắc xác minh độc lập.</div>
+            </div>
+
+            <div class="risk-card-item risk-med">
+              <div class="risk-header-row">
+                <span class="risk-title">2. Báo Động Sai</span>
+                <span class="risk-badge med">TB</span>
+              </div>
+              <p class="risk-desc">Gắn cờ nhầm email hoặc SMS nhắc đóng học phí thật của trường, gây hoang mang cho sinh
+                viên.</p>
+              <div class="risk-mitigation"><strong>Kiểm soát:</strong> Xây dựng Danh bạ trắng (Official Whitelist) xác
+                thực số của nhà trường.</div>
+            </div>
+
+            <div class="risk-card-item risk-high">
+              <div class="risk-header-row">
+                <span class="risk-title">3. Tấn Công Đối Kháng</span>
+                <span class="risk-badge high">Cao</span>
+              </div>
+              <p class="risk-desc">Tội phạm liên tục đổi số SIP, biến tướng từ ngữ tinh vi để qua mặt bộ lọc từ khóa đơn
+                giản.</p>
+              <div class="risk-mitigation"><strong>Kiểm soát:</strong> AI phân tích ngữ nghĩa hành vi (áp lực tâm lý)
+                thay vì chỉ lọc từ khóa tĩnh.</div>
+            </div>
+
+            <div class="risk-card-item risk-med">
+              <div class="risk-header-row">
+                <span class="risk-title">4. Báo Cáo Khống</span>
+                <span class="risk-badge med">TB</span>
+              </div>
+              <p class="risk-desc">Người dùng vô ý hoặc cố tình báo cáo số của người khác để chơi xấu làm nhiễu loạn
+                CSDL.</p>
+              <div class="risk-mitigation"><strong>Kiểm soát:</strong> Cơ chế xác thực chéo (Cross-verification) và Rate
+                limiting 30s chống spam.</div>
+            </div>
+
+            <div class="risk-card-item risk-low">
+              <div class="risk-header-row">
+                <span class="risk-title">5. Lộ Lọt Dữ Liệu PII</span>
+                <span class="risk-badge low">Thấp</span>
+              </div>
+              <p class="risk-desc">Rủi ro lộ hình ảnh sao kê, tên tuổi sinh viên khi tải ảnh chứng cứ lên hệ thống tiếp
+                nhận.</p>
+              <div class="risk-mitigation"><strong>Kiểm soát:</strong> Local AI xử lý ngay tại máy khách; tự động che số
+                CCCD, STK theo Nghị định 13.</div>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn tham chiếu:</strong> Chuẩn quản trị rủi ro ISO 31000 &bull; Báo Chính Phủ</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 3 (8:30 - 9:15)</strong><br>
+          - Trình bày Ma trận 5 rủi ro và giải pháp kiểm soát tương ứng.<br>
+          - Chuyển giao phần trình bày cho Thành viên 4 sang Quy trình Giờ Vàng và Đội ngũ thực hiện.
+        </div>
+      </section>
+
+      <!-- SLIDE 13: QUY TRÌNH ỨNG PHÓ KHỦNG HOẢNG GIỜ VÀNG (CANVA PAGE 13) -->
+      <section class="slide-item" data-slide="13" data-speaker="Thành viên 4">
+        <div class="slide-inner">
+          <div class="canva-ribbon-header">
+            <div>
+              <div class="canva-pill-badge">XỬ LÝ KHỦNG HOẢNG • CRISIS RESPONSE</div>
+              <h2 class="canva-title">Quy Trình Ứng Phó Khủng Hoảng "Giờ Vàng" 15-30 Phút Đầu</h2>
+              <p class="canva-desc">Kịch bản phản ứng khẩn cấp 6 bước giảm thiểu tối đa thiệt hại tài sản khi sinh viên
+                bị lừa</p>
+            </div>
+          </div>
+
+          <div class="canva-banner danger">
+            <span>🚨 <strong>QUY TẮC GIỜ VÀNG (15-30 PHÚT ĐẦU):</strong> Tội phạm mất từ 3-5 phút để tẩu tán dòng tiền.
+              Hành động khẩn cấp từng phút quyết định khả năng phong tỏa và thu hồi tài sản!</span>
+          </div>
+
+          <div class="crisis-grid" style="margin-top: 6px;">
+            <div class="crisis-card urgent">
+              <div class="crisis-step-badge">BƯỚC 1 (0-3 Phút)</div>
+              <h4>Ngắt Kết Nối Mạng</h4>
+              <p>Bật ngay <strong>Chế độ máy bay</strong>, tắt Wi-Fi và 4G để ngăn app độc chiếm quyền điều khiển từ xa
+                (Accessibility).</p>
+            </div>
+
+            <div class="crisis-card urgent">
+              <div class="crisis-step-badge">BƯỚC 2 (3-10 Phút)</div>
+              <h4>Khóa Ngân Hàng Khẩn Cấp</h4>
+              <p>Gọi hotline ngân hàng hoặc đăng nhập từ máy an toàn để <strong>Khóa thẻ &amp; phong tỏa tài
+                  khoản</strong> ngay lập tức.</p>
+            </div>
+
+            <div class="crisis-card urgent">
+              <div class="crisis-step-badge">BƯỚC 3 (10-15 Phút)</div>
+              <h4>Gỡ Ứng Dụng Độc Hại</h4>
+              <p>Vào Cài đặt ➔ Ứng dụng để gỡ app giả mạo; nếu bị chiếm quyền thì <strong>Khôi phục cài đặt gốc</strong>
+                thiết bị.</p>
+            </div>
+
+            <div class="crisis-card">
+              <div class="crisis-step-badge">BƯỚC 4 (15-20 Phút)</div>
+              <h4>Đổi Toàn Bộ Mật Khẩu</h4>
+              <p>Dùng máy tính an toàn đổi mật khẩu Email, tài khoản mạng xã hội, VNeID và bật xác thực 2 lớp (2FA).</p>
+            </div>
+
+            <div class="crisis-card">
+              <div class="crisis-step-badge">BƯỚC 5 (20-30 Phút)</div>
+              <h4>Trình Báo Công An &amp; 156</h4>
+              <p>Chụp màn hình tin nhắn, sao kê giao dịch làm bằng chứng; gọi <strong>156</strong> và đến Công an phường
+                trình báo.</p>
+            </div>
+
+            <div class="crisis-card">
+              <div class="crisis-step-badge">BƯỚC 6 (Sau 30 Phút)</div>
+              <h4>Báo Cáo Lên Cổng Tổ 4</h4>
+              <p>Gửi thông tin số lừa đảo lên <strong>Cổng Tra Cứu Tổ 4</strong> để kích hoạt cảnh báo chéo cho toàn thể
+                sinh viên.</p>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nguồn khuyến nghị:</strong> Cục An toàn thông tin &bull; Bộ Công An — Khuyến cáo xử lý khi
+              bị lừa đảo tài chính</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 4 (9:15 - 10:00)</strong><br>
+          - Hướng dẫn quy trình 6 bước ứng phó Giờ Vàng từng phút.<br>
+          - Nhấn mạnh nguyên tắc: Ngắt mạng đầu tiên, khóa ngân hàng ngay lập tức và báo Công an kèm chứng cứ số.
+        </div>
+      </section>
+
+      <!-- SLIDE 14: ĐỘI NGŨ THỰC HIỆN TỔ 4 (CANVA PAGE 14) -->
+      <section class="slide-item" data-slide="14" data-speaker="Thành viên 4">
+        <div class="slide-inner">
+          <div class="canva-ribbon-header">
+            <div>
+              <div class="canva-pill-badge">NHÂN SỰ THỰC HIỆN • OUR TEAM</div>
+              <h2 class="canva-title">Đội Ngũ Thực Hiện Đề Tài 9 — Nhóm Tổ 4</h2>
+              <p class="canva-desc">Phân công nhiệm vụ hệ thống, vai trò nghiên cứu và phát triển sản phẩm</p>
+            </div>
+          </div>
+
+          <div class="grid-4" style="margin-top: 10px; gap: 12px;">
+            <div class="canva-card-dark" style="text-align: center; border-top: 3px solid #00D2FF;">
+              <div class="canva-hex-icon"
+                style="margin: 0 auto 8px auto; width: 42px; height: 42px; font-size: 1.1rem;">1</div>
+              <h3 style="font-size: 0.95rem; color: #FFFFFF;">Thành Viên 1</h3>
+              <div style="font-size: 0.72rem; color: #00D2FF; font-weight: 700; margin-bottom: 6px;">Trưởng Nhóm /
+                Nghiên Cứu Bối Cảnh</div>
+              <p style="font-size: 0.72rem;">Nghiên cứu Bối cảnh, Bằng chứng thực tế, phân tích Hệ thống Đối kháng và
+                Vòng lặp thích nghi (Nhiệm vụ 1).</p>
+            </div>
+
+            <div class="canva-card-dark" style="text-align: center; border-top: 3px solid #00D2FF;">
+              <div class="canva-hex-icon"
+                style="margin: 0 auto 8px auto; width: 42px; height: 42px; font-size: 1.1rem;">2</div>
+              <h3 style="font-size: 0.95rem; color: #FFFFFF;">Thành Viên 2</h3>
+              <div style="font-size: 0.72rem; color: #00D2FF; font-weight: 700; margin-bottom: 6px;">Phân Tích Hệ Thống
+                &amp; Wholeness</div>
+              <p style="font-size: 0.72rem;">Phân tích Hệ thống Phòng vệ 6 tác nhân, 3 Điểm yếu liên kết, Định lý Tính
+                Nhất Thể và xây dựng Cơ đồ tư duy (Nhiệm vụ 2 &amp; 3).</p>
+            </div>
+
+            <div class="canva-card-dark" style="text-align: center; border-top: 3px solid #00D2FF;">
+              <div class="canva-hex-icon"
+                style="margin: 0 auto 8px auto; width: 42px; height: 42px; font-size: 1.1rem;">3</div>
+              <h3 style="font-size: 0.95rem; color: #00D2FF; font-weight: 700; margin-bottom: 6px;">Thành Viên 3</h3>
+              <div style="font-size: 0.72rem; color: #00D2FF; font-weight: 700; margin-bottom: 6px;">Kiến Trúc Sư Giải
+                Pháp &amp; Rủi Ro</div>
+              <p style="font-size: 0.72rem;">Thiết kế kiến trúc Cổng Tra Cứu, bảng đặc tả FR/NFR, xây dựng Ma trận 5 Rủi
+                ro và chiến lược kiểm soát (Nhiệm vụ 4).</p>
+            </div>
+
+            <div class="canva-card-dark" style="text-align: center; border-top: 3px solid #00D2FF;">
+              <div class="canva-hex-icon"
+                style="margin: 0 auto 8px auto; width: 42px; height: 42px; font-size: 1.1rem;">4</div>
+              <h3 style="font-size: 0.95rem; color: #FFFFFF;">Thành Viên 4</h3>
+              <div style="font-size: 0.72rem; color: #00D2FF; font-weight: 700; margin-bottom: 6px;">Kỹ Sư Phần Mềm
+                &amp; Demo Thực Tế</div>
+              <p style="font-size: 0.72rem;">Lập trình Web App, tích hợp Local AI, cấu hình Firebase Cloud Firestore,
+                tạo mã QR và xây dựng kịch bản Giờ Vàng.</p>
+            </div>
+          </div>
+
+          <div class="slide-source-caption">
+            <span>📌 <strong>Nhóm thực hiện:</strong> Sinh viên Tổ 4 &bull; Học phần Tư duy Hệ thống</span>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 4 (10:00 - 10:30)</strong><br>
+          - Giới thiệu đội ngũ thực hiện Đề tài 9 và sự phối hợp nhịp nhàng giữa 4 thành viên.
+        </div>
+      </section>
+
+      <!-- SLIDE 15: KẾT LUẬN & THÔNG ĐIỆP HỆ THỐNG (CANVA PAGE 15) -->
+      <section class="slide-item" data-slide="15" data-speaker="Thành viên 4">
+        <div class="slide-inner">
+          <div class="canva-cover-grid">
+            <div class="canva-cover-left">
+              <div class="canva-pill-badge">KẾT LUẬN &amp; THÔNG ĐIỆP • THANK YOU</div>
+              <h2 class="canva-title" style="font-size: 1.75rem; line-height: 1.25;">
+                Tuyên Ngôn Tư Duy Hệ Thống: Cùng Xây Dựng Lá Chắn An Toàn
+              </h2>
+
+              <div class="canva-card-white" style="border-left: 4px solid #00D2FF; margin-top: 6px;">
+                <p style="font-size: 0.85rem; font-style: italic; color: #0B192C; font-weight: 600;">
+                  "Không có giải pháp công nghệ nào bảo vệ được sinh viên nếu các mối liên kết con người bị cắt đứt. Sức
+                  mạnh phòng thủ tối thượng nằm ở sự kết nối nhất thể giữa Sinh viên — Gia đình — Nhà trường — Xã hội."
+                </p>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px;">
+                <div class="canva-card-dark danger" style="padding: 8px 10px;">
+                  <h4 style="color: #FF4B4B; font-size: 0.8rem;">🛑 3 NGUYÊN TẮC "KHÔNG"</h4>
+                  <p style="font-size: 0.72rem;">• Không vội chuyển tiền.<br>• Không click link lạ.<br>• Không cài app
+                    ngoài Store.</p>
+                </div>
+                <div class="canva-card-dark success" style="padding: 8px 10px;">
+                  <h4 style="color: #10B981; font-size: 0.8rem;">✅ 3 HÀNH ĐỘNG "NÊN"</h4>
+                  <p style="font-size: 0.72rem;">• Nên tra cứu Cổng Tổ 4.<br>• Nên chia sẻ với gia đình.<br>• Nên báo
+                    Công an / 156 ngay.</p>
+                </div>
+              </div>
+
+              <div style="font-size: 0.95rem; font-weight: 800; color: #00D2FF; margin-top: 4px;">
+                Xin chân thành cảm ơn Thầy Cô và các bạn đã chú ý lắng nghe!
+              </div>
+            </div>
+
+            <div class="canva-cover-right">
+              <div class="canva-cover-polygon-frame"
+                style="border-color: #10B981; box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);">
+                <img src="assets/canva_cyber_bg.jpg" alt="Tech Handshake Canva Final Slide">
+              </div>
+              <div style="margin-top: 10px; display: flex; gap: 8px;">
+                <a href="https://ductruongvu23.github.io/chude9to4/app/index.html" target="_blank"
+                  class="btn-ctrl btn-highlight" style="font-size: 0.8rem; padding: 6px 14px;">
+                  🚀 Trải nghiệm Cổng Tổ 4 Ngay
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="speaker-notes-content" style="display:none;">
+          <strong>Diễn giả: Thành viên 4 (10:30 - 11:00)</strong><br>
+          - Kết luận toàn bộ đề tài: đúc kết thông điệp Tư duy hệ thống và nguyên tắc 3 Không - 3 Nên.<br>
+          - Cảm ơn Thầy Cô và các bạn. Mời Thầy Cô và hội đồng đặt câu hỏi phản biện.
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Presentation Footer Controls -->
+  <footer class="presentation-footer">
+    <div class="footer-left">
+      <button class="nav-btn" onclick="prevSlide()" title="Slide trước (Mũi tên trái)">
+        ◀ Trước
+      </button>
+      <div class="slide-counter">
+        <span id="currentSlideNum">1</span> / <span id="totalSlidesNum">15</span>
+      </div>
+      <button class="nav-btn primary" onclick="nextSlide()" title="Slide kế tiếp (Mũi tên phải/Space)">
+        Tiếp ▶
+      </button>
+      <span class="speaker-indicator" id="speakerIndicator" style="color: #00D2FF;">
+        Thành viên 1
+      </span>
+    </div>
+
+    <div class="footer-right">
+      <span style="font-size: 0.76rem; color: #94A3B8;">
+        Môn: <strong>Tư Duy Hệ Thống</strong> &bull; Đề tài 9 &bull; Nhóm <strong>Tổ 4</strong>
+      </span>
+    </div>
+  </footer>
+
+  <!-- Presenter Drawer -->
+  <aside class="presenter-drawer" id="presenterDrawer">
+    <div class="drawer-header">
+      <div class="drawer-title" style="color: #00D2FF; font-weight: 800;">🎙️ GHI CHÚ THUYẾT TRÌNH VIÊN (TỔ 4 - CANVA
+        PITCH DECK)</div>
+      <button class="drawer-close" onclick="togglePresenterMode()">✕</button>
+    </div>
+
+    <div class="timer-section">
+      <div style="display: flex; justify-content: space-between; align-items: baseline;">
+        <span style="font-size: 0.72rem; font-weight: 700; color: #94A3B8;">ĐỒNG HỒ THUYẾT TRÌNH</span>
+        <div class="timer-display" id="timerDisplay" style="color: #00D2FF;">00:00</div>
+      </div>
+      <div class="timer-controls">
+        <button class="btn-timer" onclick="startTimer()">Bắt đầu</button>
+        <button class="btn-timer" onclick="pauseTimer()">Tạm dừng</button>
+        <button class="btn-timer" onclick="resetTimer()">Đặt lại</button>
+      </div>
+      <div style="font-size: 0.72rem; color: #00D2FF; font-weight: 600;">Mục tiêu: 10 - 12 phút (Đảm bảo 1.5đ đúng giờ)
+      </div>
+    </div>
+
+    <div class="notes-section">
+      <div style="font-size: 0.75rem; font-weight: 700; color: #00D2FF; margin-bottom: 8px;" id="currentSpeakerTag">
+        Người nói: Đang tải...</div>
+      <div id="notesBody">Đang tải ghi chú...</div>
+    </div>
+  </aside>
+
+  <script src="js/presentation.js"></script>
+  <script>
+    function toggleDownloadMenu() {
+      const menu = document.getElementById('downloadMenu');
+      if (menu) {
+        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+      }
+    }
+
+    document.addEventListener('click', (e) => {
+      const wrap = document.querySelector('.download-dropdown-wrap');
+      const menu = document.getElementById('downloadMenu');
+      if (wrap && menu && !wrap.contains(e.target)) {
+        menu.style.display = 'none';
+      }
+    });
+
+    function openPrintModal() {
+      window.print();
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => console.log(err));
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+  </script>
+</body>
+
+</html>
