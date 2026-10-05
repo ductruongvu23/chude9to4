@@ -460,6 +460,31 @@ const FirebaseService = (function () {
     };
   }
 
+  // Tỷ lệ % theo loại thủ đoạn (Radar - Task G-03), sắp xếp nhiều nhất trước.
+  // Giữ tối đa `maxItems` dòng; các loại còn lại gộp thành "Thủ đoạn khác".
+  function getScamTypeBreakdown(reports = cachedReports, maxItems = 5) {
+    const total = reports.length;
+    if (total === 0) return [];
+
+    const counts = new Map();
+    reports.forEach(r => {
+      const type = r.scamType || 'Khác';
+      counts.set(type, (counts.get(type) || 0) + 1);
+    });
+
+    const sorted = Array.from(counts, ([scamType, count]) => ({ scamType, count }))
+      .sort((a, b) => b.count - a.count || a.scamType.localeCompare(b.scamType, 'vi'));
+
+    let rows = sorted;
+    if (sorted.length > maxItems) {
+      const top = sorted.slice(0, maxItems - 1);
+      const otherCount = sorted.slice(maxItems - 1).reduce((sum, r) => sum + r.count, 0);
+      rows = [...top, { scamType: 'Thủ đoạn khác', count: otherCount, isOther: true }];
+    }
+
+    return rows.map(r => ({ ...r, percent: Math.round((r.count / total) * 100) }));
+  }
+
   // =================================================================
   // 8. FORMAT THỜI GIAN TƯƠNG ĐỐI
   // =================================================================
@@ -486,6 +511,7 @@ const FirebaseService = (function () {
     subscribeToReports,
     getCommunityReportsCount,
     getReportStats,
+    getScamTypeBreakdown,
     formatRelativeTime,
     getCooldownRemaining,
     canSubmit,

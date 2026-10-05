@@ -11,6 +11,71 @@ let currentLookupData = null;
 // ===================================================================
 function initLookupStats() {
   FirebaseService.subscribeToReports(renderHeroStats);
+  FirebaseService.subscribeToReports(renderScamBreakdown);
+}
+
+// ===================================================================
+// RADAR - TỶ LỆ THỦ ĐOẠN TIẾP NHẬN (Task G-03)
+// Tính từ báo cáo thật thay cho số liệu viết cứng trong HTML.
+// Dựng bằng DOM + textContent (không innerHTML) vì scamType đến từ người dùng.
+// ===================================================================
+const SCAM_TYPE_ICONS = [
+  [/việc làm|ctv|shopee|tiktok/i, '💼'],
+  [/học phí|đào tạo|trường/i, '🏫'],
+  [/công an|vneid|điều tra/i, '👮'],
+  [/cấp cứu|bệnh viện|bác sĩ/i, '🏥'],
+  [/thuế/i, '📱'],
+  [/ngân hàng/i, '🏦'],
+  [/điện lực|evn/i, '⚡'],
+  [/shipper|giao hàng/i, '📦'],
+  [/sim|viễn thông|thuê bao/i, '📶']
+];
+const BREAKDOWN_COLORS = ['danger', 'warning', 'amber', 'blue', 'blue'];
+
+function renderScamBreakdown(reports) {
+  const container = document.getElementById('scamTypeBreakdown');
+  if (!container) return;
+
+  const rows = FirebaseService.getScamTypeBreakdown(reports);
+  container.textContent = '';
+
+  if (rows.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'breakdown-item';
+    empty.textContent = 'Chưa có dữ liệu phản ánh.';
+    container.appendChild(empty);
+    return;
+  }
+
+  rows.forEach((row, i) => {
+    const color = row.isOther ? 'blue' : BREAKDOWN_COLORS[i] || 'blue';
+    const match = SCAM_TYPE_ICONS.find(([re]) => re.test(row.scamType));
+    const icon = row.isOther ? '🧩' : (match ? match[1] : '⚠️');
+
+    const item = document.createElement('div');
+    item.className = 'breakdown-item';
+    item.title = `${row.count} hồ sơ`;
+
+    const info = document.createElement('div');
+    info.className = 'breakdown-info';
+    const name = document.createElement('span');
+    name.className = 'scam-name';
+    name.textContent = `${icon} ${row.scamType}`;
+    const pct = document.createElement('span');
+    pct.className = `scam-pct ${color}-text`;
+    pct.textContent = `${row.percent}%`;
+    info.append(name, pct);
+
+    const track = document.createElement('div');
+    track.className = 'bar-track';
+    const fill = document.createElement('div');
+    fill.className = `bar-fill ${color}-bar`;
+    fill.style.width = `${row.percent}%`;
+    track.appendChild(fill);
+
+    item.append(info, track);
+    container.appendChild(item);
+  });
 }
 
 function renderHeroStats(reports) {

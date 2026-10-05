@@ -63,6 +63,19 @@
   - *Mục tiêu:* Khi sinh viên gửi phản ánh thành công và nhận được Ticket ID, cung cấp nút "Tải biên nhận tố giác" (tóm tắt Ticket ID, ngày giờ, số đối tượng để sinh viên đính kèm đơn nộp PA05/Công an).
   - *Vị trí:* `app/js/intake.js`.
 
+- [ ] **Task C-03: Mở rộng CSDL SĐT/Email lừa đảo & Bộ quy tắc nhận diện số/mail khả nghi (Heuristic Scam Detector)**
+  - *Mục tiêu theo chỉ đạo từ User (Lead / PO):*
+    1. **Thu thập & Bổ sung CSDL SĐT/Email lừa đảo thực tế:** Bổ sung các mẫu số điện thoại, đầu số lừa đảo học đường phổ biến (cuộc gọi dọa án phạt nguội/công an, bẫy việc làm online Shopee/TikTok/Telegram, mạo danh phòng đào tạo thu học phí cấp tốc, dọa người thân cấp cứu...) và các tên miền email mạo danh trường học/ngân hàng.
+    2. **Xây dựng Engine nhận diện số & email khả nghi (Heuristic Analysis):**
+       - Nhận diện cú pháp SĐT: phát hiện đầu số quốc tế vệ tinh cước cao (`+882`, `+881`, `00...`), đầu số tổng đài ảo lạ, độ dài số bất thường.
+       - Nhận diện email: phát hiện hòm thư rác dùng 1 lần (disposable email domain), tên miền cố tình giả mạo trường đại học (typo-squatting, VD: `hust-edu.com`, `daotao-portal.xyz`), hoặc cú pháp đáng ngờ.
+       - Trả về cấu trúc đánh giá rủi ro: `{ riskScore, riskLevel, flags: [...], matchedKeywords: [...], advice: "..." }`.
+    3. **Phản hồi thiết kế giao diện cho Gemini:**
+       - Sau khi Claude code xong logic backend & dữ liệu, Claude hãy viết phản hồi vào mục Nhật ký bàn giao của `AGENT_SYNC.md` để mô tả cấu trúc dữ liệu trả về và đề xuất Gemini cần dựng/cập nhật giao diện (UI) như thế nào để hiển thị cảnh báo này trực quan nhất cho người dùng.
+       - Gemini sẽ căn cứ vào mô tả của Claude để thiết kế giao diện Dark Cinematic tương thích và chạy kiểm thử tự động.
+  - *Vị trí thực hiện:* `app/js/analyzer.js` hoặc module phân tích trong `app/js/`.
+
+
 ### 📌 Task dành cho Gemini (QA & Điều phối):
 - [x] Chạy kiểm thử tự động toàn diện trên trình duyệt Edge.
 - [x] Kiểm tra CSP và Console Stderr.
@@ -152,4 +165,11 @@
     - Đã gắn `id="scamTypeBreakdown"` vào thẻ `<div class="breakdown-list" id="scamTypeBreakdown">` trong `app/index.html`. Mời Claude viết hàm `FirebaseService.getScamTypeBreakdown()` tính % theo `scamType` và render động vào đây!
     - Đã sửa nhãn thẻ 3 thành "Tỷ lệ đã xử lý" theo đúng bản chất nghiệp vụ.
   - **4. Nghiệm thu code Claude & Push Git:** Bộ QA Test tự động đã chạy trên Edge headless thật và **ĐẠT 100% (2/2 test suites PASSED)**. Đã nghiệm thu phần sửa lỗi mất số 0 (`restorePhoneZero`) của Claude và đồng bộ toàn bộ lên GitHub `main` & thư mục `bai_to_5`!
+- **2026-10-06 01:38 (User & Gemini → Claude: GIAO TASK C-03 — CSDL LỪA ĐẢO & NHẬN DIỆN KHẢ NGHI):**
+  - **Chỉ đạo từ User (Lead / PO):** Yêu cầu Claude thu thập thêm các thông tin về số điện thoại và email lừa đảo học đường thực tế, đồng thời tích hợp bộ nhận diện số/mail khả nghi (Heuristic / Pattern matching).
+  - **Yêu cầu phản hồi UI:** Sau khi Claude xây dựng xong dữ liệu và logic nhận diện khả nghi, Claude hãy phản hồi lại trong file này:
+    1. Cấu trúc hàm/dữ liệu trả về (Risk score, nhãn cảnh báo, lý do nghi vấn, khuyến nghị...).
+    2. Đề xuất cụ thể cho Gemini: Cần dựng thêm/sửa đổi những thành phần giao diện (UI Components/Cards/Badges) nào để hiển thị kết quả một cách trực quan, tối ưu trải nghiệm cho sinh viên.
+  - Gemini sẽ trực tiếp thiết kế giao diện theo phản hồi của Claude và chạy kiểm thử tự động trên trình duyệt Edge thật! Mời Claude nhận Task C-03.
+
 
