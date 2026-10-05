@@ -119,18 +119,29 @@ async function handlePhoneLookup(phone, container) {
   data.communityReports = communityStats.reports || [];
 
   // Tính toán % khả nghi tổng hợp:
-  // Nếu có báo cáo từ cộng đồng -> tự động tăng % khả nghi!
+  // Mỗi phản ánh cộng đồng tự động tăng thêm +5% nguy cơ (tối thiểu bắt đầu từ 45% nếu là số lạ)
   let calculatedRisk = data.baseRisk;
-  if (data.communityCount >= 1) {
-    if (data.communityCount === 1) {
-      calculatedRisk = Math.max(calculatedRisk, 45);
-    } else if (data.communityCount === 2) {
-      calculatedRisk = Math.max(calculatedRisk, 75);
+  let riskIncrement = 0;
+  if (data.communityCount > 0) {
+    riskIncrement = data.communityCount * 5; // Tăng +5% nguy cơ cho mỗi lượt báo cáo
+    if (data.baseRisk > 0) {
+      calculatedRisk = Math.min(99, data.baseRisk + riskIncrement);
     } else {
-      calculatedRisk = Math.max(calculatedRisk, 95);
+      calculatedRisk = Math.min(99, 40 + riskIncrement);
+    }
+    // Cập nhật đánh giá cảnh báo cộng đồng
+    if (!data.isVerifiedScam) {
+      const recentType = (data.communityReports[0] && data.communityReports[0].scamType)
+        ? data.communityReports[0].scamType
+        : 'Có dấu hiệu bất thường / quấy rối';
+      data.threatDetail = `Cảnh báo cộng đồng sinh viên: ${recentType}. Hệ thống tự động ghi nhận và tăng +${riskIncrement}% nguy cơ.`;
+      data.carrier = (data.carrier === "Thuê bao viễn thông thông thường")
+        ? "Số lạ có phản ánh nghi vấn"
+        : data.carrier;
     }
   }
 
+  data.riskIncrement = riskIncrement;
   data.finalRiskScore = Math.min(99, calculatedRisk);
   data.cleanTarget = cleanPhone;
   data.type = 'phone';
@@ -190,16 +201,23 @@ async function handleEmailLookup(email, container) {
   data.communityReports = communityStats.reports || [];
 
   let calculatedRisk = data.baseRisk;
-  if (data.communityCount >= 1) {
-    if (data.communityCount === 1) {
-      calculatedRisk = Math.max(calculatedRisk, 45);
-    } else if (data.communityCount === 2) {
-      calculatedRisk = Math.max(calculatedRisk, 75);
+  let riskIncrement = 0;
+  if (data.communityCount > 0) {
+    riskIncrement = data.communityCount * 5; // Tăng +5% nguy cơ cho mỗi lượt báo cáo
+    if (data.baseRisk > 0) {
+      calculatedRisk = Math.min(99, data.baseRisk + riskIncrement);
     } else {
-      calculatedRisk = Math.max(calculatedRisk, 95);
+      calculatedRisk = Math.min(99, 40 + riskIncrement);
+    }
+    if (!data.isVerifiedScam) {
+      const recentType = (data.communityReports[0] && data.communityReports[0].scamType)
+        ? data.communityReports[0].scamType
+        : 'Mạo danh học phí / quấy rối';
+      data.threatDetail = `Cảnh báo cộng đồng sinh viên: ${recentType}. Hệ thống tự động ghi nhận và tăng +${riskIncrement}% nguy cơ.`;
     }
   }
 
+  data.riskIncrement = riskIncrement;
   data.finalRiskScore = Math.min(99, calculatedRisk);
   data.cleanTarget = cleanEmail;
   data.type = 'email';
@@ -260,8 +278,10 @@ function renderConciseResult(data, container) {
         </div>
         <div class="summary-item">
           <strong>Phản ánh cộng đồng:</strong> 
-          <span id="resultCommunityCount" style="font-weight: 700; color: ${data.communityCount > 0 ? 'var(--accent-primary)' : 'var(--text-dim)'};">
-            ${data.communityCount > 0 ? `Đã có ${data.communityCount} lượt báo cáo nghi vấn` : 'Chưa có báo cáo từ cộng đồng'}
+          <span id="resultCommunityCount" style="font-weight: 700; color: ${data.communityCount > 0 ? '#ef4444' : 'var(--text-dim)'};">
+            ${data.communityCount > 0 
+              ? `Đã có ${data.communityCount} lượt báo cáo nghi vấn <span class="badge-increment" style="display: inline-block; background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 2px 6px; border-radius: 4px; font-size: 0.78rem; font-weight: 700; margin-left: 6px;">(+${data.riskIncrement || (data.communityCount * 5)}% nguy cơ)</span>` 
+              : 'Chưa có báo cáo từ cộng đồng'}
           </span>
         </div>
       </div>
@@ -274,10 +294,10 @@ function renderConciseResult(data, container) {
       <!-- Action Footer: Bấm báo cáo tăng % khả nghi ngay -->
       <div class="result-footer-compact">
         <button class="btn-report-increment" id="btnReportIncrement" onclick="triggerReportIncrement()">
-          🚨 Báo Cáo Số Này (+Tăng Mức Độ Khả Nghi)
+          🚨 Báo Cáo Số Này (+5% Mức Độ Nguy Cơ)
         </button>
         <span class="report-notice-hint">
-          Bấm báo cáo sẽ tăng ngay tỉ lệ rủi ro của số này trên hệ thống để cảnh báo sinh viên khác.
+          Bấm báo cáo sẽ tự động cộng thêm +5% tỉ lệ rủi ro của số này trên hệ thống để cảnh báo sinh viên khác.
         </span>
       </div>
     </div>
@@ -291,7 +311,7 @@ async function triggerReportIncrement() {
   const btn = document.getElementById('btnReportIncrement');
   if (btn) {
     btn.disabled = true;
-    btn.innerHTML = `<span>⏳ Đang ghi nhận báo cáo...</span>`;
+    btn.innerHTML = `<span>⏳ Đang ghi nhận & tăng +5% nguy cơ...</span>`;
   }
 
   const target = currentLookupData.target;
@@ -299,21 +319,17 @@ async function triggerReportIncrement() {
     ? currentLookupData.threatDetail
     : "Người dùng báo cáo có dấu hiệu lừa đảo / quấy rối";
 
-  // 1. Lưu vào LocalReportRegistry và tính toán mức rủi ro mới
-  let updatedScore = 45;
+  // 1. Tính toán mức rủi ro mới: Tăng +5% nguy cơ
+  const currentScore = currentLookupData.finalRiskScore || 0;
   let newReportCount = (currentLookupData.communityCount || 0) + 1;
+  let updatedScore = Math.min(99, Math.max(currentScore + 5, 45)); // Tăng +5% nguy cơ
+  let newIncrement = newReportCount * 5;
 
   if (typeof LocalReportRegistry !== 'undefined') {
-    const regResult = LocalReportRegistry.report(target, threatReason);
-    if (regResult) {
-      updatedScore = regResult.riskScore;
-      newReportCount = regResult.reportCount;
-    }
-  } else {
-    updatedScore = Math.min(99, Math.max(currentLookupData.finalRiskScore + 35, 45));
+    LocalReportRegistry.report(target, threatReason);
   }
 
-  // 2. Gửi vào Sổ tiếp nhận hồ sơ qua FirebaseService
+  // 2. Gửi vào Google Sheets qua FirebaseService
   try {
     await FirebaseService.submitReport({
       target: target,
@@ -321,12 +337,13 @@ async function triggerReportIncrement() {
       content: `Phản ánh trực tiếp: Số ${target} có hành vi đáng ngờ được người dùng cảnh báo qua cổng tra cứu.`
     });
   } catch (e) {
-    console.log("[Lookup] Báo cáo ghi nhận cục bộ:", e.message);
+    console.log("[Lookup] Báo cáo ghi nhận:", e.message);
   }
 
   // 3. Cập nhật dữ liệu hiện tại
   currentLookupData.finalRiskScore = updatedScore;
   currentLookupData.communityCount = newReportCount;
+  currentLookupData.riskIncrement = newIncrement;
 
   // 4. Cập nhật giao diện mượt mà (Hiệu ứng tăng số % và thanh chạy)
   const card = document.getElementById('conciseResultCard');
@@ -355,19 +372,19 @@ async function triggerReportIncrement() {
     fill.style.width = `${updatedScore}%`;
   }
   if (countEl) {
-    countEl.style.color = 'var(--accent-primary)';
-    countEl.textContent = `Đã có ${newReportCount} lượt báo cáo nghi vấn (Vừa cập nhật)`;
+    countEl.style.color = '#ef4444';
+    countEl.innerHTML = `Đã có ${newReportCount} lượt báo cáo nghi vấn <span class="badge-increment" style="display: inline-block; background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 2px 6px; border-radius: 4px; font-size: 0.78rem; font-weight: 700; margin-left: 6px;">(+${newIncrement}% nguy cơ)</span> (Vừa cập nhật)`;
   }
 
   if (btn) {
     btn.disabled = true;
-    btn.innerHTML = `✅ Đã Ghi Nhận Báo Cáo (${updatedScore}%)`;
+    btn.innerHTML = `✅ Đã Tăng +5% Nguy Cơ (${updatedScore}%)`;
     btn.style.backgroundColor = '#10b981';
     btn.style.borderColor = '#10b981';
   }
 
   // Toast thông báo ngắn gọn
-  showQuickToast(`✅ Báo cáo thành công! Mức độ khả nghi của số này đã tăng lên ${updatedScore}%.`);
+  showQuickToast(`✅ Báo cáo thành công! Mức độ rủi ro đã tăng thêm +5% nguy cơ (Hiện tại: ${updatedScore}%).`);
 }
 
 function showQuickToast(msg) {

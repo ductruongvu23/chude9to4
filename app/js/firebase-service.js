@@ -239,24 +239,25 @@ const FirebaseService = (function () {
 
     const cleanQuery = targetQuery.replace(/[\s.\-()]/g, '').toLowerCase();
 
-    // Query từ Google Sheets nếu đang kết nối
-    if (isSheetsLive && SHEETS_API_URL && SHEETS_API_URL !== "PASTE_YOUR_APPS_SCRIPT_URL_HERE") {
+    // Query từ Google Sheets
+    if (SHEETS_API_URL && SHEETS_API_URL !== "PASTE_YOUR_APPS_SCRIPT_URL_HERE") {
       try {
         const resp = await fetch(
           `${SHEETS_API_URL}?action=count&target=${encodeURIComponent(cleanQuery)}`,
           {
             method: "GET",
             mode: "cors",
-            signal: AbortSignal.timeout(5000)
+            signal: AbortSignal.timeout(6000)
           }
         );
         const json = await resp.json();
         if (json.success) {
-          // Cộng thêm dữ liệu local từ LocalReportRegistry
+          isSheetsLive = true;
+          const sheetCount = json.count || 0;
           const localStats = typeof LocalReportRegistry !== 'undefined'
             ? LocalReportRegistry.getStats(cleanQuery) : null;
           const localCount = localStats ? localStats.reportCount : 0;
-          const totalCount = (json.count || 0) + localCount;
+          const totalCount = Math.max(sheetCount, localCount);
 
           return {
             count: totalCount,
