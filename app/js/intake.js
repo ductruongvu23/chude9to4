@@ -9,6 +9,7 @@
 // ===================================================================
 
 let intakeCooldownInterval = null;
+const INTAKE_MAX_ROWS = 100; // Giới hạn số dòng hiển thị để bảng render nhanh trên điện thoại
 
 function initIntakeView() {
   console.log("[IntakeModule] Khởi tạo giao diện tiếp nhận phản ánh & kết nối Firebase...");
@@ -37,7 +38,7 @@ function renderIntakeTable(reports) {
     return;
   }
 
-  container.innerHTML = reports.map(r => {
+  container.innerHTML = reports.slice(0, INTAKE_MAX_ROWS).map(r => {
     const status = r.status || "Đang xác minh";
     let statusBadgeClass = "badge-status-warning";
     if (status === "Cảnh báo cao") {
@@ -86,7 +87,7 @@ async function handleIntakeFormSubmit(e) {
   // Khóa nút tạm thời khi đang gửi
   if (submitBtn) {
     submitBtn.disabled = true;
-    submitBtn.innerHTML = `<span>⏳ Đang ghi nhận vào Cloud Firestore...</span>`;
+    submitBtn.innerHTML = `<span>⏳ Đang ghi nhận vào hệ thống...</span>`;
   }
 
   try {
@@ -107,7 +108,9 @@ async function handleIntakeFormSubmit(e) {
           `• Mã hồ sơ định danh: ${result.reportId}\n` +
           `• Đối tượng nghi vấn: ${result.target}\n` +
           `• Bảo mật: Đã xác thực ẩn danh 100% (Không lưu trữ danh tính cá nhân)\n` +
-          `• Dữ liệu đã được đồng bộ tức thời vào Sổ tiếp nhận chung của cộng đồng.`);
+          (result.savedToCloud
+            ? `• Dữ liệu đã được đồng bộ tức thời vào Sổ tiếp nhận chung của cộng đồng.`
+            : `• Chưa kết nối được máy chủ: hồ sơ được lưu tạm trên máy và sẽ tự động gửi lại khi có mạng.`));
 
   } catch (err) {
     console.error("[IntakeModule] Lỗi gửi báo cáo:", err);

@@ -2,6 +2,14 @@
 // CLOUD DATABASE SERVICE MODULE - Google Sheets Backend
 // Thay thế Firebase bằng Google Sheets API qua Apps Script Web App
 // Toàn bộ máy đều thấy cùng dữ liệu - đồng bộ thật sự
+//
+// Tối ưu:
+// - Hiển thị ngay dữ liệu cục bộ, đồng bộ Sheets chạy nền (không chặn giao diện)
+// - Tra cứu dùng chỉ mục (Map) trong bộ nhớ thay vì gọi mạng mỗi lần
+// Bảo mật:
+// - Mọi bản ghi từ Sheets / localStorage đều được chuẩn hóa & lọc trước khi dùng
+// - Chặn chèn công thức (formula injection) khi ghi vào Google Sheets
+// - Cooldown chống spam lưu bền vững, không bị reset khi F5
 // ===================================================================
 
 const FirebaseService = (function () {
@@ -10,15 +18,27 @@ const FirebaseService = (function () {
   // Sau khi deploy Apps Script, paste URL vào đây:
   // ============================================================
   const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycbyaYe5lkRtG3PmE_hn_a4OlXrVRBAD3ZGyaM9EmEjEKiBJCMh8XiHLSnpQY5ckRntX6dQ/exec";
-  // Ví dụ: "https://script.google.com/macros/s/AKfycb.../exec"
+  const SHEETS_CONFIGURED = !!SHEETS_API_URL && SHEETS_API_URL !== "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
+
+  const CACHE_KEY = 'to4_firestore_reports';      // Bản sao dữ liệu đã đồng bộ
+  const PENDING_KEY = 'to4_pending_reports';       // Báo cáo chưa gửi được lên Sheets
+  const COOLDOWN_KEY = 'to4_last_submit_time';
+  const REFRESH_INTERVAL_MS = 60 * 1000;           // Làm mới nền tối đa 1 lần/phút
+  const MAX_REPORTS = 500;
+
+  const ALLOWED_STATUS = ['Đang xác minh', 'Đã xác minh', 'Cảnh báo cao'];
+  const LIMITS = { id: 35, target: 100, scamType: 120, content: 1500 };
 
   let isSheetsLive = false;
   let activeListeners = [];
   let cachedReports = [];
+  let reportIndex = new Map();   // normalizedTarget -> [reports]
+  let lastRefreshAt = 0;
+  let refreshPromise = null;
 
-  // Quản lý Cooldown chống spam (30s)
+  // Quản lý Cooldown chống spam (30s) - lưu bền vững qua localStorage
   const COOLDOWN_SECONDS = 30;
-  let lastSubmitTime = 0;
+  let lastSubmitTime = readNumber(COOLDOWN_KEY);
 
   // Helper tạo timeout tương thích 100% mọi trình duyệt (Safari iOS, Android, PC)
   function getSignal(ms = 10000) {
@@ -36,49 +56,211 @@ const FirebaseService = (function () {
   }
 
   // =================================================================
-  // 1. KIỂM TRA KẾT NỐI VÀ KHỞI TẠO
+  // 0. CHUẨN HÓA & LỌC DỮ LIỆU (Không tin tưởng dữ liệu đầu vào)
+  // =================================================================
+  function cleanText(value, maxLen) {
+    return String(value == null ? '' : value)
+      .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
+      .replace(/^'/, '') // Bỏ ký tự ' do chống formula injection thêm vào khi ghi Sheets
+      .trim()
+      .slice(0, maxLen);
+  }
+
+  function toTimestamp(value) {
+    if (typeof value === 'number' && isFinite(value)) return value;
+    if (value instanceof Date) return value.getTime();
+    if (typeof value === 'string' && value) {
+      const asNum = Number(value);
+      if (isFinite(asNum) && asNum > 0) return asNum;
+      const parsed = Date.parse(value);
+      if (!isNaN(parsed)) return parsed;
+    }
+    return 0;
+  }
+
+  function normalizeReport(raw) {
+    if (!raw || typeof raw !== 'object') return null;
+    const id = cleanText(raw.id, LIMITS.id);
+    const target = cleanText(raw.target, LIMITS.target);
+    if (!id || !target) return null;
+    const status = cleanText(raw.status, 40);
+    return {
+      id,
+      target,
+      scamType: cleanText(raw.scamType, LIMITS.scamType) || 'Khác',
+      content: cleanText(raw.content, LIMITS.content),
+      status: ALLOWED_STATUS.includes(status) ? status : 'Đang xác minh',
+      createdAt: toTimestamp(raw.createdAt)
+    };
+  }
+
+  function normalizeList(list) {
+    if (!Array.isArray(list)) return [];
+    return list.map(normalizeReport).filter(Boolean);
+  }
+
+  // Chống chèn công thức khi giá trị được ghi vào ô Google Sheets
+  function sheetSafe(value) {
+    return /^[=+\-@\t\r]/.test(value) ? `'${value}` : value;
+  }
+
+  function generateReportId() {
+    const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    const bytes = new Uint8Array(6);
+    if (window.crypto && window.crypto.getRandomValues) {
+      window.crypto.getRandomValues(bytes);
+    } else {
+      for (let i = 0; i < bytes.length; i++) bytes[i] = Math.floor(Math.random() * 256);
+    }
+    return 'HS-TDHT-' + Array.from(bytes, b => alphabet[b % alphabet.length]).join('');
+  }
+
+  function readJsonList(key) {
+    try {
+      const raw = localStorage.getItem(key);
+      return raw ? normalizeList(JSON.parse(raw)) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function writeJson(key, value) {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (e) {
+      console.error(`[CloudDB] Lỗi lưu ${key}:`, e);
+    }
+  }
+
+  function readNumber(key) {
+    try {
+      const n = Number(localStorage.getItem(key));
+      return isFinite(n) ? n : 0;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  // =================================================================
+  // 1. QUẢN LÝ BỘ NHỚ ĐỆM & CHỈ MỤC TRA CỨU
+  // =================================================================
+  // Gộp nhiều nguồn, loại trùng theo id (nguồn đứng trước được ưu tiên), sắp xếp mới nhất trước
+  function setReports(...sources) {
+    const seen = new Set();
+    const merged = [];
+    sources.forEach(list => {
+      list.forEach(item => {
+        if (!seen.has(item.id)) {
+          seen.add(item.id);
+          merged.push(item);
+        }
+      });
+    });
+    merged.sort((a, b) => b.createdAt - a.createdAt);
+    cachedReports = merged.slice(0, MAX_REPORTS);
+
+    reportIndex = new Map();
+    cachedReports.forEach(r => {
+      const key = normalizeTarget(r.target);
+      if (!reportIndex.has(key)) reportIndex.set(key, []);
+      reportIndex.get(key).push(r);
+    });
+  }
+
+  function seedReports() {
+    return typeof SYSTEM_SEED_REPORTS !== 'undefined' ? normalizeList(SYSTEM_SEED_REPORTS) : [];
+  }
+
+  function loadLocalData() {
+    setReports(readJsonList(PENDING_KEY), readJsonList(CACHE_KEY), seedReports());
+  }
+
+  function notifySubscribers() {
+    activeListeners.forEach(cb => {
+      try { cb(cachedReports); } catch (err) { /* ignore */ }
+    });
+  }
+
+  // =================================================================
+  // 2. KHỞI TẠO: HIỂN THỊ NGAY DỮ LIỆU CỤC BỘ, ĐỒNG BỘ SHEETS CHẠY NỀN
   // =================================================================
   async function init() {
-    console.log("[CloudDB] Đang kết nối Google Sheets backend...");
+    loadLocalData();
+    notifySubscribers();
 
-    if (!SHEETS_API_URL || SHEETS_API_URL === "PASTE_YOUR_APPS_SCRIPT_URL_HERE") {
+    window.addEventListener('storage', (e) => {
+      if (e.key === CACHE_KEY || e.key === PENDING_KEY || e.key === 'to4_custom_number_stats') {
+        loadLocalData();
+        notifySubscribers();
+      }
+    });
+
+    if (!SHEETS_CONFIGURED) {
       console.warn("[CloudDB] ⚠️ Chưa cấu hình Google Sheets URL. Sử dụng dữ liệu tích hợp sẵn.");
-      setupLocalFallback();
       updateCloudStatusBadge(false, "Dữ liệu: Cục bộ");
-      loadLocalFallbackData();
       return;
     }
 
-    try {
-      // Ping để kiểm tra kết nối với timeout rộng rãi 12s cho mạng 4G/di động
-      const fetchOpts = {
-        method: "GET",
-        mode: "cors"
-      };
-      const signal = getSignal(12000);
-      if (signal) fetchOpts.signal = signal;
+    updateCloudStatusBadge(false, "Đang đồng bộ...");
+    refreshFromSheets(); // Không await: giao diện sẵn sàng ngay với dữ liệu cục bộ
+  }
 
-      const resp = await fetch(`${SHEETS_API_URL}?action=getAll`, fetchOpts);
+  function refreshFromSheets() {
+    if (!SHEETS_CONFIGURED) return Promise.resolve(false);
+    if (refreshPromise) return refreshPromise;
 
-      if (resp.ok) {
+    refreshPromise = (async () => {
+      try {
+        const fetchOpts = { method: "GET", mode: "cors" };
+        const signal = getSignal(12000);
+        if (signal) fetchOpts.signal = signal;
+
+        const resp = await fetch(`${SHEETS_API_URL}?action=getAll`, fetchOpts);
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const json = await resp.json();
-        if (json.success) {
-          isSheetsLive = true;
-          cachedReports = json.reports || [];
-          saveLocalFallbackData();
-          console.log(`[CloudDB] ✅ Kết nối Google Sheets thành công. ${cachedReports.length} báo cáo được tải.`);
-          updateCloudStatusBadge(true, "Dữ liệu: Đồng bộ Sheets");
-          notifySubscribers();
-          return;
-        }
+        if (!json || !json.success) throw new Error("Không thể nạp dữ liệu từ Sheets");
+
+        const cloudReports = normalizeList(json.reports);
+        const cloudIds = new Set(cloudReports.map(r => r.id));
+
+        // Báo cáo chờ đã có trên Sheets thì bỏ khỏi hàng chờ
+        const pending = readJsonList(PENDING_KEY).filter(r => !cloudIds.has(r.id));
+        writeJson(PENDING_KEY, pending);
+        writeJson(CACHE_KEY, cloudReports);
+
+        setReports(pending, cloudReports, seedReports());
+        isSheetsLive = true;
+        lastRefreshAt = Date.now();
+        console.log(`[CloudDB] ✅ Đồng bộ Google Sheets thành công. ${cloudReports.length} báo cáo.`);
+        updateCloudStatusBadge(true, "Dữ liệu: Đồng bộ Sheets");
+        notifySubscribers();
+
+        if (pending.length > 0) flushPendingReports(pending);
+        return true;
+      } catch (err) {
+        console.warn("[CloudDB] Không kết nối được Sheets, dùng dữ liệu cục bộ:", err.message);
+        isSheetsLive = false;
+        updateCloudStatusBadge(false, "Dữ liệu: Cục bộ");
+        return false;
+      } finally {
+        refreshPromise = null;
       }
-      throw new Error("Không thể nạp dữ liệu từ Sheets");
-    } catch (err) {
-      console.warn("[CloudDB] Không kết nối được Sheets, dùng dữ liệu cục bộ:", err.message);
-      setupLocalFallback();
-      loadLocalFallbackData();
-      updateCloudStatusBadge(false, "Dữ liệu: Cục bộ");
+    })();
+
+    return refreshPromise;
+  }
+
+  // Gửi lại các báo cáo đã lưu tạm khi trước đó mất mạng
+  async function flushPendingReports(pending) {
+    const remaining = [];
+    for (const report of pending) {
+      try {
+        await postToSheets(report);
+      } catch (e) {
+        remaining.push(report);
+      }
     }
+    writeJson(PENDING_KEY, remaining);
   }
 
   function updateCloudStatusBadge(isActive, label) {
@@ -91,72 +273,13 @@ const FirebaseService = (function () {
   }
 
   // =================================================================
-  // 2. FALLBACK CỤC BỘ (Khi chưa cấu hình Sheets hoặc offline)
-  // =================================================================
-  function setupLocalFallback() {
-    isSheetsLive = false;
-    window.addEventListener('storage', (e) => {
-      if (e.key === 'to4_firestore_reports' || e.key === 'to4_custom_number_stats') {
-        loadLocalFallbackData();
-        notifySubscribers();
-      }
-    });
-  }
-
-  function loadLocalFallbackData() {
-    try {
-      const stored = localStorage.getItem('to4_firestore_reports');
-      const seedList = typeof SYSTEM_SEED_REPORTS !== 'undefined' ? SYSTEM_SEED_REPORTS : [];
-
-      if (stored) {
-        const userSaved = JSON.parse(stored);
-        const idMap = new Set();
-        const merged = [];
-
-        userSaved.forEach(item => {
-          if (!idMap.has(item.id)) {
-            idMap.add(item.id);
-            merged.push(item);
-          }
-        });
-
-        seedList.forEach(seed => {
-          if (!idMap.has(seed.id)) {
-            idMap.add(seed.id);
-            merged.push(seed);
-          }
-        });
-
-        cachedReports = merged;
-      } else {
-        cachedReports = seedList.length > 0 ? [...seedList] : [];
-        saveLocalFallbackData();
-      }
-    } catch (e) {
-      console.error("[CloudDB] Lỗi nạp local:", e);
-      cachedReports = typeof SYSTEM_SEED_REPORTS !== 'undefined' ? [...SYSTEM_SEED_REPORTS] : [];
-    }
-  }
-
-  function saveLocalFallbackData() {
-    try {
-      localStorage.setItem('to4_firestore_reports', JSON.stringify(cachedReports));
-    } catch (e) {
-      console.error("[CloudDB] Lỗi lưu local:", e);
-    }
-  }
-
-  function notifySubscribers() {
-    activeListeners.forEach(cb => {
-      try { cb(cachedReports); } catch (err) { /* ignore */ }
-    });
-  }
-
-  // =================================================================
   // 3. RATE LIMITING (30s cooldown)
   // =================================================================
   function getCooldownRemaining() {
-    return Math.max(0, COOLDOWN_SECONDS - Math.floor((Date.now() - lastSubmitTime) / 1000));
+    const elapsed = Math.floor((Date.now() - lastSubmitTime) / 1000);
+    // elapsed < 0: đồng hồ máy bị chỉnh lùi -> bỏ qua thay vì khóa vĩnh viễn
+    if (elapsed < 0) return 0;
+    return Math.max(0, COOLDOWN_SECONDS - elapsed);
   }
 
   function canSubmit() {
@@ -166,78 +289,98 @@ const FirebaseService = (function () {
   // =================================================================
   // 4. GỬI BÁO CÁO MỚI - LƯU VÀO GOOGLE SHEETS
   // =================================================================
+  function validateTarget(target) {
+    if (target.includes('@')) {
+      return /^[^\s@<>"']+@[^\s@<>"']+\.[a-z]{2,}$/i.test(target);
+    }
+    const digits = target.replace(/[\s.\-()]/g, '');
+    return /^\+?\d{3,15}$/.test(digits);
+  }
+
+  async function postToSheets(report) {
+    const fetchOpts = {
+      method: "POST",
+      mode: "cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({
+        id: report.id,
+        target: sheetSafe(report.target),
+        scamType: sheetSafe(report.scamType),
+        content: sheetSafe(report.content),
+        status: report.status
+      })
+    };
+    const signal = getSignal(15000);
+    if (signal) fetchOpts.signal = signal;
+
+    const resp = await fetch(SHEETS_API_URL, fetchOpts);
+    const json = await resp.json();
+    if (!json || !json.success) {
+      throw new Error((json && json.error) || "Lưu Sheets thất bại");
+    }
+  }
+
   async function submitReport({ target, scamType, content }) {
     const remaining = getCooldownRemaining();
     if (remaining > 0) {
       throw new Error(`Bạn đang gửi quá nhanh! Vui lòng chờ ${remaining} giây nữa.`);
     }
 
-    const cleanTarget = String(target || '').trim();
-    const cleanType = String(scamType || '').trim();
-    const cleanContent = String(content || '').trim();
+    const cleanTarget = cleanText(target, LIMITS.target + 1);
+    const cleanType = cleanText(scamType, LIMITS.scamType + 1);
+    const cleanContent = cleanText(content, LIMITS.content + 1);
 
-    if (!cleanTarget || cleanTarget.length < 3 || cleanTarget.length > 100) {
-      throw new Error("Số điện thoại hoặc Email nghi vấn không hợp lệ (từ 3 đến 100 ký tự)!");
+    if (cleanTarget.length < 3 || cleanTarget.length > LIMITS.target || !validateTarget(cleanTarget)) {
+      throw new Error("Số điện thoại hoặc Email nghi vấn không hợp lệ!");
     }
-    if (!cleanType || cleanType.length > 120) {
+    if (!cleanType || cleanType.length > LIMITS.scamType) {
       throw new Error("Vui lòng chọn loại hình thủ đoạn hợp lệ!");
     }
-    if (!cleanContent || cleanContent.length < 5 || cleanContent.length > 1500) {
+    if (cleanContent.length < 5 || cleanContent.length > LIMITS.content) {
       throw new Error("Nội dung phản ánh phải từ 5 đến 1500 ký tự!");
     }
 
-    const randomSuffix = Math.floor(1000 + Math.random() * 9000);
-    const reportId = `HS-TDHT-${randomSuffix}`;
-    const status = "Đang xác minh";
+    const report = {
+      id: generateReportId(),
+      target: cleanTarget,
+      scamType: cleanType,
+      content: cleanContent,
+      status: "Đang xác minh",
+      createdAt: Date.now()
+    };
 
-    // Ghi vào Google Sheets
-    if (SHEETS_API_URL && SHEETS_API_URL !== "PASTE_YOUR_APPS_SCRIPT_URL_HERE") {
+    // Khóa cooldown ngay để chặn bấm liên tục trong lúc đang gửi
+    lastSubmitTime = Date.now();
+    try { localStorage.setItem(COOLDOWN_KEY, String(lastSubmitTime)); } catch (e) { /* ignore */ }
+
+    let savedToCloud = false;
+    if (SHEETS_CONFIGURED) {
       try {
-        const fetchOpts = {
-          method: "POST",
-          mode: "cors",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({
-            id: reportId,
-            target: cleanTarget,
-            scamType: cleanType,
-            content: cleanContent,
-            status: status
-          })
-        };
-        const signal = getSignal(15000);
-        if (signal) fetchOpts.signal = signal;
-
-        const resp = await fetch(SHEETS_API_URL, fetchOpts);
-        const json = await resp.json();
-        if (!json.success) {
-          throw new Error(json.error || "Lưu Sheets thất bại");
-        }
+        await postToSheets(report);
+        savedToCloud = true;
         isSheetsLive = true;
         updateCloudStatusBadge(true, "Dữ liệu: Đồng bộ Sheets");
-        console.log(`[CloudDB] ✅ Đã ghi báo cáo vào Google Sheets: ${reportId}`);
+        console.log(`[CloudDB] ✅ Đã ghi báo cáo vào Google Sheets: ${report.id}`);
       } catch (err) {
-        console.warn("[CloudDB] Ghi Sheets thất bại, lưu local:", err.message);
-        writeToLocalFallback(reportId, cleanTarget, cleanType, cleanContent, status);
+        console.warn("[CloudDB] Ghi Sheets thất bại, lưu hàng chờ cục bộ:", err.message);
       }
-    } else {
-      writeToLocalFallback(reportId, cleanTarget, cleanType, cleanContent, status);
     }
+
+    if (savedToCloud) {
+      writeJson(CACHE_KEY, [report, ...readJsonList(CACHE_KEY)].slice(0, MAX_REPORTS));
+    } else {
+      writeJson(PENDING_KEY, [report, ...readJsonList(PENDING_KEY)].slice(0, MAX_REPORTS));
+    }
+
+    // Hiển thị ngay trong Sổ tiếp nhận (trước đây phải F5 mới thấy)
+    setReports([report], cachedReports);
+    notifySubscribers();
 
     if (typeof LocalReportRegistry !== 'undefined') {
       LocalReportRegistry.report(cleanTarget, cleanType);
     }
 
-    lastSubmitTime = Date.now();
-
-    return { success: true, reportId, target: cleanTarget };
-  }
-
-  function writeToLocalFallback(id, target, scamType, content, status) {
-    const newDoc = { id, target, scamType, content, status, createdAt: Date.now() };
-    cachedReports.unshift(newDoc);
-    saveLocalFallbackData();
-    notifySubscribers();
+    return { success: true, reportId: report.id, target: cleanTarget, savedToCloud };
   }
 
   // =================================================================
@@ -245,7 +388,7 @@ const FirebaseService = (function () {
   // =================================================================
   function subscribeToReports(callback) {
     activeListeners.push(callback);
-    if (cachedReports.length > 0) callback(cachedReports);
+    callback(cachedReports);
 
     return () => {
       activeListeners = activeListeners.filter(cb => cb !== callback);
@@ -253,77 +396,42 @@ const FirebaseService = (function () {
   }
 
   // =================================================================
-  // 6. ĐẾM SỐ BÁO CÁO - QUERY TỪ GOOGLE SHEETS
+  // 6. ĐẾM SỐ BÁO CÁO - TRA CỨU TỪ CHỈ MỤC TRONG BỘ NHỚ
   // =================================================================
   async function getCommunityReportsCount(targetQuery) {
-    if (!targetQuery) return { count: 0, reports: [] };
+    if (!targetQuery) return { count: 0, reports: [], customRiskScore: 0 };
 
-    const cleanQuery = targetQuery.replace(/[\s.\-()]/g, '').toLowerCase();
+    const key = normalizeTarget(targetQuery);
 
-    // Query từ Google Sheets
-    if (SHEETS_API_URL && SHEETS_API_URL !== "PASTE_YOUR_APPS_SCRIPT_URL_HERE") {
-      try {
-        const fetchOpts = {
-          method: "GET",
-          mode: "cors"
-        };
-        const signal = getSignal(12000);
-        if (signal) fetchOpts.signal = signal;
-
-        const resp = await fetch(
-          `${SHEETS_API_URL}?action=count&target=${encodeURIComponent(cleanQuery)}`,
-          fetchOpts
-        );
-        const json = await resp.json();
-        if (json.success) {
-          isSheetsLive = true;
-          updateCloudStatusBadge(true, "Dữ liệu: Đồng bộ Sheets");
-          const sheetCount = json.count || 0;
-          const localStats = typeof LocalReportRegistry !== 'undefined'
-            ? LocalReportRegistry.getStats(cleanQuery) : null;
-          const localCount = localStats ? localStats.reportCount : 0;
-          const totalCount = Math.max(sheetCount, localCount);
-
-          return {
-            count: totalCount,
-            reports: json.reports || [],
-            customRiskScore: localStats ? (localStats.customRiskScore || 0) : 0
-          };
-        }
-      } catch (e) {
-        console.warn("[CloudDB] Query Sheets thất bại, dùng cache:", e.message);
-      }
+    // Nếu đang đồng bộ, chờ tối đa 3s để có số liệu mới nhất
+    if (refreshPromise) {
+      await Promise.race([refreshPromise, new Promise(r => setTimeout(r, 3000))]);
+    } else if (SHEETS_CONFIGURED && Date.now() - lastRefreshAt > REFRESH_INTERVAL_MS) {
+      refreshFromSheets(); // Làm mới nền cho lần tra cứu sau
     }
 
-    // Fallback: tìm trong cache
-    const matches = cachedReports.filter(r => {
-      const itemTarget = String(r.target || '').replace(/[\s.\-()]/g, '').toLowerCase();
-      return itemTarget === cleanQuery || itemTarget.includes(cleanQuery) || cleanQuery.includes(itemTarget);
-    });
-
+    const matches = reportIndex.get(key) || [];
     const localStats = typeof LocalReportRegistry !== 'undefined'
-      ? LocalReportRegistry.getStats(cleanQuery) : null;
-    let customRiskScore = 0;
-    if (localStats && localStats.reportCount > 0) {
-      customRiskScore = localStats.customRiskScore || 0;
-    }
-
+      ? LocalReportRegistry.getStats(key) : null;
     const localCount = localStats ? localStats.reportCount : 0;
-    const totalCount = Math.max(matches.length, localCount);
 
-    return { count: totalCount, reports: matches, customRiskScore };
+    return {
+      count: Math.max(matches.length, localCount),
+      reports: matches,
+      customRiskScore: localStats && localCount > 0 ? (localStats.customRiskScore || 0) : 0
+    };
   }
 
   // =================================================================
   // 7. FORMAT THỜI GIAN TƯƠNG ĐỐI
   // =================================================================
   function formatRelativeTime(timestamp) {
-    if (!timestamp) return "Mới đây";
-    let ms = typeof timestamp === 'number' ? timestamp : (Number(timestamp) || Date.now());
-    const diffSeconds = Math.floor((Date.now() - ms) / 1000);
+    const ms = toTimestamp(timestamp);
+    if (!ms) return "Không rõ";
+    const diffSeconds = Math.max(0, Math.floor((Date.now() - ms) / 1000));
 
     if (diffSeconds < 45) return "Vừa xong";
-    if (diffSeconds < 3600) return `${Math.floor(diffSeconds / 60)} phút trước`;
+    if (diffSeconds < 3600) return `${Math.max(1, Math.floor(diffSeconds / 60))} phút trước`;
     if (diffSeconds < 86400) return `${Math.floor(diffSeconds / 3600)} giờ trước`;
     const d = Math.floor(diffSeconds / 86400);
     if (d === 1) return "Hôm qua";
@@ -335,6 +443,7 @@ const FirebaseService = (function () {
   // Public API
   return {
     init,
+    refresh: refreshFromSheets,
     submitReport,
     subscribeToReports,
     getCommunityReportsCount,

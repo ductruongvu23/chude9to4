@@ -41,7 +41,8 @@ async function executeLookup() {
 }
 
 async function handlePhoneLookup(phone, container) {
-  const cleanPhone = phone.replace(/[\s.\-()]/g, '');
+  // Chuẩn hóa +84 / 84 / dấu chấm, khoảng trắng về cùng một định dạng
+  const cleanPhone = normalizeTarget(phone);
   let data = null;
 
   // 1. Kiểm tra đối soát trong Danh sách xác minh
@@ -151,7 +152,7 @@ async function handlePhoneLookup(phone, container) {
 }
 
 async function handleEmailLookup(email, container) {
-  const cleanEmail = email.trim().toLowerCase();
+  const cleanEmail = normalizeTarget(email);
   let data = null;
 
   // 1. Kiểm tra đối soát trong EMAIL_DATABASE
@@ -325,19 +326,23 @@ async function triggerReportIncrement() {
   let updatedScore = Math.min(99, Math.max(currentScore + 5, 45)); // Tăng +5% nguy cơ
   let newIncrement = newReportCount * 5;
 
-  if (typeof LocalReportRegistry !== 'undefined') {
-    LocalReportRegistry.report(target, threatReason);
-  }
-
   // 2. Gửi vào Google Sheets qua FirebaseService
+  //    (submitReport tự ghi LocalReportRegistry - không gọi thêm ở đây để tránh đếm trùng 2 lần)
   try {
     await FirebaseService.submitReport({
       target: target,
       scamType: currentLookupData.type === 'email' ? 'Mạo danh thu học phí' : 'Nghi vấn số lạ lừa đảo',
-      content: `Phản ánh trực tiếp: Số ${target} có hành vi đáng ngờ được người dùng cảnh báo qua cổng tra cứu.`
+      content: `Phản ánh trực tiếp: ${currentLookupData.type === 'email' ? 'Email' : 'Số'} ${target} có hành vi đáng ngờ được người dùng cảnh báo qua cổng tra cứu.
+Đánh giá hệ thống: ${threatReason}`.slice(0, 1500)
     });
   } catch (e) {
-    console.log("[Lookup] Báo cáo ghi nhận:", e.message);
+    console.warn("[Lookup] Không ghi nhận được báo cáo:", e.message);
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = `🚨 Báo Cáo Số Này (+5% Mức Độ Nguy Cơ)`;
+    }
+    showQuickToast(`❌ ${e.message}`);
+    return;
   }
 
   // 3. Cập nhật dữ liệu hiện tại

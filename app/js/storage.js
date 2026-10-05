@@ -597,6 +597,8 @@ const EMAIL_DATABASE = {
 // DỮ LIỆU BÁO CÁO CỘNG ĐỒNG TÍCH HỢP SẴN (SYSTEM SEED REPORTS)
 // Đảm bảo mọi máy mở lên (kể cả clone GitHub hay mở offline) đều CÓ SẴN
 // đầy đủ dữ liệu phản ánh thực tế và đối soát không phụ thuộc tải file local.
+// Thời gian ghi nhận là mốc cố định (không tính theo Date.now() để tránh
+// hiển thị sai lệch "6 phút trước" vĩnh viễn).
 // ===================================================================
 const SYSTEM_SEED_REPORTS = [
   {
@@ -605,7 +607,7 @@ const SYSTEM_SEED_REPORTS = [
     scamType: "Mạo danh ngân hàng",
     content: "Đối tượng tự xưng nhân viên Vietcombank thông báo tài khoản có giao dịch bất thường, dọa khóa thẻ và đòi đọc mã OTP.",
     status: "Cảnh báo cao",
-    createdAt: Date.now() - 6 * 60 * 1000 // 6 phút trước
+    createdAt: Date.parse("2026-10-05T21:40:00+07:00")
   },
   {
     id: "HS-TDHT-8821",
@@ -613,7 +615,7 @@ const SYSTEM_SEED_REPORTS = [
     scamType: "Mạo danh thu học phí",
     content: "Gửi thông báo nộp 4.500.000đ học phí phụ thu vào số tài khoản cá nhân Techcombank, dọa đình chỉ thi học kỳ.",
     status: "Đã xác minh",
-    createdAt: Date.now() - 18 * 60 * 1000 // 18 phút trước
+    createdAt: Date.parse("2026-10-05T19:15:00+07:00")
   },
   {
     id: "HS-TDHT-7734",
@@ -621,7 +623,7 @@ const SYSTEM_SEED_REPORTS = [
     scamType: "Mạo danh cơ quan thuế",
     content: "Gọi điện dọa nợ thuế môn bài, gửi link tải app eTax Mobile giả mạo chứa mã độc chiếm quyền điện thoại.",
     status: "Cảnh báo cao",
-    createdAt: Date.now() - 45 * 60 * 1000 // 45 phút trước
+    createdAt: Date.parse("2026-10-05T16:05:00+07:00")
   },
   {
     id: "HS-TDHT-6102",
@@ -629,7 +631,7 @@ const SYSTEM_SEED_REPORTS = [
     scamType: "Dọa cấp cứu bệnh viện",
     content: "Giả danh bác sĩ bệnh viện Chợ Rẫy báo người nhà bị tai nạn nguy kịch, ép chuyển gấp 30 triệu viện phí.",
     status: "Cảnh báo cao",
-    createdAt: Date.now() - 90 * 60 * 1000 // 1.5 giờ trước
+    createdAt: Date.parse("2026-10-05T10:30:00+07:00")
   },
   {
     id: "HS-TDHT-5541",
@@ -637,7 +639,7 @@ const SYSTEM_SEED_REPORTS = [
     scamType: "Công an dọa án phạt",
     content: "Tự xưng điều tra viên Bộ Công an dọa sinh viên liên quan vụ án rửa tiền, ép chuyển tiền bảo lãnh và cấm báo người thân.",
     status: "Cảnh báo cao",
-    createdAt: Date.now() - 140 * 60 * 1000 // hơn 2 giờ trước
+    createdAt: Date.parse("2026-10-04T20:20:00+07:00")
   },
   {
     id: "HS-TDHT-4923",
@@ -645,7 +647,7 @@ const SYSTEM_SEED_REPORTS = [
     scamType: "Mạo danh điện lực EVN",
     content: "Dọa cắt điện ký túc xá/nhà trọ trong vòng 2 giờ vì quá hạn tiền điện, yêu cầu bấm link thanh toán lạ.",
     status: "Đã xác minh",
-    createdAt: Date.now() - 210 * 60 * 1000 // 3.5 giờ trước
+    createdAt: Date.parse("2026-10-04T14:45:00+07:00")
   },
   {
     id: "HS-TDHT-4108",
@@ -653,7 +655,7 @@ const SYSTEM_SEED_REPORTS = [
     scamType: "Mạo danh Shipper giao hàng",
     content: "Gọi báo có đơn hàng Shopee 450.000đ nhưng khách vắng nhà, ép chuyển tiền trước vào STK cá nhân rồi mới gửi bảo vệ.",
     status: "Cảnh báo cao",
-    createdAt: Date.now() - 320 * 60 * 1000 // 5 giờ trước
+    createdAt: Date.parse("2026-10-04T09:10:00+07:00")
   },
   {
     id: "HS-TDHT-3755",
@@ -661,7 +663,7 @@ const SYSTEM_SEED_REPORTS = [
     scamType: "Mạo danh VNeID / Công an",
     content: "Báo tài khoản định danh VNeID mức 2 bị lỗi sai thông tin CCCD, hướng dẫn cài file .apk lạ để kích hoạt lại.",
     status: "Cảnh báo cao",
-    createdAt: Date.now() - 480 * 60 * 1000 // 8 giờ trước
+    createdAt: Date.parse("2026-10-03T18:00:00+07:00")
   },
   {
     id: "HS-TDHT-2914",
@@ -669,7 +671,7 @@ const SYSTEM_SEED_REPORTS = [
     scamType: "Lừa đảo việc làm online",
     content: "Mời làm CTV giật đơn online hoa hồng 500k/ngày, sau khi nạp tiền làm nhiệm vụ 3 thì bị khóa tài khoản không cho rút.",
     status: "Cảnh báo cao",
-    createdAt: Date.now() - 720 * 60 * 1000 // 12 giờ trước
+    createdAt: Date.parse("2026-10-03T08:25:00+07:00")
   },
   {
     id: "HS-TDHT-1832",
@@ -677,7 +679,7 @@ const SYSTEM_SEED_REPORTS = [
     scamType: "Dọa khóa SIM viễn thông",
     content: "Cuộc gọi tự động dọa khóa thuê bao 2 chiều sau 2 giờ vì chưa chuẩn hóa sinh trắc học, yêu cầu làm theo phím bấm.",
     status: "Đã xác minh",
-    createdAt: Date.now() - 1050 * 60 * 1000 // 17 giờ trước
+    createdAt: Date.parse("2026-10-02T15:50:00+07:00")
   },
   {
     id: "HS-TDHT-1290",
@@ -685,9 +687,23 @@ const SYSTEM_SEED_REPORTS = [
     scamType: "Mạo danh thu học phí",
     content: "Email giả mạo Ban Đào tạo ĐHBK gửi thông báo đóng tiền học cải thiện qua STK Vietcombank cá nhân.",
     status: "Đã xác minh",
-    createdAt: Date.now() - 1440 * 60 * 1000 // 1 ngày trước
+    createdAt: Date.parse("2026-10-01T11:00:00+07:00")
   }
 ];
+
+// ===================================================================
+// CHUẨN HÓA ĐỐI TƯỢNG TRA CỨU (SĐT / EMAIL)
+// Dùng chung cho tra cứu, đếm báo cáo và lưu thống kê để mọi định dạng
+// (+84 912..., 0912.xxx, 84912xxx) đều quy về cùng một khóa.
+// ===================================================================
+function normalizeTarget(target) {
+  let t = String(target == null ? '' : target).replace(/[\s.\-()]/g, '').toLowerCase();
+  if (t.includes('@')) return t;
+  if (t.startsWith('+84')) t = '0' + t.slice(3);
+  else if (t.startsWith('0084')) t = '0' + t.slice(4);
+  else if (/^84\d{9}$/.test(t)) t = '0' + t.slice(2);
+  return t;
+}
 
 // ===================================================================
 // BỘ QUẢN LÝ BÁO CÁO CỘNG ĐỒNG ĐỘNG (LOCAL REPORT REGISTRY)
@@ -695,34 +711,47 @@ const SYSTEM_SEED_REPORTS = [
 // ===================================================================
 const LocalReportRegistry = {
   STORAGE_KEY: 'to4_custom_number_stats',
+  MAX_REPORTS_PER_TARGET: 20,
 
   getAll() {
     try {
       const raw = localStorage.getItem(this.STORAGE_KEY);
-      return raw ? JSON.parse(raw) : {};
+      const parsed = raw ? JSON.parse(raw) : {};
+      return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
     } catch (e) {
       return {};
     }
   },
 
+  // Lọc dữ liệu đọc từ localStorage (có thể bị sửa tay / hỏng)
+  sanitizeStats(entry) {
+    const count = Number(entry && entry.reportCount);
+    const score = Number(entry && entry.customRiskScore);
+    return {
+      reportCount: isFinite(count) && count > 0 ? Math.floor(count) : 0,
+      customRiskScore: isFinite(score) ? Math.min(99, Math.max(0, score)) : 0,
+      customReports: Array.isArray(entry && entry.customReports) ? entry.customReports.slice(0, this.MAX_REPORTS_PER_TARGET) : [],
+      lastUpdated: Number(entry && entry.lastUpdated) || 0
+    };
+  },
+
   getStats(target) {
     if (!target) return { reportCount: 0, customRiskScore: 0, customReports: [] };
-    const clean = String(target).replace(/[\s.\-()]/g, '').toLowerCase();
     const all = this.getAll();
-    return all[clean] || { reportCount: 0, customRiskScore: 0, customReports: [] };
+    return this.sanitizeStats(all[normalizeTarget(target)]);
   },
 
   report(target, threatType = "Nghi vấn lừa đảo qua phản ánh người dùng") {
     if (!target) return null;
-    const clean = String(target).replace(/[\s.\-()]/g, '').toLowerCase();
+    const clean = normalizeTarget(target);
     const all = this.getAll();
-    const current = all[clean] || { reportCount: 0, customRiskScore: 0, customReports: [] };
+    const current = this.sanitizeStats(all[clean]);
 
     // Tăng số lượt báo cáo
     current.reportCount += 1;
 
     // Tăng % khả nghi (Risk Percentage) theo số lượt báo cáo
-    // 1 lượt -> 45% (Khả nghi), 2 lượt -> 75% (Cảnh báo cao), 3+ lượt -> 95%-99% (Nguy hiểm)
+    // 1 lượt -> 45% (Khả nghi), 2 lượt -> 75% (Cảnh báo cao), 3+ lượt -> 85%-99% (Nguy hiểm)
     let newScore = 45;
     if (current.reportCount === 2) {
       newScore = 75;
@@ -733,12 +762,12 @@ const LocalReportRegistry = {
     current.lastUpdated = Date.now();
 
     const reportItem = {
-      id: `HS-TDHT-${Math.floor(1000 + Math.random() * 9000)}`,
-      scamType: threatType,
+      scamType: String(threatType || '').slice(0, 120),
       createdAt: Date.now(),
       status: "Đang xác minh"
     };
     current.customReports.unshift(reportItem);
+    current.customReports = current.customReports.slice(0, this.MAX_REPORTS_PER_TARGET);
 
     all[clean] = current;
     try {

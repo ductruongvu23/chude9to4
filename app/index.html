@@ -2,6 +2,10 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
+  <!-- Content Security Policy: chỉ cho phép tải mã/kết nối từ các nguồn tin cậy.
+       Nếu thêm thư viện CDN mới, cần bổ sung domain vào đây. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Cổng Tra Cứu & Tiếp Nhận Báo Cáo Lừa Đảo - Tổ 4 | Tư Duy Hệ Thống</title>
   
@@ -20,15 +24,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   
   <!-- Modular CSS with Cache-Busting -->
-  <link rel="stylesheet" href="css/base.css?v=20261005_8">
-  <link rel="stylesheet" href="css/lookup.css?v=20261005_8">
-  <link rel="stylesheet" href="css/intake.css?v=20261005_8">
-  <link rel="stylesheet" href="css/analyzer.css?v=20261005_8">
+  <link rel="stylesheet" href="css/base.css?v=20261006_1">
+  <link rel="stylesheet" href="css/lookup.css?v=20261006_1">
+  <link rel="stylesheet" href="css/intake.css?v=20261006_1">
+  <link rel="stylesheet" href="css/analyzer.css?v=20261006_1">
 
-  <!-- Firebase App & Services (Compat CDN - Hỗ trợ thuần Vanilla JS không cần Bundler) -->
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -220,11 +220,11 @@
   </footer>
 
   <!-- Modular Scripts with Cache-Busting -->
-  <script src="js/storage.js?v=20261005_8"></script>
-  <script src="js/firebase-service.js?v=20261005_8"></script>
-  <script src="js/lookup.js?v=20261005_8"></script>
-  <script src="js/intake.js?v=20261005_8"></script>
-  <script src="js/analyzer.js?v=20261005_8"></script>
-  <script src="js/app.js?v=20261005_8"></script>
+  <script src="js/storage.js?v=20261006_1"></script>
+  <script src="js/firebase-service.js?v=20261006_1"></script>
+  <script src="js/lookup.js?v=20261006_1"></script>
+  <script src="js/intake.js?v=20261006_1"></script>
+  <script src="js/analyzer.js?v=20261006_1"></script>
+  <script src="js/app.js?v=20261006_1"></script>
 </body>
 </html>
