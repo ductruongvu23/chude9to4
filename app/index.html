@@ -20,10 +20,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   
   <!-- Modular CSS with Cache-Busting -->
-  <link rel="stylesheet" href="css/base.css?v=20261005_6">
-  <link rel="stylesheet" href="css/lookup.css?v=20261005_6">
-  <link rel="stylesheet" href="css/intake.css?v=20261005_6">
-  <link rel="stylesheet" href="css/analyzer.css?v=20261005_6">
+  <link rel="stylesheet" href="css/base.css?v=20261005_8">
+  <link rel="stylesheet" href="css/lookup.css?v=20261005_8">
+  <link rel="stylesheet" href="css/intake.css?v=20261005_8">
+  <link rel="stylesheet" href="css/analyzer.css?v=20261005_8">
 
   <!-- Firebase App & Services (Compat CDN - Hỗ trợ thuần Vanilla JS không cần Bundler) -->
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
@@ -48,9 +48,7 @@
         <div id="cloudStatusBadge" class="btn-header-badge" title="Trạng thái hệ thống bảo vệ">
           🟢 Dữ liệu: Sẵn sàng
         </div>
-        <a href="../slides/index.html" class="btn-header-link" target="_blank">
-          📊 Xem Slide Thuyết Trình
-        </a>
+        <a href="../index.html" class="btn-header-link">← Trang chủ</a>
       </div>
     </div>
   </header>
@@ -59,10 +57,9 @@
   <main class="portal-container">
     <!-- Clean Tab Navigation - Mobile Smooth Scroll -->
     <nav class="app-tab-nav">
-      <button class="active" data-tab="lookup" onclick="switchAppTab('lookup')">🔍 Tra Cứu SĐT & Email</button>
-      <button data-tab="analyzer" onclick="switchAppTab('analyzer')">💬 Nhận Diện Tin Nhắn</button>
-      <button data-tab="intake" onclick="switchAppTab('intake')">📝 Tiếp Nhận Báo Cáo</button>
-      <button data-tab="system" onclick="switchAppTab('system')">🌐 Sơ Đồ Hệ Thống</button>
+      <button class="active" data-tab="lookup" onclick="switchAppTab('lookup')">🔍 Tra cứu</button>
+      <button data-tab="analyzer" onclick="switchAppTab('analyzer')">💬 Kiểm tra tin nhắn</button>
+      <button data-tab="intake" onclick="switchAppTab('intake')">📝 Báo cáo lừa đảo</button>
     </nav>
 
     <!-- TAB 1: TRA CỨU SĐT & EMAIL -->
@@ -215,41 +212,6 @@
       </div>
     </section>
 
-    <!-- TAB 3: SƠ ĐỒ HỆ THỐNG -->
-    <section id="tab-system" class="tab-section">
-      <div class="lookup-card">
-        <h2 class="lookup-title">Mô Phỏng Tư Duy Hệ Thống: Phòng Vệ Đa Tác Nhân</h2>
-        <p class="lookup-desc">Khắc phục 4 điểm gãy liên kết xã hội và tái lập Tính nhất thể (Wholeness) cho hệ thống phòng vệ học đường</p>
-
-        <div style="background-color: var(--bg-subtle); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 20px; font-size: 0.88rem; line-height: 1.7;">
-          <p><strong>1. Bản chất hệ thống của đường dây lừa đảo:</strong> Không hoạt động tự phát mà tổ chức thành 3 phân hệ chuyên môn hóa: <em>Săn tìm mục tiêu</em> ➔ <em>Thao túng tâm lý (Social Engineering)</em> ➔ <em>Tẩu tán dòng tiền qua tài khoản rác trong 3 phút</em>.</p>
-          <p style="margin-top: 10px;"><strong>2. Nguyên nhân cảnh báo rời rạc thất bại (Thiếu tính nhất thể):</strong> Mỗi đơn vị (Nhà trường, Ngân hàng, Nhà mạng, Công an) hoạt động trong ốc đảo thông tin của mình. Kẻ lừa đảo khai thác chính <em>khoảng trống liên kết</em> giữa các bên để tấn công vào sinh viên năm nhất bị cô lập.</p>
-          <p style="margin-top: 10px;"><strong>3. Giải pháp từ Cổng Tra Cứu & Tiếp Nhận Tổ 4:</strong> Tạo cơ chế chia sẻ dữ liệu tức thì ($1 + 1 > 2$), sinh viên tra cứu đối soát ngay số tài khoản học phí, đồng thời tiếp nhận phản ánh để cập nhật blacklist cho toàn bộ mạng lưới sinh viên.</p>
-          <div style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--border-color); font-size: 0.76rem; color: var(--text-dim); font-style: italic;">
-            Nguồn: Báo cáo phân tích chuyên sâu - Tổ 4 • Môn Tư duy hệ thống (Chương 1)
-          </div>
-        </div>
-
-        <!-- Cloud Firestore Realtime Architecture Card -->
-        <div style="background-color: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 20px; margin-top: 16px; font-size: 0.88rem; line-height: 1.7;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
-            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
-              ⚡ Cơ Chế Chia Sẻ Thông Tin Thời Gian Thực &amp; Bảo Mật Ẩn Danh
-            </h3>
-            <span style="padding: 4px 10px; font-size: 0.78rem; background-color: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 4px; font-weight: 700;">
-              Bảo Mật Quyền Riêng Tư
-            </span>
-          </div>
-          <p>Hệ thống vận hành theo nguyên tắc phòng vệ cộng đồng thời gian thực, kết nối sinh viên và dữ liệu cảnh báo nhằm tạo lớp lá chắn học đường vững chắc:</p>
-          <ul style="margin: 10px 0 10px 22px;">
-            <li><strong>Đồng Bộ Cảnh Báo Tức Thời:</strong> Các số điện thoại, tài khoản bị phản ánh được cập nhật trực tiếp vào cơ sở dữ liệu chung, giúp sinh viên khác tra cứu nhận được cảnh báo ngay lập tức.</li>
-            <li><strong>Bảo Mật Danh Tính Tuyệt Đối:</strong> Mọi phản ánh và tra cứu đều ẩn danh 100%, không thu thập số điện thoại cá nhân, họ tên hay dữ liệu riêng tư của người gửi.</li>
-            <li><strong>Chống Spam &amp; Làm Sai Lệch Dữ Liệu:</strong> Cơ chế kiểm soát tốc độ gửi (Rate-limiting) và đối soát đa tầng giúp ngăn chặn hành vi gửi thông tin giả mạo.</li>
-            <li><strong>Phản Hồi &amp; Tăng Mức Độ Cảnh Báo:</strong> Số điện thoại càng nhận nhiều phản ánh từ cộng đồng thì chỉ số rủi ro (% khả nghi) càng tăng cao, bảo vệ sinh viên trước các chiêu trò mới.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
   </main>
 
   <!-- Clean Footer -->
@@ -258,11 +220,11 @@
   </footer>
 
   <!-- Modular Scripts with Cache-Busting -->
-  <script src="js/storage.js?v=20261005_6"></script>
-  <script src="js/firebase-service.js?v=20261005_6"></script>
-  <script src="js/lookup.js?v=20261005_6"></script>
-  <script src="js/intake.js?v=20261005_6"></script>
-  <script src="js/analyzer.js?v=20261005_6"></script>
-  <script src="js/app.js?v=20261005_6"></script>
+  <script src="js/storage.js?v=20261005_8"></script>
+  <script src="js/firebase-service.js?v=20261005_8"></script>
+  <script src="js/lookup.js?v=20261005_8"></script>
+  <script src="js/intake.js?v=20261005_8"></script>
+  <script src="js/analyzer.js?v=20261005_8"></script>
+  <script src="js/app.js?v=20261005_8"></script>
 </body>
 </html>

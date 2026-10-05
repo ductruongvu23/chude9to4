@@ -5,20 +5,12 @@
 
 document.addEventListener('DOMContentLoaded', async () => {
   initTheme();
-  
-  // Khởi tạo Firebase Service (Anonymous Auth + Realtime listeners)
-  if (typeof FirebaseService !== 'undefined' && typeof FirebaseService.init === 'function') {
-    try {
-      await FirebaseService.init();
-    } catch (e) {
-      console.error("[App] Lỗi khởi tạo FirebaseService:", e);
-    }
-  }
 
-  initIntakeView();
-  if (typeof initAnalyzerView === 'function') {
-    initAnalyzerView();
-  }
+  // Khởi tạo Firebase Service (Anonymous Auth + Realtime listeners).
+  // Không chặn giao diện: ping mạng có thể mất tới 12s trên 4G.
+  const firebaseReady = (typeof FirebaseService !== 'undefined' && typeof FirebaseService.init === 'function')
+    ? FirebaseService.init().catch(e => console.error("[App] Lỗi khởi tạo FirebaseService:", e))
+    : Promise.resolve();
 
   // Hỗ trợ nhấn phím Enter trong ô tra cứu
   const inputEl = document.getElementById('lookupInput');
@@ -31,12 +23,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // URL parameters handling (tab, sample, analyze)
+  // URL parameters: ?tab=lookup|analyzer|intake, ?q=<SĐT/STK/email> (từ ô tra cứu nhanh ở trang chủ)
   const urlParams = new URLSearchParams(window.location.search);
   const requestedTab = urlParams.get('tab');
   if (requestedTab) {
     switchAppTab(requestedTab);
   }
+  const requestedQuery = (urlParams.get('q') || '').trim();
+  if (requestedQuery && inputEl) {
+    switchAppTab('lookup');
+    inputEl.value = requestedQuery;
+    firebaseReady.then(() => executeLookup());
+  }
+
+  await firebaseReady;
+
+  initIntakeView();
+  if (typeof initAnalyzerView === 'function') {
+    initAnalyzerView();
+  }
+
   const requestedSample = urlParams.get('sample');
   if (requestedSample && typeof loadScamSample === 'function') {
     loadScamSample(requestedSample);
@@ -48,6 +54,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Chuyển Tab
 function switchAppTab(tabName) {
+  if (!document.getElementById(`tab-${tabName}`)) tabName = 'lookup';
   document.querySelectorAll('.app-tab-nav button').forEach(btn => {
     btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
   });

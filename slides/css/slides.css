@@ -61,18 +61,6 @@ body {
   gap: 10px;
 }
 
-.theme-selector-wrap select {
-  background-color: var(--bg-card);
-  color: var(--text-main);
-  border: 1px solid var(--border-color);
-  padding: 6px 10px;
-  border-radius: var(--radius-sm);
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  outline: none;
-}
-
 .btn-ctrl {
   background-color: var(--bg-card);
   color: var(--text-main);
@@ -1759,18 +1747,6 @@ body {
     width: 100%;
   }
 
-  .theme-selector-wrap {
-    flex: 1 1 100%;
-    width: 100%;
-  }
-
-  .theme-selector-wrap select {
-    width: 100%;
-    font-size: 0.74rem;
-    padding: 6px 8px;
-    border-radius: var(--radius-sm);
-  }
-
   .download-dropdown-wrap {
     flex: 1 1 calc(50% - 3px);
   }
@@ -2343,79 +2319,6 @@ body.is-presentation-mode.mouse-idle {
 /* ===================================================================
    CHẾ ĐỘ CHỈNH SỬA TRỰC TIẾP (LIVE INLINE EDIT MODE)
    =================================================================== */
-body.edit-mode-active [contenteditable="true"] {
-  outline: 1.5px dashed rgba(0, 210, 255, 0.5) !important;
-  outline-offset: 3px !important;
-  cursor: text !important;
-  border-radius: 4px !important;
-  transition: all 0.2s ease !important;
-}
-
-body.edit-mode-active [contenteditable="true"]:hover {
-  outline-color: #00d2ff !important;
-  background: rgba(0, 210, 255, 0.08) !important;
-}
-
-body.edit-mode-active [contenteditable="true"]:focus {
-  outline: 2px solid #00d2ff !important;
-  background: rgba(0, 210, 255, 0.15) !important;
-}
-
-.edit-floating-bar {
-  position: fixed;
-  bottom: 58px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #0b192c;
-  border: 1.5px solid #00d2ff;
-  border-radius: 30px;
-  padding: 8px 20px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85), 0 0 25px rgba(0, 210, 255, 0.35);
-  z-index: 9999;
-  animation: slideUpFade 0.25s ease;
-}
-
-.edit-floating-bar .edit-title {
-  font-size: 0.82rem;
-  font-weight: 800;
-  color: #00d2ff;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.edit-btn {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  padding: 5px 14px;
-  border-radius: 20px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.edit-btn:hover {
-  background: rgba(0, 210, 255, 0.25);
-  border-color: #00d2ff;
-  color: #00d2ff;
-}
-
-.edit-btn.primary {
-  background: #00d2ff;
-  color: #040d1a;
-  border-color: #00d2ff;
-  font-weight: 800;
-}
-
-.edit-btn.primary:hover {
-  background: #38bdf8;
-}
-
 /* Lightbox Modal */
 .lightbox-modal {
   position: fixed;
@@ -2481,4 +2384,143 @@ body.edit-mode-active [contenteditable="true"]:focus {
     opacity: 1;
     transform: translate(-50%, 0);
   }
+}
+
+/* ===================================================================
+   EXPORT MODE (?export=1&slide=N) — 1 slide 1600x900, không khung,
+   dùng cho tools/export_slides.py chụp ảnh PPTX / PDF
+   =================================================================== */
+body.export-mode {
+  width: 1600px;
+  height: 900px;
+  min-height: 0;
+  overflow: hidden;
+  display: block;
+}
+
+body.export-mode .presentation-header,
+body.export-mode .presentation-footer,
+body.export-mode .presenter-drawer,
+body.export-mode .presentation-dock,
+body.export-mode .lightbox-modal {
+  display: none !important;
+}
+
+body.export-mode .slide-viewport {
+  position: fixed;
+  inset: 0;
+  width: 1600px;
+  height: 900px;
+  padding: 0;
+  display: block;
+  background: none !important;
+}
+
+body.export-mode .slides-container {
+  transform: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+body.export-mode .slide-item {
+  transition: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+body.export-mode .diagram-img-frame .caption {
+  display: none;
+}
+
+/* ===================================================================
+   SLIDE 14 — KẾT LUẬN: 3 thông điệp + QR lớn
+   =================================================================== */
+.closing-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 24px;
+  margin-top: 18px;
+  min-height: 0;
+  max-height: 560px;
+}
+
+.closing-points {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+}
+
+.closing-card {
+  padding: 20px 26px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-left: 5px solid var(--accent-primary);
+  border-radius: var(--radius-md);
+}
+
+.closing-card h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 6px;
+}
+
+.closing-card p {
+  font-size: 1.15rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.closing-qr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+  padding: 24px;
+  border: 2px solid var(--accent-primary);
+  border-radius: var(--radius-md);
+  background: linear-gradient(160deg, rgba(0, 210, 255, 0.12) 0%, rgba(4, 13, 26, 0.9) 100%);
+}
+
+.closing-qr img {
+  width: 260px;
+  height: 260px;
+  background: #ffffff;
+  padding: 8px;
+  border-radius: 12px;
+}
+
+.closing-qr strong {
+  font-size: 1.1rem;
+  color: var(--text-main);
+  line-height: 1.4;
+}
+
+.closing-qr a {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+}
+
+.closing-thanks {
+  margin-top: 18px;
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
+  background: var(--accent-primary);
+  color: #040d1a;
+  text-align: center;
+  font-weight: 900;
+  font-size: 1.4rem;
+  letter-spacing: 0.5px;
+}
+
+@media screen and (max-width: 860px) {
+  .closing-layout { grid-template-columns: 1fr; }
+  .closing-qr img { width: 180px; height: 180px; }
 }
