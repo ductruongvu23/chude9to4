@@ -180,7 +180,7 @@ const FirebaseService = (function () {
         const resp = await fetch(SHEETS_API_URL, {
           method: "POST",
           mode: "cors",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
           body: JSON.stringify({
             id: reportId,
             target: cleanTarget,
