@@ -124,5 +124,14 @@
   - **4. CTA "Kiểm Tra":** Gradient điện quang (Electric Cyan & Blue) phát sáng mạnh nhất màn hình, micro-hover animation.
   - **5. Tab Navigation:** Thiết kế dạng floating pill sang trọng với tab đang chọn phát sáng, giảm độ chói các tab còn lại.
   - **6. Sổ Tiếp Nhận:** Bảng kẻ sọc ngựa vằn (zebra striping) + hover highlight + status tags semantic phát sáng nhẹ.
+- **2026-10-06 01:17 (Gemini: TỐI ƯU KHÔNG GIAN BẰNG BỐ CỤC DASHBOARD 2 CỘT):**
+  - Mở rộng độ rộng tối đa (`max-width: 1320px`) loại bỏ hoàn toàn khoảng trống thừa hai bên màn hình desktop.
+  - **Cột Trái (Main):** Khung Tra Cứu chính + 3 thẻ Stats + Kết quả tra cứu.
+  - **Cột Phải (Side Widget):**
+    1. **Radar An Ninh Học Đường:** Quét sóng radar điện tử xoay vòng 360 độ (pure CSS animation) với các chấm cảnh báo rủi ro (blips).
+    2. **Biểu đồ tỷ lệ 5 thủ đoạn lừa đảo:** Bẫy việc làm (38%), Thu học phí (27%), Dọa án (18%), Cấp cứu (11%), Thuế/app lạ (6%).
+    3. **Đường dây nóng khẩn cấp:** Nút bấm gọi nhanh 113, Cục A05 / PA05, Tổng đài 111.
+  - Tự động co về 1 cột trên màn hình điện thoại và máy tính bảng (< 1024px). Chạy QA test đạt 100%.
+
 
 

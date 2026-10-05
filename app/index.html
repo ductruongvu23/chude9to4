@@ -62,47 +62,146 @@
       <button data-tab="intake" onclick="switchAppTab('intake')">📝 Báo cáo lừa đảo</button>
     </nav>
 
-    <!-- TAB 1: TRA CỨU SĐT & EMAIL -->
+    <!-- TAB 1: TRA CỨU SĐT & EMAIL (2-COLUMN DASHBOARD) -->
     <section id="tab-lookup" class="tab-section active">
-      <div class="lookup-card">
-        <h2 class="lookup-title">🔍 Tra Cứu Số Điện Thoại & Email Nghi Vấn</h2>
-        <p class="lookup-desc">Kiểm tra tức thời mức độ khả nghi, cảnh báo lừa đảo và số lượt phản ánh từ cộng đồng.</p>
+      <div class="lookup-dashboard-grid">
+        <!-- CỘT TRÁI: KHUNG TRA CỨU & THAO TÁC CHÍNH -->
+        <div class="lookup-main-col">
+          <div class="lookup-card">
+            <h2 class="lookup-title">🔍 Tra Cứu Số Điện Thoại & Email Nghi Vấn</h2>
+            <p class="lookup-desc">Kiểm tra tức thời mức độ khả nghi, cảnh báo lừa đảo và số lượt phản ánh từ cộng đồng.</p>
 
-        <!-- Hero Stats Summary (Task C-01) -->
-        <div class="lookup-stats-grid">
-          <div class="lookup-stat-item stat-item-total">
-            <div class="stat-icon-wrap icon-cyan">🛡️</div>
-            <div class="stat-content">
-              <span class="lookup-stat-label">Tổng báo cáo</span>
-              <span class="lookup-stat-val text-total" id="statTotalReports">--</span>
+            <!-- Hero Stats Summary (Task C-01) -->
+            <div class="lookup-stats-grid">
+              <div class="lookup-stat-item stat-item-total">
+                <div class="stat-icon-wrap icon-cyan">🛡️</div>
+                <div class="stat-content">
+                  <span class="lookup-stat-label">Tổng báo cáo</span>
+                  <span class="lookup-stat-val text-total" id="statTotalReports">--</span>
+                </div>
+              </div>
+              <div class="lookup-stat-item stat-item-verified">
+                <div class="stat-icon-wrap icon-emerald">✅</div>
+                <div class="stat-content">
+                  <span class="lookup-stat-label">Đã xác minh</span>
+                  <span class="lookup-stat-val text-verified" id="statVerifiedReports">--</span>
+                </div>
+              </div>
+              <div class="lookup-stat-item stat-item-rate">
+                <div class="stat-icon-wrap icon-violet">📈</div>
+                <div class="stat-content">
+                  <span class="lookup-stat-label">Tỷ lệ an toàn</span>
+                  <span class="lookup-stat-val text-rate" id="statSafetyRate">--</span>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="lookup-stat-item stat-item-verified">
-            <div class="stat-icon-wrap icon-emerald">✅</div>
-            <div class="stat-content">
-              <span class="lookup-stat-label">Đã xác minh</span>
-              <span class="lookup-stat-val text-verified" id="statVerifiedReports">--</span>
+
+            <!-- Clean Omni Search Input (Tối giản, không để sẵn ví dụ) -->
+            <div class="search-input-group">
+              <input type="text" id="lookupInput" placeholder="Nhập số điện thoại, số tài khoản hoặc email cần kiểm tra..." autocomplete="off">
+              <button class="btn-search" id="btnExecuteLookup" onclick="executeLookup()">
+                <span>Kiểm Tra</span>
+              </button>
             </div>
-          </div>
-          <div class="lookup-stat-item stat-item-rate">
-            <div class="stat-icon-wrap icon-violet">📈</div>
-            <div class="stat-content">
-              <span class="lookup-stat-label">Tỷ lệ an toàn</span>
-              <span class="lookup-stat-val text-rate" id="statSafetyRate">--</span>
-            </div>
+
+            <!-- Result Container (Chỉ hiển thị sau khi người dùng bấm kiểm tra) -->
+            <div id="lookupResultContainer"></div>
           </div>
         </div>
 
-        <!-- Clean Omni Search Input (Tối giản, không để sẵn ví dụ) -->
-        <div class="search-input-group">
-          <input type="text" id="lookupInput" placeholder="Nhập số điện thoại, số tài khoản hoặc email cần kiểm tra..." autocomplete="off">
-          <button class="btn-search" id="btnExecuteLookup" onclick="executeLookup()">
-            <span>Kiểm Tra</span>
-          </button>
-        </div>
+        <!-- CỘT PHẢI: RADAR AN NINH & BIỂU ĐỒ PHÂN BỔ RỦI RO TRỰC QUAN -->
+        <aside class="lookup-side-col">
+          <div class="dashboard-widget radar-widget">
+            <div class="widget-header">
+              <div class="widget-title-row">
+                <span class="widget-badge live-pulse">LIVE</span>
+                <h3 class="widget-title">📡 Radar An Ninh Học Đường</h3>
+              </div>
+              <span class="widget-subtitle">Quét dữ liệu thời gian thực</span>
+            </div>
 
-        <!-- Result Container (Chỉ hiển thị sau khi người dùng bấm kiểm tra) -->
-        <div id="lookupResultContainer"></div>
+            <!-- Visual Radar Scanner (Pure CSS & SVG Animation) -->
+            <div class="radar-scanner-box">
+              <div class="radar-scope">
+                <div class="radar-circle radar-c1"></div>
+                <div class="radar-circle radar-c2"></div>
+                <div class="radar-circle radar-c3"></div>
+                <div class="radar-crosshair-h"></div>
+                <div class="radar-crosshair-v"></div>
+                <div class="radar-sweep"></div>
+                <!-- Radar blips -->
+                <div class="radar-blip blip-1" title="Cuộc gọi dọa án"></div>
+                <div class="radar-blip blip-2" title="Bẫy việc làm"></div>
+                <div class="radar-blip blip-3" title="Mạo danh thu học phí"></div>
+              </div>
+              <div class="radar-status-text">
+                <span class="radar-dot"></span>
+                <span>Hệ thống giám sát: <strong>BẢO VỆ TÍCH CỰC</strong></span>
+              </div>
+            </div>
+
+            <!-- Phân Bổ 5 Nhóm Thủ Đoạn Nghiêm Trọng Nhất -->
+            <div class="scam-breakdown-section">
+              <h4 class="breakdown-title">📊 Tỷ Lệ Thủ Đoạn Tiếp Nhận</h4>
+              
+              <div class="breakdown-list">
+                <div class="breakdown-item">
+                  <div class="breakdown-info">
+                    <span class="scam-name">💼 Bẫy việc làm online / Shopee</span>
+                    <span class="scam-pct danger-text">38%</span>
+                  </div>
+                  <div class="bar-track"><div class="bar-fill danger-bar" style="width: 38%;"></div></div>
+                </div>
+
+                <div class="breakdown-item">
+                  <div class="breakdown-info">
+                    <span class="scam-name">🏫 Mạo danh trường thu học phí</span>
+                    <span class="scam-pct warning-text">27%</span>
+                  </div>
+                  <div class="bar-track"><div class="bar-fill warning-bar" style="width: 27%;"></div></div>
+                </div>
+
+                <div class="breakdown-item">
+                  <div class="breakdown-info">
+                    <span class="scam-name">👮 Giả Công an dọa án / nợ cước</span>
+                    <span class="scam-pct danger-text">18%</span>
+                  </div>
+                  <div class="bar-track"><div class="bar-fill danger-bar" style="width: 18%;"></div></div>
+                </div>
+
+                <div class="breakdown-item">
+                  <div class="breakdown-info">
+                    <span class="scam-name">🏥 Dọa người thân đang cấp cứu</span>
+                    <span class="scam-pct amber-text">11%</span>
+                  </div>
+                  <div class="bar-track"><div class="bar-fill amber-bar" style="width: 11%;"></div></div>
+                </div>
+
+                <div class="breakdown-item">
+                  <div class="breakdown-info">
+                    <span class="scam-name">📱 Giả cơ quan thuế cài app lạ</span>
+                    <span class="scam-pct blue-text">6%</span>
+                  </div>
+                  <div class="bar-track"><div class="bar-fill blue-bar" style="width: 6%;"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Đường Dây Nóng Khẩn Cấp -->
+            <div class="hotline-card">
+              <span class="hotline-icon">🚨</span>
+              <div class="hotline-details">
+                <div class="hotline-label">Đường dây nóng khẩn cấp hỗ trợ sinh viên:</div>
+                <div class="hotline-numbers">
+                  <a href="tel:113" class="hotline-pill">🚔 113</a>
+                  <a href="tel:0692348560" class="hotline-pill">🛡️ Cục A05 / PA05</a>
+                  <a href="tel:111" class="hotline-pill">📞 111</a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </aside>
       </div>
     </section>
 

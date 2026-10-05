@@ -5,9 +5,24 @@
 
 /* Căn giữa Tab Tra Cứu và Phóng To */
 #tab-lookup {
-  max-width: 960px;
-  margin: 15px auto 40px auto;
+  max-width: 100%;
+  margin: 10px auto 40px auto;
   width: 100%;
+}
+
+.lookup-dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 410px;
+  gap: 24px;
+  align-items: start;
+}
+
+.lookup-main-col {
+  min-width: 0;
+}
+
+.lookup-side-col {
+  min-width: 0;
 }
 
 #tab-lookup .lookup-card {
@@ -944,5 +959,336 @@
     width: 100%;
     padding: 13px;
     font-size: 0.95rem;
+  }
+}
+
+/* ===================================================================
+   DASHBOARD WIDGET: RADAR SCANNER & RISK BREAKDOWN
+   =================================================================== */
+
+.dashboard-widget.radar-widget {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.widget-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 14px;
+}
+
+.widget-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.widget-title {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.widget-badge.live-pulse {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  letter-spacing: 0.06em;
+  animation: pulse-live 1.8s infinite;
+}
+
+@keyframes pulse-live {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.95); }
+}
+
+.widget-subtitle {
+  font-size: 0.76rem;
+  color: var(--text-dim);
+}
+
+/* Radar Scope Container */
+.radar-scanner-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.radar-scope {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(14, 165, 233, 0.08) 0%, rgba(6, 9, 17, 0.95) 75%);
+  border: 2px solid rgba(56, 189, 248, 0.35);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.2), inset 0 0 20px rgba(14, 165, 233, 0.15);
+}
+
+.radar-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.radar-c1 { width: 45px; height: 45px; }
+.radar-c2 { width: 90px; height: 90px; }
+.radar-c3 { width: 135px; height: 135px; }
+
+.radar-crosshair-h {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: rgba(56, 189, 248, 0.2);
+}
+
+.radar-crosshair-v {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 100%;
+  background-color: rgba(56, 189, 248, 0.2);
+}
+
+.radar-sweep {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, rgba(6, 182, 212, 0) 0deg, rgba(6, 182, 212, 0) 300deg, rgba(56, 189, 248, 0.45) 360deg);
+  animation: radar-sweep-rotate 3.5s linear infinite;
+}
+
+@keyframes radar-sweep-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Radar Blips */
+.radar-blip {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  animation: blip-flash 2.5s infinite;
+}
+
+.blip-1 {
+  top: 32px;
+  left: 110px;
+  background-color: #ef4444;
+  box-shadow: 0 0 8px #ef4444;
+  animation-delay: 0.5s;
+}
+
+.blip-2 {
+  top: 105px;
+  left: 45px;
+  background-color: #f59e0b;
+  box-shadow: 0 0 8px #f59e0b;
+  animation-delay: 1.6s;
+}
+
+.blip-3 {
+  top: 125px;
+  left: 120px;
+  background-color: #ef4444;
+  box-shadow: 0 0 8px #ef4444;
+  animation-delay: 2.2s;
+}
+
+@keyframes blip-flash {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  40%, 60% { opacity: 1; transform: scale(1.3); }
+}
+
+.radar-status-text {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.radar-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 6px #10b981;
+}
+
+/* Scam Breakdown List */
+.scam-breakdown-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.breakdown-title {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.breakdown-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.breakdown-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.breakdown-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.scam-name {
+  color: var(--text-muted);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scam-pct {
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+.scam-pct.danger-text { color: #f87171; }
+.scam-pct.warning-text { color: #fbbf24; }
+.scam-pct.amber-text { color: #f59e0b; }
+.scam-pct.blue-text { color: #38bdf8; }
+
+.bar-track {
+  width: 100%;
+  height: 6px;
+  background-color: rgba(255, 255, 255, 0.06);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bar-fill.danger-bar {
+  background: linear-gradient(90deg, #ef4444, #f97316);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+}
+
+.bar-fill.warning-bar {
+  background: linear-gradient(90deg, #f59e0b, #eab308);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+}
+
+.bar-fill.amber-bar {
+  background: linear-gradient(90deg, #d97706, #f59e0b);
+  box-shadow: 0 0 8px rgba(217, 119, 6, 0.4);
+}
+
+.bar-fill.blue-bar {
+  background: linear-gradient(90deg, #2563eb, #38bdf8);
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+}
+
+/* Hotline Emergency Card */
+.hotline-card {
+  background: rgba(10, 16, 32, 0.65);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.hotline-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.hotline-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hotline-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #fca5a5;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.hotline-numbers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.hotline-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.hotline-pill:hover {
+  background-color: rgba(239, 68, 68, 0.25);
+  border-color: #ef4444;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Responsive adjustment for Dashboard Grid */
+@media (max-width: 1024px) {
+  .lookup-dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 }
