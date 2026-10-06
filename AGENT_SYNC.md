@@ -339,6 +339,21 @@
     * Nâng cache-busting `v=20261006_9` đảm bảo trình duyệt người dùng nhận ngay code mới.
   - **2. Kiểm thử hồi quy tự động:** **100% PASSED** trên Edge Chromium Headless (cả `qa_regression_test.py` và `run_qa_suite.py` đều 0 lỗi, DOM và mock đều hợp lệ).
   - **3. Đồng bộ & Git:** Đã sync sang `bai_to_5` và đẩy lên GitHub `main`.
+- **2026-10-07 00:15 (Gemini → Claude & PO: HOÀN TẤT CHUẨN HÓA GIAO DIỆN SÁNG & TỐI - TASK G-06):**
+  - **1. Phân tích & Khắc phục lỗi tương phản Chế độ Sáng (Light Mode):**
+    * *Hiện trạng cũ:* Giao diện Sáng bị lỗi nghiêm trọng do nhiều class cứng nền tối (`rgba(15, 23, 42, 0.75)`, `#0f172a`, `rgba(9, 14, 28, 0.85)`) trong khi chữ chuyển sang màu đen/slate (`#0f172a`), dẫn đến chữ tối đè trên nền tối không thể đọc được trên cả 3 Tab.
+    * *Chuẩn hóa CSS Design Tokens (`app/css/base.css`):* Thiết lập đầy đủ biến ngữ nghĩa cho cả `:root, [data-theme="light"]` và `[data-theme="dark"]` (`--bg-page`, `--bg-surface`, `--bg-subtle`, `--bg-card`, `--bg-input`, `--border-color`, `--border-input`, `--header-bg`, `--header-btn-*`, `--nav-pill-*`, `--radar-*`, `--bar-track`, `--hotline-*`).
+  - **2. Đồng bộ toàn diện trên cả 3 Tab:**
+    * **Tab 1 (Tra cứu):** Main card chuyển sang nền trắng tinh khôi thanh lịch, đổ bóng mềm mại, các thẻ thống kê 3 khối bo tròn nổi bật rực rỡ, thanh tìm kiếm input sáng sủa, Radar widget nền sáng tương phản cao, thẻ Hotline cảnh báo nền hồng cam dịu mắt dễ nhận diện.
+    * **Tab 2 (Phân tích tin nhắn):** Textarea, dropzone tải ảnh, huy hiệu Mini AI, thanh đo 5 chiều và thẻ kết quả phân tích hiển thị sắc nét, chữ rõ ràng không bị chìm màu.
+    * **Tab 3 (Báo cáo lừa đảo):** Form tiếp nhận trắng sáng gọn gàng, ô nhập và select sắc nét, bảng sổ tiếp nhận hồ sơ phân dòng và gắn nhãn trạng thái sinh động, trực quan.
+    * **Chế độ Tối (Dark Mode):** Giữ trọn vẹn phong cách Dark Cinematic cao cấp với hiệu ứng dạ quang Cyberpunk tinh tế, loại bỏ hoàn toàn các đoạn ghi đè màu cứng.
+  - **3. Xác thực Trực quan (Visual Inspection):**
+    * Đã chụp và kiểm định ảnh màn hình thực tế (Edge Headless) trên cả 3 Tab cho cả 2 chế độ Sáng và Tối: màu sắc hài hòa, chuẩn tương phản WCAG, độ sắc nét 100%.
+  - **4. Kiểm thử Hồi quy Tự động:**
+    * `python tools/qa_regression_test.py`: **100% PASSED** (0 lỗi CSP, 0 lỗi JS, các chỉ số và form submit hoạt động hoàn hảo).
+    * `python tools/run_qa_suite.py`: **100% PASSED**.
+  - **5. Đồng bộ & Git:** Cập nhật cache-busting CSS lên `v=20261007_1`. Đồng bộ sang `bai_to_5` và đẩy lên GitHub `main`.
 
 
 

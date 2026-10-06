@@ -30,12 +30,13 @@
   overflow: hidden;
   padding: 48px 44px;
   border-radius: 20px;
-  background: rgba(15, 23, 42, 0.75);
+  background: var(--bg-surface);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--card-shadow);
   text-align: center;
+  transition: background var(--transition-speed) ease, border-color var(--transition-speed) ease;
 }
 
 /* Hero Center Ambient Glow */
@@ -48,7 +49,7 @@
   width: min(520px, 90vw);
   max-width: 100%;
   height: 240px;
-  background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.24) 0%, rgba(6, 182, 212, 0.08) 45%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.16) 0%, rgba(6, 182, 212, 0.05) 45%, transparent 70%);
   pointer-events: none;
   border-radius: 50%;
 }
@@ -58,7 +59,7 @@
   font-weight: 800;
   margin-bottom: 10px;
   letter-spacing: -0.02em;
-  color: #ffffff;
+  color: var(--text-main);
   text-align: center;
   position: relative;
   z-index: 1;
@@ -88,7 +89,7 @@
 
 #tab-lookup .lookup-stat-item {
   position: relative;
-  background: rgba(10, 16, 32, 0.65);
+  background: var(--bg-subtle);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-radius: 14px;
@@ -97,18 +98,18 @@
   align-items: center;
   gap: 16px;
   text-align: left;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 #tab-lookup .lookup-stat-item:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  box-shadow: var(--shadow-md);
 }
 
 #tab-lookup .lookup-stat-item.stat-item-total {
-  border-color: rgba(56, 189, 248, 0.25);
+  border-color: rgba(56, 189, 248, 0.3);
 }
 #tab-lookup .lookup-stat-item.stat-item-total:hover {
   border-color: rgba(56, 189, 248, 0.6);
@@ -116,7 +117,7 @@
 }
 
 #tab-lookup .lookup-stat-item.stat-item-verified {
-  border-color: rgba(52, 211, 153, 0.25);
+  border-color: rgba(52, 211, 153, 0.3);
 }
 #tab-lookup .lookup-stat-item.stat-item-verified:hover {
   border-color: rgba(52, 211, 153, 0.6);
@@ -124,7 +125,7 @@
 }
 
 #tab-lookup .lookup-stat-item.stat-item-rate {
-  border-color: rgba(167, 139, 250, 0.25);
+  border-color: rgba(167, 139, 250, 0.3);
 }
 #tab-lookup .lookup-stat-item.stat-item-rate:hover {
   border-color: rgba(167, 139, 250, 0.6);
@@ -175,20 +176,17 @@
   font-weight: 800;
   line-height: 1.1;
   font-family: var(--font-mono, monospace);
-  color: #ffffff;
+  color: var(--text-main);
 }
 
 #tab-lookup .lookup-stat-val.text-total {
-  color: #38bdf8;
-  text-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
+  color: var(--accent-cyan);
 }
 #tab-lookup .lookup-stat-val.text-verified {
-  color: #34d399;
-  text-shadow: 0 0 16px rgba(52, 211, 153, 0.35);
+  color: var(--accent-emerald);
 }
 #tab-lookup .lookup-stat-val.text-rate {
-  color: #a78bfa;
-  text-shadow: 0 0 16px rgba(167, 139, 250, 0.35);
+  color: var(--accent-violet);
 }
 
 @media (max-width: 680px) {
@@ -226,18 +224,23 @@
   font-size: 1.15rem;
   padding: 16px 24px;
   border-radius: 14px;
-  border: 1.5px solid rgba(255, 255, 255, 0.12);
-  background-color: rgba(9, 14, 28, 0.85);
-  color: #ffffff;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  border: 1.5px solid var(--border-input);
+  background-color: var(--bg-input);
+  color: var(--text-main);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
   outline: none;
   transition: all 0.25s ease;
 }
 
 #tab-lookup .search-input-group input:focus {
-  border-color: #38bdf8;
-  background-color: rgba(13, 21, 41, 0.95);
-  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2), 0 0 24px rgba(56, 189, 248, 0.15);
+  border-color: var(--border-focus);
+  background-color: var(--bg-input);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.18), 0 0 20px rgba(56, 189, 248, 0.15);
+}
+
+#tab-lookup .search-input-group input::placeholder {
+  color: var(--text-dim);
+  opacity: 0.8;
 }
 
 /* Nút Kiểm Tra - CTA Vibrant Glowing Focal Point */
@@ -874,10 +877,10 @@
 }
 
 .risk-flag {
-  background: rgba(15, 23, 42, 0.6);
+  background: var(--bg-surface);
   border-radius: var(--radius-sm);
   padding: 11px 14px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-color);
   border-left: 4px solid var(--primary);
   display: flex;
   flex-direction: column;
@@ -888,28 +891,28 @@
 }
 
 .risk-flag:hover {
-  background: rgba(15, 23, 42, 0.85);
+  background: var(--bg-subtle);
   transform: translateY(-1px);
 }
 
 .risk-flag-danger {
-  border-left-color: #ef4444;
-  background: rgba(239, 68, 68, 0.08);
+  border-left-color: var(--danger);
+  background: var(--danger-bg);
 }
 .risk-flag-danger:hover {
-  background: rgba(239, 68, 68, 0.14);
+  background: var(--danger-bg);
 }
 
 .risk-flag-warning {
-  border-left-color: #f59e0b;
-  background: rgba(245, 158, 11, 0.08);
+  border-left-color: var(--warning);
+  background: var(--warning-bg);
 }
 .risk-flag-warning:hover {
-  background: rgba(245, 158, 11, 0.14);
+  background: var(--warning-bg);
 }
 
 .risk-flag-info {
-  border-left-color: #38bdf8;
+  border-left-color: var(--accent-cyan);
   background: rgba(56, 189, 248, 0.08);
 }
 .risk-flag-info:hover {
@@ -917,18 +920,18 @@
 }
 
 .risk-flag-title {
-  color: #ffffff;
+  color: var(--text-main);
   font-size: 0.88rem;
   font-weight: 700;
 }
 .risk-flag-danger .risk-flag-title {
-  color: #fca5a5;
+  color: var(--danger-text);
 }
 .risk-flag-warning .risk-flag-title {
-  color: #fde68a;
+  color: var(--warning-text);
 }
 .risk-flag-info .risk-flag-title {
-  color: #bae6fd;
+  color: var(--primary);
 }
 
 .risk-flag-detail {
@@ -951,9 +954,9 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: #38bdf8;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  color: var(--primary);
   padding: 3px 9px;
   border-radius: 6px;
   font-size: 0.74rem;
@@ -964,8 +967,8 @@
 }
 
 .risk-source-link:hover {
-  background: rgba(56, 189, 248, 0.22);
-  border-color: #38bdf8;
+  background: var(--primary);
+  border-color: var(--primary);
   color: #ffffff;
   transform: translateY(-1px);
 }
@@ -1005,9 +1008,9 @@
   border-radius: var(--radius-sm);
   font-size: 0.76rem;
   line-height: 1.5;
-  background: rgba(245, 158, 11, 0.08);
-  border: 1px solid rgba(245, 158, 11, 0.25);
-  color: #fde68a;
+  background: var(--warning-bg);
+  border: 1px solid var(--warning-border);
+  color: var(--warning-text);
   font-style: italic;
 }
 
@@ -1232,20 +1235,21 @@
    =================================================================== */
 
 .dashboard-widget.radar-widget {
-  background: rgba(15, 23, 42, 0.75);
+  background: var(--bg-surface);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  border: 1px solid var(--border-color);
   border-radius: 20px;
   padding: 24px;
-  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  box-shadow: var(--card-shadow);
   display: flex;
   flex-direction: column;
   gap: 20px;
+  transition: background var(--transition-speed) ease, border-color var(--transition-speed) ease;
 }
 
 .widget-header {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--border-color);
   padding-bottom: 14px;
 }
 
@@ -1259,14 +1263,14 @@
 .widget-title {
   font-size: 1.08rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-main);
   letter-spacing: -0.01em;
 }
 
 .widget-badge.live-pulse {
-  background-color: rgba(239, 68, 68, 0.15);
-  color: #f87171;
-  border: 1px solid rgba(239, 68, 68, 0.4);
+  background-color: var(--danger-bg);
+  color: var(--danger-text);
+  border: 1px solid var(--danger-border);
   font-size: 0.65rem;
   font-weight: 800;
   padding: 2px 7px;
@@ -1298,11 +1302,11 @@
   width: 170px;
   height: 170px;
   border-radius: 50%;
-  background: radial-gradient(circle at center, rgba(14, 165, 233, 0.08) 0%, rgba(6, 9, 17, 0.95) 75%);
-  border: 2px solid rgba(56, 189, 248, 0.35);
+  background: var(--radar-bg);
+  border: 2px solid var(--radar-border);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 0 20px rgba(6, 182, 212, 0.2), inset 0 0 20px rgba(14, 165, 233, 0.15);
+  box-shadow: var(--radar-shadow);
 }
 
 .radar-circle {
@@ -1311,7 +1315,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 50%;
-  border: 1px solid rgba(56, 189, 248, 0.2);
+  border: 1px solid var(--radar-grid);
 }
 
 .radar-c1 { width: 45px; height: 45px; }
@@ -1324,7 +1328,7 @@
   left: 0;
   width: 100%;
   height: 1px;
-  background-color: rgba(56, 189, 248, 0.2);
+  background-color: var(--radar-grid);
 }
 
 .radar-crosshair-v {
@@ -1333,7 +1337,7 @@
   left: 50%;
   width: 1px;
   height: 100%;
-  background-color: rgba(56, 189, 248, 0.2);
+  background-color: var(--radar-grid);
 }
 
 .radar-sweep {
@@ -1416,7 +1420,7 @@
 .breakdown-title {
   font-size: 0.86rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-main);
   letter-spacing: -0.01em;
 }
 
@@ -1455,12 +1459,12 @@
 .scam-pct.danger-text { color: #f87171; }
 .scam-pct.warning-text { color: #fbbf24; }
 .scam-pct.amber-text { color: #f59e0b; }
-.scam-pct.blue-text { color: #38bdf8; }
+.scam-pct.blue-text { color: var(--accent-cyan); }
 
 .bar-track {
   width: 100%;
   height: 6px;
-  background-color: rgba(255, 255, 255, 0.06);
+  background-color: var(--bar-track);
   border-radius: 9999px;
   overflow: hidden;
 }
@@ -1493,8 +1497,8 @@
 
 /* Hotline Emergency Card */
 .hotline-card {
-  background: rgba(10, 16, 32, 0.65);
-  border: 1px solid rgba(239, 68, 68, 0.25);
+  background: var(--hotline-bg);
+  border: 1px solid var(--hotline-border);
   border-radius: 14px;
   padding: 14px;
   display: flex;
@@ -1517,7 +1521,7 @@
 .hotline-label {
   font-size: 0.78rem;
   font-weight: 700;
-  color: #fca5a5;
+  color: var(--hotline-label);
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
@@ -1532,9 +1536,9 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background-color: rgba(239, 68, 68, 0.12);
-  color: #fca5a5;
-  border: 1px solid rgba(239, 68, 68, 0.35);
+  background-color: var(--danger-bg);
+  color: var(--danger-text);
+  border: 1px solid var(--danger-border);
   padding: 4px 10px;
   border-radius: 8px;
   font-size: 0.75rem;
@@ -1544,8 +1548,8 @@
 }
 
 .hotline-pill:hover {
-  background-color: rgba(239, 68, 68, 0.25);
-  border-color: #ef4444;
+  background-color: var(--danger);
+  border-color: var(--danger);
   color: #ffffff;
   transform: translateY(-1px);
 }
