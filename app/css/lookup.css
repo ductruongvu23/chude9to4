@@ -842,6 +842,202 @@
   color: var(--success-text);
 }
 
+/* ===================================================================
+   RISK ENGINE ENHANCED RESULT CARD STYLES (Task C-03 UI)
+   =================================================================== */
+
+.risk-section {
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+
+.risk-section-title {
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Danh sách cờ rủi ro (Risk Flags) */
+.risk-flags {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+}
+
+.risk-flag {
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 4px solid var(--primary);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.risk-flag:hover {
+  background: rgba(15, 23, 42, 0.85);
+  transform: translateY(-1px);
+}
+
+.risk-flag-danger {
+  border-left-color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+}
+.risk-flag-danger:hover {
+  background: rgba(239, 68, 68, 0.14);
+}
+
+.risk-flag-warning {
+  border-left-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.08);
+}
+.risk-flag-warning:hover {
+  background: rgba(245, 158, 11, 0.14);
+}
+
+.risk-flag-info {
+  border-left-color: #38bdf8;
+  background: rgba(56, 189, 248, 0.08);
+}
+.risk-flag-info:hover {
+  background: rgba(56, 189, 248, 0.14);
+}
+
+.risk-flag-title {
+  color: #ffffff;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+.risk-flag-danger .risk-flag-title {
+  color: #fca5a5;
+}
+.risk-flag-warning .risk-flag-title {
+  color: #fde68a;
+}
+.risk-flag-info .risk-flag-title {
+  color: #bae6fd;
+}
+
+.risk-flag-detail {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.risk-flag-sources {
+  margin-top: 4px;
+  font-size: 0.76rem;
+  color: var(--text-dim);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.risk-source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #38bdf8;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  text-decoration: none;
+  word-break: break-all;
+  transition: all 0.2s ease;
+}
+
+.risk-source-link:hover {
+  background: rgba(56, 189, 248, 0.22);
+  border-color: #38bdf8;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Danh sách khuyến nghị hành động (Checklist) */
+.risk-advice {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.risk-advice li {
+  position: relative;
+  padding-left: 22px;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.risk-advice li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #34d399;
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+/* Cảnh báo rủi ro (Legal Disclaimer) */
+.risk-disclaimer {
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.76rem;
+  line-height: 1.5;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  color: #fde68a;
+  font-style: italic;
+}
+
+/* Mức độ nguy cơ động cho Card */
+#conciseResultCard[data-risk-level="critical"] {
+  border-color: rgba(239, 68, 68, 0.6);
+  box-shadow: 0 0 24px rgba(239, 68, 68, 0.22), 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+#conciseResultCard[data-risk-level="critical"] .risk-badge {
+  animation: pulse-critical 2s infinite;
+}
+
+@keyframes pulse-critical {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+  50% { box-shadow: 0 0 16px 3px rgba(239, 68, 68, 0.6); }
+}
+
+#conciseResultCard[data-risk-level="high"] {
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+#conciseResultCard[data-risk-level="suspicious"] {
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+#conciseResultCard[data-risk-level="safe"] {
+  border-color: rgba(34, 197, 94, 0.35);
+}
+
 .result-footer-compact {
   display: flex;
   flex-direction: column;
@@ -974,6 +1170,28 @@
     width: 100%;
     padding: 12px;
     font-size: 0.92rem;
+  }
+
+  #tab-lookup .risk-flag {
+    padding: 9px 11px;
+    font-size: 0.82rem;
+  }
+
+  #tab-lookup .risk-flag-sources {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  #tab-lookup .risk-source-link {
+    max-width: 100%;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  #tab-lookup .risk-disclaimer {
+    padding: 8px 10px;
+    font-size: 0.74rem;
   }
 
   /* Side widget mobile optimization */

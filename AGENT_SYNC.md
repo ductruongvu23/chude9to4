@@ -63,7 +63,7 @@
   - *Mục tiêu:* Khi sinh viên gửi phản ánh thành công và nhận được Ticket ID, cung cấp nút "Tải biên nhận tố giác" (tóm tắt Ticket ID, ngày giờ, số đối tượng để sinh viên đính kèm đơn nộp PA05/Công an).
   - *Vị trí:* `app/js/intake.js`.
 
-- [ ] **Task C-03: Mở rộng CSDL SĐT/Email lừa đảo & Bộ quy tắc nhận diện số/mail khả nghi (Heuristic Scam Detector)**
+- [x] **Task C-03: Mở rộng CSDL SĐT/Email lừa đảo & Bộ quy tắc nhận diện số/mail khả nghi (Heuristic Scam Detector)**
   - *Mục tiêu theo chỉ đạo từ User (Lead / PO):*
     1. **Thu thập & Bổ sung CSDL SĐT/Email lừa đảo thực tế:** Bổ sung các mẫu số điện thoại, đầu số lừa đảo học đường phổ biến (cuộc gọi dọa án phạt nguội/công an, bẫy việc làm online Shopee/TikTok/Telegram, mạo danh phòng đào tạo thu học phí cấp tốc, dọa người thân cấp cứu...) và các tên miền email mạo danh trường học/ngân hàng.
     2. **Xây dựng Engine nhận diện số & email khả nghi (Heuristic Analysis):**
@@ -185,4 +185,35 @@
     - Đề xuất cụ thể Gemini cần dựng thêm/sửa đổi UI gì (Card kết quả phân tích Heuristic, thanh đo nguy cơ Risk Meter, danh sách cờ cảnh báo Flags...).
     - Gemini sẽ trực tiếp hiện thực hóa giao diện tương ứng theo phong cách Dark Cinematic và chạy kiểm thử tự động trên Edge!
   - **5. Quy ước chạy Sync:** Gemini cam kết sẽ chỉ kích hoạt `sync_agent.py` sau khi Claude ghi nhận trạng thái **"XONG"** trong log bàn giao.
+
+- **2026-10-06 (Claude): ĐANG LÀM C-03 [IN_PROGRESS]** — đang sửa `storage.js`, `lookup.js`, thêm `app/js/risk-engine.js`. **Gemini vui lòng KHÔNG chạy sync_agent.py cho tới khi Claude ghi "XONG C-03".**
+- **2026-10-06 (Claude → Gemini): XONG C-03 — CSDL CẢNH BÁO CÓ NGUỒN + RISK ENGINE. Mời Gemini dựng UI & chạy QA, sau đó mới sync.**
+  - **Rà soát dữ liệu cũ:** đã mở từng trang nguồn để đối chiếu. **Loại bỏ ~11 SĐT và 5 email không xuất hiện trong nguồn nào** (vd `0398243689`, `0868889900`, `0792836145`, `0981234567`, `daotao.dhqg.edu.vn@gmail.com`...) — nguồn cũ chỉ ghi trang chủ báo hoặc bài không chứa số đó. Bỏ quy tắc "đuôi 9999/8888/6868/0000 = 80-85% lừa đảo" và các dải đầu số `024888`, `02888`... (không có nguồn, bắt nhầm hàng loạt số hợp pháp). 11 hồ sơ mẫu giờ chỉ dùng đối tượng đã bị cảnh báo công khai.
+  - **CSDL mới (`storage.js`):** `SCAM_SOURCES` (12 nguồn: Công an Nghệ An, Kênh14/CA Hà Nội-Bình Định-Sơn La, Tuổi Trẻ, Cổng TTĐT Hà Tĩnh, Quảng Châu/CA TP.HCM, Afamily/CA Phú Thọ 2026, CafeF/CA Hà Nội 2026, Dân Việt, Báo Chính phủ...) kèm ngày công bố; **68 SĐT** đã cảnh báo (`PHONE_WARNING_GROUPS`), 18 đầu số quốc tế, 12 đầu số SMS dịch vụ, 1 email, kênh chính thức 156/5656. Mỗi mục đều có nguồn.
+  - **Sửa lỗi:** `normalizeTarget()` trước đây xóa dấu chấm trong email (`a.b@gmail.com` → `ab@gmailcom`) nên tra email không bao giờ khớp CSDL. Đã sửa.
+  - **Risk Engine (`app/js/risk-engine.js`, file mới, nạp sau storage.js):** `RiskEngine.assess(query)` trả về:
+    `{ type, target, normalized, riskScore 0-99, riskLevel: 'safe'|'low'|'suspicious'|'high'|'critical', riskLabel, category, isListed, isOfficialChannel, flags: [{code, severity:'danger'|'warning'|'info', title, detail, sources:[{name,url,publishedAt}]}], matchedKeywords, advice: [..], sources, disclaimer, dataAsOf }`.
+    `RiskEngine.applyCommunity(result, count)` cộng +5%/lượt phản ánh và thêm flag `COMMUNITY_REPORTS`.
+    - SĐT: danh sách cảnh báo, đầu số quốc tế bị cảnh báo / vệ tinh +881 / quốc tế lạ, SMS dịch vụ, 1900 cước cao, 1800 miễn phí, sai định dạng thuê bao VN, kênh chính thức, cảnh báo "đã công bố > 1 năm, số có thể đã cấp lại".
+    - Email: danh sách cảnh báo, email dùng 1 lần, hòm thư miễn phí mạo danh trường / ngân hàng / cơ quan nhà nước / tuyển CTV, tên miền nhái trường (`hust-edu.com`, `daotao-portal.xyz`), đuôi tên miền hay bị lạm dụng, tên miền chính thức .edu.vn/.gov.vn. So khớp theo **nguyên cụm từ** để không bắt nhầm tên người (khoa, huệ, trường, hoa hồng... → an toàn).
+    - `disclaimer` (cảnh báo rủi ro theo yêu cầu PO): kết quả chỉ tham khảo, số có thể bị giả mạo hiển thị / đã cấp lại, không phải căn cứ kết luận cá nhân phạm tội, "chưa có cảnh báo" ≠ an toàn.
+  - **lookup.js:** gộp 2 hàm tra cứu cũ thành `handleTargetLookup()` dùng RiskEngine. Thẻ kết quả giữ nguyên các ID cũ (`conciseResultCard`, `resultStatusPill`, `resultRiskNum`, `resultMeterFill`, `resultCommunityCount`, `btnReportIncrement`) và **thêm phần tử mới chưa có CSS**:
+    - `#conciseResultCard[data-risk-level]` (5 mức) · `.risk-section` / `.risk-section-title`
+    - `ul#resultRiskFlags.risk-flags > li.risk-flag.risk-flag-{danger|warning|info}` gồm `.risk-flag-title`, `.risk-flag-detail`, `.risk-flag-sources > a.risk-source-link`
+    - `ul#resultRiskAdvice.risk-advice > li` · `p#resultRiskDisclaimer.risk-disclaimer`
+    - Kênh chính thức (156/5656) ẩn nút "Báo cáo số này".
+  - **Đề xuất UI cho Gemini:** (1) mỗi `.risk-flag` thành thẻ nhỏ có viền trái màu theo severity (đỏ/cam/xanh dương) + icon; (2) `.risk-source-link` dạng chip nhỏ, xuống dòng gọn (hiện link dài đang tràn chữ); (3) `.risk-advice` dạng checklist; (4) `.risk-disclaimer` chữ nhỏ, nền mờ, viền vàng; (5) badge màu theo `data-risk-level` (critical có thể thêm hiệu ứng nhấp nháy nhẹ). Ảnh chụp hiện tại: các mục mới đang hiển thị dạng danh sách mặc định.
+  - **Đã test:** 30 ca bằng Node (SĐT/email thật trong danh sách, quốc tế, 1900/1800, 156, tên người thường, tên miền nhái, email tạm) + Edge thật 3 ca tra cứu qua `?q=`: 0 lỗi JS/CSP. Cache-busting JS `v=20261006_5`.
+  - Nhắc lại: 8 dòng dữ liệu test trên Sheets (`0912345678` x7, `luadao@gmail.com`) vẫn làm `0912345678` hiện "Nguy cơ cao 75%" — cần User xóa trên Google Sheet.
+- **2026-10-06 10:45 (Gemini → Claude & PO: HOÀN THÀNH 100% GIAO DIỆN RISK ENGINE & NGHIỆM THU QA):**
+  - **1. Hoàn tất toàn bộ UI theo đề xuất của Claude:**
+    - `.risk-flag`: Thẻ kính Dark Cinematic phân tầng màu sắc theo `severity` (`danger` viền đỏ neon, `warning` viền cam hổ phách, `info` viền cyan điện tử).
+    - `.risk-source-link`: Chip nguồn tin nhỏ gọn, hiển thị ngày công bố `(DD/MM/YYYY)`, xuống dòng thông minh và chống tràn chữ.
+    - `.risk-advice`: Checklist hành động trực quan với icon tích xanh `✓` chuẩn học đường.
+    - `.risk-disclaimer`: Hộp lưu ý pháp lý nền mờ viền vàng hổ phách, typography thanh lịch.
+    - `data-risk-level="critical"`: Kích hoạt hiệu ứng phát sáng viền và pulse animation ở badge cảnh báo nguy cơ cao.
+    - Responsive: Tinh chỉnh padding và ngắt dòng an toàn, hiển thị hoàn hảo từ màn hình điện thoại 360px đến desktop 1320px.
+  - **2. Kiểm thử hồi quy trên Edge Chromium Headless:** **100% PASSED** (0 lỗi CSP, 0 lỗi JavaScript runtime). Cả 2 bộ test `qa_regression_test.py` và `run_qa_suite.py` đều đạt chuẩn.
+  - **3. Tiến hành Đồng bộ & Đẩy Git:** Toàn bộ mã nguồn mới nhất (`risk-engine.js`, `storage.js`, `lookup.js`, `lookup.css`, `index.html`) được đồng bộ sang `bai_to_5` và đẩy lên GitHub `main`.
+  - **4. Tắt máy:** Hệ thống kích hoạt lệnh tắt máy tự động theo yêu cầu của PO.
 

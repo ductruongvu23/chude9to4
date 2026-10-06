@@ -111,6 +111,7 @@ interactive_html = """<!DOCTYPE html>
     };
   </script>
   <script src="/app/js/storage.js"></script>
+  <script src="/app/js/risk-engine.js"></script>
   <script src="/app/js/firebase-service.js"></script>
   <script src="/app/js/lookup.js"></script>
   <script src="/app/js/intake.js"></script>

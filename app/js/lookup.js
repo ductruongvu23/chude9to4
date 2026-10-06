@@ -108,12 +108,7 @@ async function executeLookup() {
   `;
 
   try {
-    const isEmail = query.includes('@');
-    if (isEmail) {
-      await handleEmailLookup(query, container);
-    } else {
-      await handlePhoneLookup(query, container);
-    }
+    await handleTargetLookup(query, container);
   } catch (err) {
     console.error("[Lookup] Lỗi tra cứu:", err);
     container.innerHTML = `
@@ -124,221 +119,78 @@ async function executeLookup() {
   }
 }
 
-async function handlePhoneLookup(phone, container) {
-  // Chuẩn hóa +84 / 84 / dấu chấm, khoảng trắng về cùng một định dạng
-  const cleanPhone = normalizeTarget(phone);
-  let data = null;
+// Tra cứu SĐT / email: đối soát danh sách cảnh báo + quy tắc nhận diện (RiskEngine)
+// rồi cộng thêm điểm từ phản ánh cộng đồng.
+async function handleTargetLookup(query, container) {
+  let assessment = RiskEngine.assess(query);
 
-  // 1. Kiểm tra đối soát trong Danh sách xác minh
-  const verifiedRecord = PHONE_DATABASE[cleanPhone] || PHONE_DATABASE[phone];
+  const communityStats = await FirebaseService.getCommunityReportsCount(assessment.normalized);
+  const communityCount = communityStats.count || 0;
+  assessment = RiskEngine.applyCommunity(assessment, communityCount);
 
-  if (verifiedRecord) {
-    data = {
-      target: verifiedRecord.number || phone,
-      carrier: verifiedRecord.carrier || "Thuê bao di động / cố định",
-      baseRisk: verifiedRecord.riskScore || 95,
-      isVerifiedScam: verifiedRecord.riskScore > 0,
-      threatDetail: verifiedRecord.threatType || "Số điện thoại nằm trong danh mục lừa đảo đã được cơ quan chức năng công bố.",
-      sourceName: verifiedRecord.sourceName,
-      sourceUrl: verifiedRecord.sourceUrl
-    };
-  } else {
-    // 2. Nhận diện kỹ thuật (Đầu số quốc tế bẫy cước, VoIP ảo, SMS dịch vụ, đuôi số)
-    const matchedPattern = typeof SCAM_PATTERNS !== 'undefined'
-      ? SCAM_PATTERNS.find(p => cleanPhone.startsWith(p.prefix) || (p.prefix.startsWith('+') && cleanPhone.startsWith('00' + p.prefix.substring(1))))
-      : null;
+  const topFlag = assessment.flags.find(f => f.severity === 'danger')
+    || assessment.flags.find(f => f.severity === 'warning')
+    || assessment.flags[0];
 
-    const isSmsShortcode = typeof SCAM_SMS_SHORTCODES !== 'undefined' && SCAM_SMS_SHORTCODES.includes(cleanPhone);
+  currentLookupData = {
+    assessment,
+    target: assessment.target,
+    type: assessment.type,
+    cleanTarget: assessment.normalized,
+    finalRiskScore: assessment.riskScore,
+    communityCount,
+    communityReports: communityStats.reports || [],
+    riskIncrement: assessment.communityIncrement || 0,
+    threatDetail: topFlag ? topFlag.detail : NO_WARNING_TEXT
+  };
 
-    const matchedSuffix = typeof SCAM_SUFFIXES !== 'undefined' && cleanPhone.length >= 8
-      ? SCAM_SUFFIXES.find(s => cleanPhone.endsWith(s.suffix))
-      : null;
-
-    if (matchedPattern) {
-      data = {
-        target: phone,
-        carrier: `Đầu số quốc tế: ${matchedPattern.prefix} (${matchedPattern.country})`,
-        baseRisk: matchedPattern.risk || 95,
-        isVerifiedScam: true,
-        threatDetail: `Đầu số quốc tế nháy máy bẫy cước viễn thông giá cao (${matchedPattern.type}). Tuyệt đối không gọi lại.`,
-        sourceName: matchedPattern.source,
-        sourceUrl: matchedPattern.url
-      };
-    } else if (isSmsShortcode) {
-      data = {
-        target: phone,
-        carrier: `Đầu số SMS dịch vụ: ${cleanPhone}`,
-        baseRisk: 95,
-        isVerifiedScam: true,
-        threatDetail: `Đầu số tin nhắn dịch vụ câu cước ngầm được cơ quan công an cảnh báo.`,
-        sourceName: "Cổng TT Bệnh Viện Lê Văn Thịnh",
-        sourceUrl: "https://benhvienlevanthinh.vn"
-      };
-    } else if (matchedSuffix) {
-      data = {
-        target: phone,
-        carrier: `Đuôi số: ...${matchedSuffix.suffix} (${matchedSuffix.type})`,
-        baseRisk: matchedSuffix.risk || 80,
-        isVerifiedScam: true,
-        threatDetail: `Đuôi số tổng đài VoIP ảo thường bị đối tượng xấu lợi dụng để tạo uy tín giả (${matchedSuffix.note}).`,
-        sourceName: "Báo Điện tử Chính phủ & Cục An toàn thông tin",
-        sourceUrl: "https://baochinhphu.vn"
-      };
-    } else {
-      // Số thông thường chưa có trong danh sách đen
-      data = {
-        target: phone,
-        carrier: "Thuê bao viễn thông thông thường",
-        baseRisk: 0,
-        isVerifiedScam: false,
-        threatDetail: "Chưa ghi nhận tiền sử vi phạm hoặc cảnh báo từ cơ quan chức năng.",
-        sourceName: null,
-        sourceUrl: null
-      };
-    }
-  }
-
-  // 3. Truy vấn thống kê phản ánh cộng đồng (Bao gồm dữ liệu sẵn có + người dùng báo cáo)
-  const communityStats = await FirebaseService.getCommunityReportsCount(cleanPhone);
-  data.communityCount = communityStats.count || 0;
-  data.communityReports = communityStats.reports || [];
-
-  // Tính toán % khả nghi tổng hợp:
-  // Mỗi phản ánh cộng đồng tự động tăng thêm +5% nguy cơ (tối thiểu bắt đầu từ 45% nếu là số lạ)
-  let calculatedRisk = data.baseRisk;
-  let riskIncrement = 0;
-  if (data.communityCount > 0) {
-    riskIncrement = data.communityCount * 5; // Tăng +5% nguy cơ cho mỗi lượt báo cáo
-    if (data.baseRisk > 0) {
-      calculatedRisk = Math.min(99, data.baseRisk + riskIncrement);
-    } else {
-      calculatedRisk = Math.min(99, 40 + riskIncrement);
-    }
-    // Cập nhật đánh giá cảnh báo cộng đồng
-    if (!data.isVerifiedScam) {
-      const recentType = (data.communityReports[0] && data.communityReports[0].scamType)
-        ? data.communityReports[0].scamType
-        : 'Có dấu hiệu bất thường / quấy rối';
-      data.threatDetail = `Cảnh báo cộng đồng sinh viên: ${recentType}. Hệ thống tự động ghi nhận và tăng +${riskIncrement}% nguy cơ.`;
-      data.carrier = (data.carrier === "Thuê bao viễn thông thông thường")
-        ? "Số lạ có phản ánh nghi vấn"
-        : data.carrier;
-    }
-  }
-
-  data.riskIncrement = riskIncrement;
-  data.finalRiskScore = Math.min(99, calculatedRisk);
-  data.cleanTarget = cleanPhone;
-  data.type = 'phone';
-
-  currentLookupData = data;
-  renderConciseResult(data, container);
+  renderConciseResult(currentLookupData, container);
 }
 
-async function handleEmailLookup(email, container) {
-  const cleanEmail = normalizeTarget(email);
-  let data = null;
+const NO_WARNING_TEXT = "Chưa ghi nhận tiền sử vi phạm hoặc cảnh báo từ cơ quan chức năng.";
 
-  // 1. Kiểm tra đối soát trong EMAIL_DATABASE
-  const verifiedRecord = EMAIL_DATABASE[cleanEmail] || EMAIL_DATABASE[email];
+function safeUrl(url) {
+  return /^https:\/\//i.test(String(url || '')) ? url : '#';
+}
 
-  if (verifiedRecord) {
-    data = {
-      target: verifiedRecord.email || email,
-      carrier: "Hòm thư điện tử",
-      baseRisk: verifiedRecord.riskScore || 95,
-      isVerifiedScam: verifiedRecord.riskScore > 0,
-      threatDetail: verifiedRecord.threatType || "Email mạo danh tổ chức giáo dục / đào tạo.",
-      sourceName: verifiedRecord.sourceName,
-      sourceUrl: verifiedRecord.sourceUrl
-    };
-  } else {
-    // 2. Nhận diện kỹ thuật: Domain công cộng mạo danh trường học
-    const isPublicDomain = cleanEmail.endsWith('@gmail.com') || cleanEmail.endsWith('@outlook.com') || cleanEmail.endsWith('@yahoo.com') || cleanEmail.endsWith('@hotmail.com');
-    const hasEduKeyword = cleanEmail.includes('daotao') || cleanEmail.includes('hocphi') || cleanEmail.includes('sinhvien') || cleanEmail.includes('vnu') || cleanEmail.includes('hust') || cleanEmail.includes('uet') || cleanEmail.includes('neu');
-
-    if (isPublicDomain && hasEduKeyword) {
-      data = {
-        target: email,
-        carrier: "Hòm thư miễn phí (@gmail/@outlook)",
-        baseRisk: 95,
-        isVerifiedScam: true,
-        threatDetail: "Hòm thư cá nhân miễn phí nhưng chứa từ khóa đào tạo/học phí nhằm mạo danh nhà trường gửi thông báo nộp tiền.",
-        sourceName: "Cục An toàn thông tin",
-        sourceUrl: "https://ais.gov.vn"
-      };
-    } else {
-      data = {
-        target: email,
-        carrier: "Hòm thư điện tử",
-        baseRisk: 0,
-        isVerifiedScam: false,
-        threatDetail: "Chưa có dữ liệu cảnh báo vi phạm đối với địa chỉ email này.",
-        sourceName: null,
-        sourceUrl: null
-      };
-    }
-  }
-
-  // 3. Thống kê cộng đồng
-  const communityStats = await FirebaseService.getCommunityReportsCount(cleanEmail);
-  data.communityCount = communityStats.count || 0;
-  data.communityReports = communityStats.reports || [];
-
-  let calculatedRisk = data.baseRisk;
-  let riskIncrement = 0;
-  if (data.communityCount > 0) {
-    riskIncrement = data.communityCount * 5; // Tăng +5% nguy cơ cho mỗi lượt báo cáo
-    if (data.baseRisk > 0) {
-      calculatedRisk = Math.min(99, data.baseRisk + riskIncrement);
-    } else {
-      calculatedRisk = Math.min(99, 40 + riskIncrement);
-    }
-    if (!data.isVerifiedScam) {
-      const recentType = (data.communityReports[0] && data.communityReports[0].scamType)
-        ? data.communityReports[0].scamType
-        : 'Mạo danh học phí / quấy rối';
-      data.threatDetail = `Cảnh báo cộng đồng sinh viên: ${recentType}. Hệ thống tự động ghi nhận và tăng +${riskIncrement}% nguy cơ.`;
-    }
-  }
-
-  data.riskIncrement = riskIncrement;
-  data.finalRiskScore = Math.min(99, calculatedRisk);
-  data.cleanTarget = cleanEmail;
-  data.type = 'email';
-
-  currentLookupData = data;
-  renderConciseResult(data, container);
+function renderSourceLinks(sources) {
+  if (!sources || sources.length === 0) return '';
+  return sources.map(s => `
+    <a class="risk-source-link" href="${escapeHtml(safeUrl(s.url))}" target="_blank" rel="noopener noreferrer">
+      ${escapeHtml(s.name)}${s.publishedAt ? ` (${escapeHtml(s.publishedAt.split('-').reverse().join('/'))})` : ''}
+    </a>`).join('');
 }
 
 // Render Thẻ Kết Quả Tối Giản & Tóm Gọn
 function renderConciseResult(data, container) {
+  const a = data.assessment;
   const score = data.finalRiskScore;
   const isDanger = score >= 70;
   const isWarning = score >= 35 && score < 70;
-  const isSafe = score < 35;
 
   let statusClass = 'safe';
-  let statusText = 'AN TOÀN / CHƯA CÓ CẢNH BÁO';
-  let advice = 'Chưa phát hiện rủi ro, tuy nhiên vẫn cần cảnh giác trước các yêu cầu chuyển khoản lạ.';
+  if (isDanger) statusClass = 'danger';
+  else if (isWarning) statusClass = 'warning';
 
-  if (isDanger) {
-    statusClass = 'danger';
-    statusText = 'BÁO ĐỘNG ĐỎ: NGUY CƠ LỪA ĐẢO CAO';
-    advice = '🛑 Tuyệt đối không chuyển tiền, không cung cấp mã OTP hoặc làm theo hướng dẫn.';
-  } else if (isWarning) {
-    statusClass = 'warning';
-    statusText = 'CẢNH BÁO: ĐANG CÓ DẤU HIỆU NGHI VẤN';
-    advice = '⚠️ Cần xác minh kỹ qua hotline chính thức trước khi thực hiện bất kỳ giao dịch nào.';
-  }
+  const statusText = a.isOfficialChannel ? 'KÊNH CHÍNH THỨC' : a.riskLabel.toUpperCase();
+  const headlineAdvice = a.advice[0] || '';
+
+  const flagsHtml = a.flags.map(f => `
+    <li class="risk-flag risk-flag-${escapeHtml(f.severity)}">
+      <strong class="risk-flag-title">${escapeHtml(f.title)}</strong>
+      <span class="risk-flag-detail">${escapeHtml(f.detail)}</span>
+      ${f.sources && f.sources.length ? `<span class="risk-flag-sources">Nguồn: ${renderSourceLinks(f.sources)}</span>` : ''}
+    </li>`).join('');
+
+  const adviceHtml = a.advice.map(t => `<li>${escapeHtml(t)}</li>`).join('');
 
   container.innerHTML = `
-    <div class="result-card ${statusClass}" id="conciseResultCard">
+    <div class="result-card ${statusClass}" id="conciseResultCard" data-risk-level="${escapeHtml(a.riskLevel)}">
       <!-- Result Header -->
       <div class="result-header">
         <div>
           <div class="result-target">${data.type === 'email' ? '✉️' : '📞'} ${escapeHtml(data.target)}</div>
-          <span class="status-pill ${statusClass}" id="resultStatusPill">${statusText}</span>
+          <span class="status-pill ${statusClass}" id="resultStatusPill">${escapeHtml(statusText)}</span>
         </div>
         <div class="risk-badge ${statusClass}">
           <span class="risk-num" id="resultRiskNum">${score}%</span>
@@ -356,27 +208,44 @@ function renderConciseResult(data, container) {
       <!-- Tóm Gọn Thông Tin Chính -->
       <div class="result-summary-list">
         <div class="summary-item">
-          <strong>Thông tin:</strong> <span>${escapeHtml(data.carrier)}</span>
+          <strong>Phân loại:</strong> <span>${escapeHtml(a.category || (a.isListed ? 'Đã bị cảnh báo' : 'Chưa xác định thủ đoạn'))}</span>
         </div>
         <div class="summary-item">
           <strong>Đánh giá:</strong> <span>${escapeHtml(data.threatDetail)}</span>
         </div>
         <div class="summary-item">
-          <strong>Phản ánh cộng đồng:</strong> 
+          <strong>Phản ánh cộng đồng:</strong>
           <span id="resultCommunityCount" style="font-weight: 700; color: ${data.communityCount > 0 ? '#ef4444' : 'var(--text-dim)'};">
-            ${data.communityCount > 0 
-              ? `Đã có ${data.communityCount} lượt báo cáo nghi vấn <span class="badge-increment" style="display: inline-block; background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 2px 6px; border-radius: 4px; font-size: 0.78rem; font-weight: 700; margin-left: 6px;">(+${data.riskIncrement || (data.communityCount * 5)}% nguy cơ)</span>` 
+            ${data.communityCount > 0
+              ? `Đã có ${data.communityCount} lượt báo cáo nghi vấn <span class="badge-increment" style="display: inline-block; background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 2px 6px; border-radius: 4px; font-size: 0.78rem; font-weight: 700; margin-left: 6px;">(+${data.riskIncrement || (data.communityCount * 5)}% nguy cơ)</span>`
               : 'Chưa có báo cáo từ cộng đồng'}
           </span>
         </div>
       </div>
 
-      <!-- Lời khuyên 1 dòng -->
+      <!-- Lời khuyên chính -->
       <div class="result-advice-box ${statusClass}">
-        <span>${advice}</span>
+        <span>${escapeHtml(headlineAdvice)}</span>
       </div>
 
+      <!-- Các dấu hiệu phát hiện (RiskEngine flags) -->
+      ${flagsHtml ? `
+      <div class="risk-section">
+        <h4 class="risk-section-title">Dấu hiệu phát hiện</h4>
+        <ul class="risk-flags" id="resultRiskFlags">${flagsHtml}</ul>
+      </div>` : ''}
+
+      <!-- Khuyến nghị đầy đủ -->
+      <div class="risk-section">
+        <h4 class="risk-section-title">Bạn nên làm gì</h4>
+        <ul class="risk-advice" id="resultRiskAdvice">${adviceHtml}</ul>
+      </div>
+
+      <!-- Cảnh báo rủi ro của kết quả -->
+      <p class="risk-disclaimer" id="resultRiskDisclaimer">⚠️ ${escapeHtml(a.disclaimer)}</p>
+
       <!-- Action Footer: Bấm báo cáo tăng % khả nghi ngay -->
+      ${a.isOfficialChannel ? '' : `
       <div class="result-footer-compact">
         <button class="btn-report-increment" id="btnReportIncrement" onclick="triggerReportIncrement()">
           🚨 Báo Cáo Số Này (+5% Mức Độ Nguy Cơ)
@@ -384,7 +253,7 @@ function renderConciseResult(data, container) {
         <span class="report-notice-hint">
           Bấm báo cáo sẽ tự động cộng thêm +5% tỉ lệ rủi ro của số này trên hệ thống để cảnh báo sinh viên khác.
         </span>
-      </div>
+      </div>`}
     </div>
   `;
 }
@@ -400,7 +269,7 @@ async function triggerReportIncrement() {
   }
 
   const target = currentLookupData.target;
-  const threatReason = currentLookupData.threatDetail && currentLookupData.threatDetail !== "Chưa ghi nhận tiền sử vi phạm hoặc cảnh báo từ cơ quan chức năng."
+  const threatReason = currentLookupData.threatDetail && currentLookupData.threatDetail !== NO_WARNING_TEXT
     ? currentLookupData.threatDetail
     : "Người dùng báo cáo có dấu hiệu lừa đảo / quấy rối";
 
