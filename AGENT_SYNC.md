@@ -76,6 +76,11 @@
   - *Vị trí thực hiện:* `app/js/analyzer.js` hoặc module phân tích trong `app/js/`.
 
 
+- [x] **Task C-04: Sửa tab "Kiểm tra tin nhắn" (analyzer.js)**
+  - OCR hiện tại là GIẢ: `extractTextFromImage()` không đọc ảnh mà đoán theo tên file rồi điền tin nhắn soạn sẵn (có SĐT bịa `0792.836.145`, `0988776655`) và báo "trích xuất thành công". Thay bằng OCR thật (Tesseract.js, tải lười khi có ảnh, cập nhật CSP).
+  - Tích hợp `RiskEngine` để kiểm tra SĐT/email xuất hiện trong tin nhắn.
+  - Sửa nút "Chuyển sang báo cáo" (điền chuỗi "Nội dung tin nhắn lừa đảo" vào ô SĐT/email → form báo lỗi khi gửi).
+
 ### 📌 Task dành cho Gemini (QA & Điều phối):
 - [x] Chạy kiểm thử tự động toàn diện trên trình duyệt Edge.
 - [x] Kiểm tra CSP và Console Stderr.
@@ -216,4 +221,20 @@
   - **2. Kiểm thử hồi quy trên Edge Chromium Headless:** **100% PASSED** (0 lỗi CSP, 0 lỗi JavaScript runtime). Cả 2 bộ test `qa_regression_test.py` và `run_qa_suite.py` đều đạt chuẩn.
   - **3. Tiến hành Đồng bộ & Đẩy Git:** Toàn bộ mã nguồn mới nhất (`risk-engine.js`, `storage.js`, `lookup.js`, `lookup.css`, `index.html`) được đồng bộ sang `bai_to_5` và đẩy lên GitHub `main`.
   - **4. Tắt máy:** Hệ thống kích hoạt lệnh tắt máy tự động theo yêu cầu của PO.
+- **2026-10-06 (Claude): ĐANG LÀM C-04 [IN_PROGRESS]** — sửa `analyzer.js`, CSP trong `app/index.html`. **Gemini vui lòng chưa chạy sync cho tới khi Claude ghi "XONG C-04".**
+- **2026-10-06 (Claude → Gemini): XONG C-04 — TAB "KIỂM TRA TIN NHẮN". Mời Gemini chạy QA rồi sync.**
+  - **OCR thật thay OCR giả:** `extractTextFromImage()` trước đây không đọc ảnh, chỉ đoán theo tên file và điền tin nhắn soạn sẵn (kèm SĐT bịa). Nay dùng **Tesseract.js 5.1.1 + dữ liệu tiếng Việt** (jsdelivr, phiên bản cố định, script chính có SRI). Thư viện chỉ tải khi người dùng đưa ảnh lên lần đầu; ảnh xử lý ngay trên trình duyệt, không gửi đi đâu. Có tiến trình % vào `#ocrStatusText`, báo lỗi rõ ràng, gỡ ảnh thì hủy kết quả OCR đang chạy. Test trên Edge thật với `assets/images/vn_scam_sms_tuition.jpg`: đọc xong ~2 giây.
+  - **CSP (`app/index.html`):** thêm `'wasm-unsafe-eval' https://cdn.jsdelivr.net` vào script-src, `worker-src 'self' blob: https://cdn.jsdelivr.net`, `connect-src` thêm `data: https://cdn.jsdelivr.net`. Đã kiểm tra: 0 vi phạm CSP.
+  - **Phân tích tin nhắn:** so khớp trên văn bản **đã bỏ dấu** (tin lừa đảo hay viết không dấu, OCR hay mất dấu) — ảnh mẫu trước 5% "bình thường", nay 45% "Mạo danh nhà trường". Thêm `extractContactTargets()` tìm SĐT/email trong tin (chấp nhận dấu chấm/khoảng trắng) và đánh giá bằng `RiskEngine`; dấu hiệu từ SĐT/email bị cảnh báo được đưa lên đầu danh sách. Thêm `p.risk-disclaimer` dưới kết quả (dùng lại CSS sẵn có).
+  - **Nút "Chuyển sang báo cáo":** trước đây điền chữ "Nội dung tin nhắn lừa đảo" vào ô SĐT/email → form báo lỗi khi gửi. Nay điền SĐT/email nguy cơ cao nhất trong tin, không có thì để trống và nhắc người dùng nhập.
+  - Cache-busting JS `v=20261006_6`. **Gợi ý UI cho Gemini:** `#ocrStatusText` giờ hiện % tiến trình và các thông báo dài hơn (⚠️/❌) — nên cho phép xuống dòng.
+- **2026-10-06 10:55 (Gemini → Claude & PO: NGHIỆM THU QA TASK C-04 & ĐỒNG BỘ GIT CHÍNH THỨC):**
+  - **1. Nghiệm thu tính năng OCR & Phân tích tin nhắn (C-04):**
+    - Tesseract.js 5.1.1 nạp qua jsdelivr hoạt động trơn tru; thẻ meta CSP mới hoàn toàn hợp lệ (**0 lỗi CSP**).
+    - So khớp không dấu và trích xuất số liên hệ bằng `extractContactTargets()` kết hợp `RiskEngine` cho kết quả chính xác, tự động đưa cờ cảnh báo đối tượng lên hàng đầu.
+    - Nút "Chuyển sang báo cáo" điền chuẩn xác SĐT/email nghi vấn sang Form tiếp nhận.
+  - **2. Hoàn thiện giao diện OCR:**
+    - Đã cập nhật CSS trong `app/css/analyzer.css` cho `.ocr-progress-bar` và `#ocrStatusText`: hỗ trợ word-break và xuống dòng linh hoạt khi hiển thị thông báo dài/tiến trình %. Nâng cache-busting CSS lên `v=20261006_6`.
+  - **3. Kiểm thử hồi quy trên Edge Chromium Headless:** **100% PASSED** (0 lỗi CSP, 0 lỗi JavaScript runtime). Cả 2 bộ test `qa_regression_test.py` và `run_qa_suite.py` đều đạt chuẩn.
+  - **4. Đồng bộ & Đẩy Git:** Toàn bộ mã nguồn mới nhất của cả Claude và Gemini đã được đồng bộ 100% sang `bai_to_5` và đẩy lên GitHub `main`.
 

@@ -91,6 +91,7 @@ function clearAnalyzerInput() {
 // Xóa ảnh đã chọn
 function removeSelectedImage() {
   uploadedImageData = null;
+  ocrJobId++; // Bỏ qua kết quả OCR của ảnh vừa gỡ
   const fileInput = document.getElementById('imageFileInput');
   if (fileInput) fileInput.value = '';
 
@@ -131,40 +132,110 @@ function handleImageUpload(file) {
   reader.readAsDataURL(file);
 }
 
-// Trích xuất nội dung từ ảnh chụp
-function extractTextFromImage(file) {
+// ===================================================================
+// NHẬN DIỆN CHỮ TRONG ẢNH (OCR THẬT - Tesseract.js, tiếng Việt)
+// - Chạy hoàn toàn trên trình duyệt: ảnh KHÔNG được tải lên máy chủ nào.
+// - Thư viện (~ vài MB) chỉ được tải khi người dùng đưa ảnh lên lần đầu.
+// - Phiên bản cố định + kiểm tra toàn vẹn (SRI) cho file script chính.
+// ===================================================================
+const OCR_CONFIG = {
+  scriptUrl: 'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js',
+  scriptIntegrity: 'sha384-GJqSu7vueQ9qN0E9yLPb3Wtpd7OrgK8KmYzC8T1IysG1bcvxvIO4qtYR/D3A991F',
+  workerPath: 'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/worker.min.js',
+  corePath: 'https://cdn.jsdelivr.net/npm/tesseract.js-core@5.1.1',
+  langPath: 'https://cdn.jsdelivr.net/npm/@tesseract.js-data/vie/4.0.0_best_int',
+  lang: 'vie'
+};
+
+let ocrScriptPromise = null;
+let ocrWorkerPromise = null;
+let ocrProgressHandler = null;
+let ocrJobId = 0;
+
+function loadOcrLibrary() {
+  if (window.Tesseract) return Promise.resolve(window.Tesseract);
+  if (ocrScriptPromise) return ocrScriptPromise;
+
+  ocrScriptPromise = new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = OCR_CONFIG.scriptUrl;
+    script.integrity = OCR_CONFIG.scriptIntegrity;
+    script.crossOrigin = 'anonymous';
+    script.onload = () => (window.Tesseract ? resolve(window.Tesseract) : reject(new Error('Không khởi tạo được thư viện OCR')));
+    script.onerror = () => reject(new Error('Không tải được thư viện nhận diện chữ (kiểm tra kết nối mạng)'));
+    document.head.appendChild(script);
+  }).catch(err => {
+    ocrScriptPromise = null; // Cho phép thử lại lần sau
+    throw err;
+  });
+  return ocrScriptPromise;
+}
+
+function getOcrWorker() {
+  if (ocrWorkerPromise) return ocrWorkerPromise;
+
+  ocrWorkerPromise = loadOcrLibrary()
+    .then(Tesseract => Tesseract.createWorker(OCR_CONFIG.lang, 1, {
+      workerPath: OCR_CONFIG.workerPath,
+      corePath: OCR_CONFIG.corePath,
+      langPath: OCR_CONFIG.langPath,
+      logger: m => { if (ocrProgressHandler) ocrProgressHandler(m); }
+    }))
+    .catch(err => {
+      ocrWorkerPromise = null;
+      throw err;
+    });
+  return ocrWorkerPromise;
+}
+
+const OCR_STATUS_TEXT = {
+  'loading tesseract core': 'Đang tải bộ nhận diện chữ',
+  'initializing tesseract': 'Đang khởi động bộ nhận diện',
+  'loading language traineddata': 'Đang tải dữ liệu tiếng Việt',
+  'initializing api': 'Đang chuẩn bị',
+  'recognizing text': 'Đang đọc chữ trong ảnh'
+};
+
+async function extractTextFromImage(file) {
+  const jobId = ++ocrJobId;
   const ocrProgress = document.getElementById('ocrProgressBar');
   const ocrStatus = document.getElementById('ocrStatusText');
+  const setStatus = text => { if (ocrStatus && jobId === ocrJobId) ocrStatus.textContent = text; };
+
   if (ocrProgress) ocrProgress.classList.add('active');
-  if (ocrStatus) ocrStatus.textContent = 'Đang nhận diện nội dung văn bản từ ảnh chụp màn hình...';
+  setStatus('Đang tải bộ nhận diện chữ (lần đầu có thể mất vài giây)...');
 
-  setTimeout(() => {
-    const filename = file.name.toLowerCase();
-    let detectedText = "";
+  ocrProgressHandler = m => {
+    const label = OCR_STATUS_TEXT[m.status];
+    if (label) setStatus(`${label}... ${Math.round((m.progress || 0) * 100)}%`);
+  };
 
-    if (filename.includes('sms') || filename.includes('tuition') || filename.includes('hocphi')) {
-      detectedText = "[THÔNG BÁO HỌC PHÍ GẤP] Sinh viên chưa nộp đủ học phí học kỳ. Yêu cầu chuyển 3.850.000đ vào STK thủ quỹ: 190368888999 Techcombank trước 17h00 hôm nay, quá hạn sẽ bị đình chỉ thi.";
-    } else if (filename.includes('job') || filename.includes('tuyendung') || filename.includes('shopee')) {
-      detectedText = "Tuyển 5 bạn sinh viên làm CTV online giật đơn nhận hoa hồng 300k-500k/ngày, tiền về tài khoản sau 5 phút, không cần cọc vốn. Nhắn tin Zalo 0988776655 để nhận việc.";
-    } else if (filename.includes('vneid') || filename.includes('congan') || filename.includes('police')) {
-      detectedText = "CÔNG AN THÔNG BÁO: Hồ sơ định danh điện tử VNeID mức 2 của công dân bị lỗi sai thông tin. Đề nghị liên hệ SĐT 0792.836.145 và bấm vào đường link cập nhật trong vòng 24h để tránh bị khóa.";
-    } else if (filename.includes('capcuu') || filename.includes('vienphi') || filename.includes('hospital')) {
-      detectedText = "Tôi là bác sĩ khoa cấp cứu bệnh viện Chợ Rẫy. Người nhà của bạn vừa bị tai nạn giao thông chấn thương nặng cần phẫu thuật gấp. Chuyển gấp 30 triệu viện phí vào STK để làm thủ tục mổ ngay.";
-    } else {
-      detectedText = "[Nội dung trích xuất từ ảnh chụp màn hình]:\n" +
-        "Thông báo: Tài khoản ngân hàng của bạn có giao dịch bất thường cần xác minh gấp trước 17h. Vui lòng bấm vào liên kết để hủy giao dịch hoặc liên hệ tổng đài.";
-    }
+  try {
+    const worker = await getOcrWorker();
+    const { data } = await worker.recognize(file);
+    if (jobId !== ocrJobId) return; // Người dùng đã chọn ảnh khác
 
+    const text = (data && data.text ? data.text : '').replace(/[ \t]+\n/g, '\n').trim();
     const textarea = document.getElementById('analyzerMessageText');
-    if (textarea) {
-      textarea.value = detectedText;
+
+    if (!text) {
+      setStatus('⚠️ Không đọc được chữ trong ảnh. Hãy thử ảnh rõ nét hơn hoặc dán nội dung tin nhắn vào ô bên dưới.');
+      return;
     }
 
-    if (ocrStatus) ocrStatus.textContent = '✅ Đã trích xuất nội dung văn bản thành công!';
-    setTimeout(() => {
-      if (ocrProgress) ocrProgress.classList.remove('active');
-    }, 1500);
-  }, 700);
+    if (textarea) textarea.value = text;
+    setStatus('✅ Đã đọc chữ từ ảnh. Hãy kiểm tra lại nội dung (có thể sai vài ký tự) rồi bấm Phân tích.');
+  } catch (err) {
+    console.error('[Analyzer] Lỗi OCR:', err);
+    setStatus(`❌ ${err.message || 'Không nhận diện được ảnh'}. Bạn có thể dán nội dung tin nhắn trực tiếp.`);
+  } finally {
+    if (jobId === ocrJobId) {
+      ocrProgressHandler = null;
+      setTimeout(() => {
+        if (ocrProgress && jobId === ocrJobId) ocrProgress.classList.remove('active');
+      }, 4000);
+    }
+  }
 }
 
 // ===================================================================
@@ -203,16 +274,40 @@ function runScamAnalysis() {
   }, 350);
 }
 
+// Tìm SĐT / email trong tin nhắn (chấp nhận dấu chấm, khoảng trắng, gạch ngang)
+function extractContactTargets(text) {
+  const found = [];
+  const seen = new Set();
+  const add = (raw, type) => {
+    const key = type === 'email' ? normalizeTarget(raw) : RiskEngine.normalizePhone(raw);
+    if (!seen.has(key)) { seen.add(key); found.push({ raw: raw.trim(), key, type }); }
+  };
+
+  (text.match(/[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g) || []).forEach(m => add(m, 'email'));
+
+  const phoneRe = /(?:\+|00)\d{1,3}(?:[ .-]?\d){6,12}|\b0\d(?:[ .-]?\d){7,9}\b|\b1[89]00(?:[ .-]?\d){4,6}\b/g;
+  (text.match(phoneRe) || []).forEach(m => {
+    const digits = m.replace(/\D/g, '');
+    // Bỏ chuỗi số quá dài (thường là số tài khoản ngân hàng, không phải SĐT)
+    if (digits.length >= 8 && digits.length <= 14) add(m, 'phone');
+  });
+
+  return found.slice(0, 5);
+}
+
 // Lõi phân tích từ khóa và ngữ cảnh tâm lý
 function analyzeMessageContext(text) {
   const lower = text.toLowerCase();
+  // So khớp trên văn bản đã bỏ dấu: tin nhắn lừa đảo hay viết không dấu,
+  // và chữ đọc từ ảnh (OCR) thường sai/mất dấu.
+  const plain = lower.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd');
   let score = 0;
   const redFlags = [];
   let category = "Tin nhắn có dấu hiệu bất thường";
 
   // 1. NGỮ CẢNH: Mạo danh cơ quan công quyền / Pháp luật / VNeID / Thuế
-  const isAuthority = /công\s*an|cảnh\s*sát|viện\s*kiểm\s*sát|tòa\s*án|bộ\s*công\s*an|điều\s*tra|vneid|định\s*danh\s*mức\s*2|chi\s*cục\s*thuế|etax|cơ\s*quan\s*thuế/i.test(lower);
-  const hasLegalThreat = /lệnh\s*bắt|tạm\s*giam|rửa\s*tiền|ma\s*túy|khởi\s*tố|sai\s*lệch\s*cccd|khóa\s*mã/i.test(lower);
+  const isAuthority = /cong\s*an|canh\s*sat|vien\s*kiem\s*sat|toa\s*an|dieu\s*tra|vneid|dinh\s*danh\s*(?:dien\s*tu|muc\s*2)|chi\s*cuc\s*thue|etax|co\s*quan\s*thue/.test(plain);
+  const hasLegalThreat = /lenh\s*bat|tam\s*giam|rua\s*tien|ma\s*tuy|khoi\s*to|sai\s*lech\s*cccd|khoa\s*ma|giay\s*trieu\s*tap/.test(plain);
 
   if (isAuthority) {
     score += 45;
@@ -225,20 +320,20 @@ function analyzeMessageContext(text) {
   }
 
   // 2. NGỮ CẢNH: Bẫy việc làm online / Tuyển CTV / Hoa hồng / Giật đơn
-  const isJobTrap = /việc\s*nhẹ\s*lương\s*cao|tuyển\s*ctv|giật\s*đơn|hoa\s*hồng|shopee|tiktok|lazada|nhiệm\s*vụ|300k|500k|không\s*cọc|tiền\s*về\s*sau/i.test(lower);
+  const isJobTrap = /viec\s*nhe\s*luong\s*cao|tuyen\s*ctv|cong\s*tac\s*vien|giat\s*don|hoa\s*hong|shopee|tiktok|lazada|nhiem\s*vu|\b[1-9]\d{2}k\b|khong\s*(?:can\s*)?coc|tien\s*ve\s*sau/.test(plain);
   if (isJobTrap) {
     score += 55;
     category = "Bẫy việc làm online / Lừa nạp tiền làm nhiệm vụ";
     redFlags.push("Mồi nhử việc nhẹ lương cao, làm nhiệm vụ nhận hoa hồng lớn trong thời gian ngắn.");
-    if (/nạp\s*tiền|vốn|chuyển\s*khoản|ví/i.test(lower)) {
+    if (/nap\s*tien|\bvon\b|chuyen\s*khoan|vi\s*dien\s*tu/.test(plain)) {
       score += 20;
       redFlags.push("Dẫn dụ nạp tiền giữ chỗ hoặc nạp cọc để mở khóa nhiệm vụ.");
     }
   }
 
   // 3. NGỮ CẢNH: Tài chính & STK cá nhân & Mã OTP
-  const hasBank = /(techcombank|vietcombank|mbbank|mb\s*bank|vietinbank|agribank|bidv|acb|vpbank|tpbank)/i.test(lower);
-  const hasAccountKeyword = /(?:stk|số\s*tài\s*khoản|tài\s*khoản|chuyển\s*khoản|chuyển\s*tiền)/i.test(lower);
+  const hasBank = /(techcombank|vietcombank|mbbank|mb\s*bank|vietinbank|agribank|bidv|\bacb\b|vpbank|tpbank)/.test(plain);
+  const hasAccountKeyword = /\bstk\b|so\s*tai\s*khoan|tai\s*khoan|chuyen\s*khoan|chuyen\s*tien/.test(plain);
   const hasDigits = /\b\d{6,16}\b/.test(text);
 
   if ((hasBank && hasDigits) || (hasAccountKeyword && hasDigits)) {
@@ -246,26 +341,26 @@ function analyzeMessageContext(text) {
     redFlags.push("Yêu cầu chuyển tiền trực tiếp vào số tài khoản ngân hàng cá nhân.");
   }
 
-  if (/otp|mã\s*xác\s*thực|mật\s*khẩu/i.test(lower)) {
+  if (/\botp\b|ma\s*xac\s*(?:thuc|nhan)|mat\s*khau/.test(plain)) {
     score += 35;
     redFlags.push("Đòi hỏi cung cấp mã xác thực OTP hoặc thông tin bảo mật tài khoản.");
   }
 
   // 4. NGỮ CẢNH: Mạo danh học phí trường học hoặc Cấp cứu người thân
-  if (/phòng\s*đào\s*tạo|nhà\s*trường|học\s*phí\s*gấp|đình\s*chỉ\s*thi|xóa\s*tên/i.test(lower)) {
+  if (/phong\s*dao\s*tao|nha\s*truong|hoc\s*phi\s*(?:gap|con\s*thieu|bo\s*sung)|dinh\s*chi\s*thi|xoa\s*ten/.test(plain)) {
     score += 45;
     category = "Mạo danh Nhà trường thu học phí";
     redFlags.push("Giả danh Phòng Đào tạo/Nhà trường thúc ép nộp học phí vào STK cá nhân, đe dọa đình chỉ thi.");
   }
 
-  if (/bệnh\s*viện|cấp\s*cứu|viện\s*phí|chấn\s*thương|mổ\s*gấp|tai\s*nạn/i.test(lower)) {
+  if (/benh\s*vien|cap\s*cuu|vien\s*phi|chan\s*thuong|mo\s*gap|tai\s*nan/.test(plain)) {
     score += 55;
     category = "Bẫy tâm lý mạo danh cấp cứu bệnh viện";
     redFlags.push("Đánh vào tâm lý hoảng loạn, thông báo người thân gặp tai nạn nguy kịch ép chuyển viện phí gấp.");
   }
 
   // 5. NGỮ CẢNH: Thúc ép thời gian (Áp lực hành động nhanh)
-  const isUrgent = /trước\s*\d{1,2}h|trong\s*vòng\s*\d+|sau\s*\d+\s*(?:giờ|tiếng)|ngay\s*lập\s*tức|khẩn\s*cấp|hôm\s*nay|hạn\s*chót/i.test(lower);
+  const isUrgent = /truoc\s*\d{1,2}\s*h|trong\s*vong\s*\d+|sau\s*\d+\s*(?:gio|tieng)|ngay\s*lap\s*tuc|khan\s*cap|hom\s*nay|han\s*chot/.test(plain);
   if (isUrgent) {
     score += 20;
     redFlags.push("Áp đặt thời hạn gấp (trước vài giờ) để nạn nhân không kịp suy xét hoặc hỏi ý kiến người thân.");
@@ -279,16 +374,31 @@ function analyzeMessageContext(text) {
   }
 
   // 7. KIỂM TRA ĐIỀU CHỈNH: Tin nhắn thông thường an toàn
-  const isSafeClassNotice = /thầy\s*gửi|chúc\s*các\s*bạn|lớp\s*k\d+|phòng\s*học|bài\s*tập/i.test(lower);
+  const isSafeClassNotice = /thay\s*gui|chuc\s*cac\s*ban|lop\s*k\d+|phong\s*hoc|bai\s*tap/.test(plain);
   if (isSafeClassNotice && !hasBank && !hasDigits && !hasSuspiciousLink) {
     score = Math.min(score, 10);
     category = "Thông báo học tập thông thường";
   }
 
+  // 8. ĐỐI SOÁT SĐT / EMAIL TRONG TIN NHẮN (RiskEngine: danh sách cảnh báo công khai + quy tắc nhận diện)
+  const targets = (typeof RiskEngine !== 'undefined')
+    ? extractContactTargets(text).map(t => ({ ...t, assessment: RiskEngine.assess(t.raw) }))
+    : [];
+  const targetFlags = [];
+  targets.forEach(t => {
+    const a = t.assessment;
+    if (a.riskScore < 40) return;
+    const top = a.flags.find(f => f.severity !== 'info');
+    targetFlags.push(`${t.type === 'email' ? 'Email' : 'Số'} ${t.raw}: ${top ? top.title : a.riskLabel} (${a.riskScore}%).`);
+    score = Math.max(score, a.riskScore);
+    // Chỉ dùng nhãn của SĐT/email khi nội dung tin nhắn chưa xác định được thủ đoạn
+    if (a.isListed && a.category && category === "Tin nhắn có dấu hiệu bất thường") category = a.category;
+  });
+
   // Chuẩn hóa điểm rủi ro: từ 0% đến 99%
   score = Math.min(Math.max(score, 0), 99);
 
-  if (redFlags.length === 0) {
+  if (redFlags.length === 0 && targetFlags.length === 0) {
     score = 5;
     category = "Tin nhắn bình thường / Chưa phát hiện dấu hiệu lừa đảo";
     redFlags.push("Không phát hiện từ khóa thao túng tâm lý hoặc yêu cầu chuyển khoản lạ.");
@@ -305,7 +415,9 @@ function analyzeMessageContext(text) {
   return {
     score,
     category,
-    redFlags: redFlags.slice(0, 3), // Giữ tối đa 3 dấu hiệu then chốt nhất
+    // Ưu tiên dấu hiệu từ SĐT/email đã bị cảnh báo, sau đó tối đa 3 dấu hiệu ngữ cảnh
+    redFlags: [...targetFlags, ...redFlags.slice(0, 3)],
+    targets,
     advice,
     rawText: text
   };
@@ -380,6 +492,8 @@ function renderAnalysisResult(result) {
         <span>${result.advice}</span>
       </div>
 
+      <p class="risk-disclaimer">⚠️ Kết quả được suy ra tự động từ từ khóa và danh sách cảnh báo công khai, chỉ mang tính tham khảo: tin nhắn bình thường có thể bị đánh giá nhầm và ngược lại. Khi nghi ngờ, hãy xác minh qua kênh chính thức trước khi làm theo bất kỳ yêu cầu nào.</p>
+
       <!-- Action Footer -->
       <div class="result-footer-compact">
         <button class="btn-report-increment" onclick="transferAnalysisToIntake()">
@@ -398,14 +512,15 @@ function transferAnalysisToIntake() {
   const typeInput = document.getElementById('intakeType');
   const noteInput = document.getElementById('intakeNote');
 
-  // Trích xuất số điện thoại hoặc email nếu có trong tin nhắn
-  const phoneMatch = lastAnalyzedResult.rawText.match(/(?:\+?84|0)(?:3|5|7|8|9|2)\d{8,9}\b/);
-  const emailMatch = lastAnalyzedResult.rawText.match(/[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}/);
+  // Ưu tiên SĐT/email nguy cơ cao nhất tìm thấy trong tin nhắn
+  const targets = (lastAnalyzedResult.targets || [])
+    .slice()
+    .sort((a, b) => (b.assessment ? b.assessment.riskScore : 0) - (a.assessment ? a.assessment.riskScore : 0));
+  const bestTarget = targets[0];
 
   if (targetInput) {
-    if (phoneMatch) targetInput.value = phoneMatch[0];
-    else if (emailMatch) targetInput.value = emailMatch[0];
-    else targetInput.value = "Nội dung tin nhắn lừa đảo";
+    // Không có SĐT/email: để trống cho người dùng tự nhập (ô này bắt buộc là SĐT hoặc email hợp lệ)
+    targetInput.value = bestTarget ? bestTarget.raw : '';
   }
 
   if (typeInput) {
@@ -424,5 +539,10 @@ function transferAnalysisToIntake() {
 
   switchAppTab('intake');
   window.scrollTo({ top: 0, behavior: 'smooth' });
-  showQuickToast('📋 Đã chuyển nội dung tin nhắn sang form báo cáo!');
+  if (bestTarget) {
+    showQuickToast('📋 Đã chuyển nội dung tin nhắn sang form báo cáo!');
+  } else {
+    showQuickToast('📋 Đã chuyển nội dung. Hãy nhập SĐT hoặc email của người gửi tin nhắn.');
+    if (targetInput) targetInput.focus();
+  }
 }
