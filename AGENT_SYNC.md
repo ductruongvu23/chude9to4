@@ -115,6 +115,11 @@
 - [x] **Task G-03: Sẵn sàng dữ liệu động cho Radar / Scam Breakdown & Sửa nhãn tỷ lệ**
   - Đã thêm `id="scamTypeBreakdown"` vào `<div class="breakdown-list" id="scamTypeBreakdown">` trong `app/index.html` để Claude sẵn sàng inject dữ liệu tính toán từ `FirebaseService.getScamTypeBreakdown()`.
   - Đã đổi nhãn thẻ thống kê 3 từ "Tỷ lệ an toàn" thành "Tỷ lệ đã xử lý" đúng chuẩn ngữ nghĩa.
+- [x] **Task G-05: Bảo mật API Proxy Vercel, Giấu link Google Sheets & Bỏ trang Slide (ĐÃ HOÀN THÀNH)**
+  - Đã tạo Vercel Serverless API Proxy `api/reports.js` ẩn toàn bộ link backend khỏi F12/DevTools.
+  - Xóa bỏ link trần và chú thích nội bộ trong `firebase-service.js`, mã hóa động URL dự phòng.
+  - Cấu hình `vercel.json` rewrite đưa trang chủ `/` vào thẳng `/app/index.html`, xóa bỏ thư mục web `slides/` khỏi Git/Vercel theo chỉ đạo của PO.
+
 
 ---
 
