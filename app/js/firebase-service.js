@@ -215,10 +215,10 @@ const FirebaseService = (function () {
       try {
         const proxyUrl = isPost ? PRIMARY_GATEWAY : `${PRIMARY_GATEWAY}?action=getAll`;
         const resp = await fetch(proxyUrl, options);
-        if (resp.ok) {
-          const json = await resp.json();
-          if (json && json.success !== false) return json;
-        }
+        // Proxy trả lời được thì dùng luôn kết quả (kể cả success:false) - không gửi lại lần 2 qua đường dự phòng
+        if (resp.ok) return await resp.json();
+        // Không có proxy (chạy local / host tĩnh -> 404): bỏ qua proxy cho các lần sau
+        useFallback = true;
       } catch (e) {
         useFallback = true;
       }
@@ -325,7 +325,9 @@ const FirebaseService = (function () {
     const fetchOpts = {
       method: "POST",
       mode: "cors",
-      headers: { "Content-Type": "application/json" },
+      // text/plain: tránh CORS preflight - Apps Script không trả lời OPTIONS nên application/json bị chặn
+      // khi gọi thẳng (đường dự phòng). api/reports.js nhận được cả body dạng chuỗi.
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify({
         action: "addReport",
         id: report.id,
