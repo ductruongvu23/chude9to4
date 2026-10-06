@@ -30,6 +30,7 @@
   --accent-cyan: #0284c7;
   --accent-violet: #7c3aed;
   --accent-emerald: #059669;
+  --accent-warning: #b45309;
   --accent-danger: #dc2626;
 
   --danger: #dc2626;
@@ -112,6 +113,7 @@
   --accent-cyan: #38bdf8;
   --accent-violet: #a78bfa;
   --accent-emerald: #34d399;
+  --accent-warning: #f59e0b;
   --accent-danger: #ef4444;
 
   --danger: #ef4444;

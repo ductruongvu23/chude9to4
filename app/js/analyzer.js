@@ -493,7 +493,7 @@ function renderAnalysisResult(result) {
       <!-- Phân loại & Dấu hiệu then chốt -->
       <div style="margin: 14px 0;">
         <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px;">
-          📌 Dạng thủ đoạn: <span style="color: ${isDanger ? 'var(--accent-danger)' : (isWarning ? 'var(--accent-warning)' : 'var(--accent-primary)')};">${escapeHtml(result.category)}</span>
+          📌 Dạng thủ đoạn: <span style="color: ${isDanger ? 'var(--accent-danger)' : (isWarning ? 'var(--warning)' : 'var(--accent-primary)')};">${escapeHtml(result.category)}</span>
         </div>
         ${result.ai ? `
         <div class="ai-similarity-line" id="aiSimilarityLine">
