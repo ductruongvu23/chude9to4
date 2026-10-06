@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <!-- Content Security Policy: chỉ cho phép tải mã/kết nối từ các nguồn tin cậy.
        Nếu thêm thư viện CDN mới, cần bổ sung domain vào đây. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://cdn.jsdelivr.net; worker-src 'self' blob: https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' data: https://script.google.com https://script.googleusercontent.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://cdn.jsdelivr.net; worker-src 'self' blob: https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' data: blob: https://script.google.com https://script.googleusercontent.com https://cdn.jsdelivr.net https://huggingface.co https://*.huggingface.co; object-src 'none'; base-uri 'self'; form-action 'self'">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Cổng Tra Cứu & Tiếp Nhận Báo Cáo Lừa Đảo - Tổ 4 | Tư Duy Hệ Thống</title>
@@ -262,11 +262,27 @@
             <textarea id="analyzerMessageText" class="analyzer-textarea" placeholder="Dán nội dung tin nhắn SMS, tin nhắn mạng xã hội hoặc thông báo đáng ngờ vào đây để phân tích rủi ro..."></textarea>
           </div>
 
-          <!-- Action Row -->
+          <!-- Action Row & Local AI Status -->
           <div class="analyzer-actions-row">
             <button id="runAnalyzerBtn" class="btn-run-analyzer" onclick="runScamAnalysis()">
               🔍 Phân Tích Mức Độ Rủi Ro
             </button>
+            <div id="aiStatusBadge" class="ai-status-badge" title="Mô hình AI nhận diện ngữ nghĩa chạy trực tiếp trên trình duyệt (0đ chi phí, bảo mật tối đa)">
+              <span class="ai-badge-dot"></span>
+              <span id="aiBadgeText">Local AI: Sẵn sàng</span>
+            </div>
+          </div>
+
+          <!-- AI Model Download / Inference Progress Bar -->
+          <div id="aiProgressContainer" class="ai-progress-container" style="display: none;">
+            <div class="ai-progress-header">
+              <span id="aiProgressLabel" class="ai-progress-label">🧠 Đang tải mô hình AI Local (Transformers.js ONNX)...</span>
+              <span id="aiProgressPercent" class="ai-progress-percent">0%</span>
+            </div>
+            <div class="ai-progress-track">
+              <div id="aiProgressBar" class="ai-progress-bar-fill" style="width: 0%;"></div>
+            </div>
+            <div class="ai-progress-hint">💡 Mô hình chỉ tải một lần (~23MB) và lưu vào bộ nhớ đệm trình duyệt để chạy ngoại tuyến hoàn toàn miễn phí.</div>
           </div>
 
           <!-- Dynamic Analysis Results Container -->

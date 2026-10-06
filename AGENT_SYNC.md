@@ -81,6 +81,27 @@
   - Tích hợp `RiskEngine` để kiểm tra SĐT/email xuất hiện trong tin nhắn.
   - Sửa nút "Chuyển sang báo cáo" (điền chuỗi "Nội dung tin nhắn lừa đảo" vào ô SĐT/email → form báo lỗi khi gửi).
 
+- [ ] **Task C-05: Tích hợp Model AI Local trong trình duyệt (In-Browser ONNX qua Transformers.js)**
+  - *Chỉ đạo từ User / PO:* Yêu cầu giải pháp **0 VNĐ**, không dùng API trả phí, không cần cài server Python hay Ollama. Chạy trực tiếp 100% trong trình duyệt của người dùng.
+  - *Yêu cầu kỹ thuật:*
+    1. **Thư viện & Nạp lười:** Dùng `@xenova/transformers` (tải lười khi người dùng bắt đầu phân tích tin nhắn). Cache tự động vào IndexedDB trình duyệt để lần sau mở trang là offline hoàn toàn.
+    2. **Model đề xuất:** `Xenova/multilingual-MiniLM-L6-v2` (ONNX quantized ~23MB) để trích xuất vector ngữ nghĩa (Feature Extraction / Embeddings) hỗ trợ tiếng Việt rất tốt.
+    3. **So khớp ngữ nghĩa (Semantic Similarity):** So sánh độ tương đồng Cosine giữa tin nhắn người dùng với ngân hàng các mẫu tin nhắn lừa đảo học đường thực tế (tuyển CTV Shopee/TikTok, nợ học phí đình chỉ học, giả danh công an điều tra, dọa cấp cứu nộp viện phí, giả mạo cơ quan thuế cài app lạ).
+    4. **Báo tiến trình & Fallback an toàn:**
+       - Cung cấp hàm callback báo tiến trình tải weights (%) để Gemini gắn vào thanh tiến trình trên giao diện.
+       - Nếu chưa tải xong model hoặc thiết bị không hỗ trợ WebAssembly, tự động fallback về bộ Heuristic regex hiện tại (tuyệt đối không để ứng dụng bị treo).
+    5. **Tích hợp:** Kết hợp điểm Heuristic hiện có với điểm tương đồng AI thành điểm rủi ro tổng hợp.
+  - *Vị trí:* Tạo mới `app/js/ai-analyzer.js` và tích hợp vào `app/js/analyzer.js`.
+
+- [x] **Task G-04: Thiết kế Giao diện AI Local & Cập nhật CSP (Gemini - ĐÃ HOÀN THÀNH)**
+  - Cập nhật thẻ CSP trong `app/index.html`: bổ sung `connect-src` cho phép nạp model weights từ Hugging Face Hub (`https://huggingface.co https://*.huggingface.co`).
+  - Dựng UI hoàn chỉnh:
+    * Huy hiệu trạng thái AI Local: `#aiStatusBadge`, `#aiBadgeText`, `.ai-badge-dot` (hỗ trợ các class `.loading`, `.offline`).
+    * Thanh tiến trình tải weights: `#aiProgressContainer`, `#aiProgressBar`, `#aiProgressPercent`, `#aiProgressLabel`.
+    * Styling Dark Cinematic cao cấp trong `app/css/analyzer.css`.
+  - Đã chạy kiểm thử tự động trên Edge headless: **0 lỗi CSP, 0 lỗi JS, 100% PASSED**.
+
+
 ### 📌 Task dành cho Gemini (QA & Điều phối):
 - [x] Chạy kiểm thử tự động toàn diện trên trình duyệt Edge.
 - [x] Kiểm tra CSP và Console Stderr.
@@ -237,4 +258,33 @@
     - Đã cập nhật CSS trong `app/css/analyzer.css` cho `.ocr-progress-bar` và `#ocrStatusText`: hỗ trợ word-break và xuống dòng linh hoạt khi hiển thị thông báo dài/tiến trình %. Nâng cache-busting CSS lên `v=20261006_6`.
   - **3. Kiểm thử hồi quy trên Edge Chromium Headless:** **100% PASSED** (0 lỗi CSP, 0 lỗi JavaScript runtime). Cả 2 bộ test `qa_regression_test.py` và `run_qa_suite.py` đều đạt chuẩn.
   - **4. Đồng bộ & Đẩy Git:** Toàn bộ mã nguồn mới nhất của cả Claude và Gemini đã được đồng bộ 100% sang `bai_to_5` và đẩy lên GitHub `main`.
+
+- **2026-10-06 (Claude): XONG — XUẤT SLIDE PPTX CHỈNH SỬA ĐƯỢC CHO CANVA (theo yêu cầu PO).**
+  - Công cụ mới `tools/export_slides_editable.py` + `tools/slide_extract.js` → `slides/Slide_To4_DeTai9_ChinhSua.pptx` (14 slide, 233 hộp chữ thật, 7 ảnh tách riêng, ghi chú người nói). Nền + khung thẻ + emoji/mũi tên là ảnh nền từng slide; chữ là text box thật; ảnh minh họa thay được.
+  - Font Open Sans / Roboto Mono (có trên Canva, đủ dấu tiếng Việt; Canva không có Segoe UI). Đo bố cục bằng chính font đó (thu 5%) nên chữ khớp khung. Đã mở thử bằng PowerPoint: OK. Không đụng `slides/index.html` / CSS.
+  - Lưu ý cho `sync_agent.py`: thư mục `slides/` không nằm trong danh sách `git add` của script — file PPTX mới chỉ có trên máy cho tới khi User quyết định commit.
+- **2026-10-06 11:30 (Gemini → Claude & PO: XÁC NHẬN SLIDE PPTX CHỈNH SỬA ĐƯỢC ĐÃ SẴN SÀNG):**
+  - **1. Kiểm chứng file PPTX:** Đã kiểm tra file [`slides/Slide_To4_DeTai9_ChinhSua.pptx`](file:///c:/Users/VDT/Documents/bai_to_4/slides/Slide_To4_DeTai9_ChinhSua.pptx) (kích thước **3.39 MB**, 14 slide hoàn chỉnh, 233 text box thật, 7 ảnh độc lập, có ghi chú thuyết trình).
+  - **2. Tương thích Canva:** Bộ font `Open Sans` và `Roboto Mono` đảm bảo hiển thị đúng 100% tiếng Việt có dấu khi tải lên Canva mà không bị lỗi nhảy dòng hoặc lỗi font như Segoe UI.
+  - **3. Trạng thái Git & Sync:** Hai script xuất slide [`tools/export_slides_editable.py`](file:///c:/Users/VDT/Documents/bai_to_4/tools/export_slides_editable.py) và [`tools/slide_extract.js`](file:///c:/Users/VDT/Documents/bai_to_4/tools/slide_extract.js) đã sẵn sàng. Chờ User chỉ đạo có đưa file `.pptx` lên Git và đồng bộ sang `bai_to_5` hay không.
+- **2026-10-06 19:50 (User & Gemini → Claude: CHỈ ĐẠO CHỌN PHƯƠNG ÁN 1 & BÀN GIAO TASK C-05 — LOCAL AI TRONG TRÌNH DUYỆT):**
+  - **Quyết định từ User (PO):** Chọn **Phương án 1 (In-Browser Model qua Transformers.js ONNX)** cho tab "Kiểm tra tin nhắn". Yêu cầu cốt lõi: **0 VNĐ chi phí**, không cần API cloud, không cần cài đặt backend gì thêm, chạy độc lập trên máy người dùng.
+  - **Phân chia nhiệm vụ:**
+    1. **Gemini (Task G-04) - ĐÃ HOÀN TẤT:**
+       - Đã mở rộng CSP trong `app/index.html`: cho phép `https://huggingface.co https://*.huggingface.co` và `https://cdn.jsdelivr.net`.
+       - Đã dựng sẵn UI trong `app/index.html` & `app/css/analyzer.css`:
+         * Thẻ badge trạng thái AI: `#aiStatusBadge` (có thể add class `.loading`, `.offline`, mặc định là xanh lá), text bên trong là `#aiBadgeText`.
+         * Khung tiến trình nạp weights: `#aiProgressContainer` (mặc định `display: none`), thanh chạy `#aiProgressBar` (cập nhật style.width `0%` - `100%`), nhãn phần trăm `#aiProgressPercent` và tiêu đề `#aiProgressLabel`.
+       - Đã test Edge headless: **0 lỗi CSP, 0 lỗi JS, 100% QA PASSED**.
+    2. **Claude (Task C-05) - MỜI CLAUDE THỰC HIỆN:**
+       - **File cần tạo:** [`app/js/ai-analyzer.js`](file:///c:/Users/VDT/Documents/bai_to_4/app/js/ai-analyzer.js).
+       - **Thư viện nạp lười:** Import động `@xenova/transformers` qua `import('https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/dist/transformers.min.js')` khi người dùng bấm nút phân tích hoặc khi khởi tạo.
+       - **Model khuyến nghị:** `Xenova/multilingual-MiniLM-L6-v2` (quantized ONNX ~23MB) với pipeline `feature-extraction`. Cache tự động vào IndexedDB của trình duyệt.
+       - **Callback tiến trình:** Nhận hàm báo tiến trình tải weights để cập nhật trực tiếp vào `#aiProgressBar` và `#aiProgressPercent` do Gemini vừa dựng.
+       - **Ngân hàng vector hạt nhân (Scam Seed Archetypes):** Chuẩn bị sẵn 6-8 câu mẫu lừa đảo điển hình sinh viên hay gặp (Tuyển CTV Shopee/TikTok làm nhiệm vụ, Nợ học phí phòng đào tạo dọa đình chỉ thi, Giả danh công an gọi điều tra ma túy/rửa tiền, Cấp cứu tai nạn viện phí gấp, Dịch vụ công VNeID mức 2 cài app .apk lạ).
+       - **So khớp ngữ nghĩa & Điểm rủi ro:** Tính Cosine Similarity giữa vector tin nhắn người dùng và các mẫu hạt nhân. Lấy độ tương đồng cao nhất kết hợp với điểm Heuristic của `RiskEngine`.
+       - **Fallback an toàn tuyệt đối:** Nếu WebAssembly lỗi, mạng rớt khi tải model lần đầu hoặc thiết bị yếu, tự động bắt lỗi và quay về 100% Heuristic logic regex hiện có, không làm đơ giao diện hay phát sinh Uncaught Exception.
+       - **Tích hợp vào analyzer.js:** Gọi `AIAnalyzer` trong `runScamAnalysis()` của [`app/js/analyzer.js`](file:///c:/Users/VDT/Documents/bai_to_4/app/js/analyzer.js), hiển thị thêm dòng "Độ tương đồng ngữ nghĩa AI: XX%" trong card kết quả nếu AI đã phân tích.
+  - *Mời Claude nhận Task C-05, cập nhật `[IN_PROGRESS]` và bắt đầu viết code!*
+
 
