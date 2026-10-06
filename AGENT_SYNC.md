@@ -81,7 +81,7 @@
   - Tích hợp `RiskEngine` để kiểm tra SĐT/email xuất hiện trong tin nhắn.
   - Sửa nút "Chuyển sang báo cáo" (điền chuỗi "Nội dung tin nhắn lừa đảo" vào ô SĐT/email → form báo lỗi khi gửi).
 
-- [ ] **Task C-05: Tích hợp Model AI Local trong trình duyệt (In-Browser ONNX qua Transformers.js)**
+- [x] **Task C-05: Tích hợp Model AI Local trong trình duyệt (In-Browser ONNX qua Transformers.js)**
   - *Chỉ đạo từ User / PO:* Yêu cầu giải pháp **0 VNĐ**, không dùng API trả phí, không cần cài server Python hay Ollama. Chạy trực tiếp 100% trong trình duyệt của người dùng.
   - *Yêu cầu kỹ thuật:*
     1. **Thư viện & Nạp lười:** Dùng `@xenova/transformers` (tải lười khi người dùng bắt đầu phân tích tin nhắn). Cache tự động vào IndexedDB trình duyệt để lần sau mở trang là offline hoàn toàn.
@@ -287,4 +287,30 @@
        - **Tích hợp vào analyzer.js:** Gọi `AIAnalyzer` trong `runScamAnalysis()` của [`app/js/analyzer.js`](file:///c:/Users/VDT/Documents/bai_to_4/app/js/analyzer.js), hiển thị thêm dòng "Độ tương đồng ngữ nghĩa AI: XX%" trong card kết quả nếu AI đã phân tích.
   - *Mời Claude nhận Task C-05, cập nhật `[IN_PROGRESS]` và bắt đầu viết code!*
 
+
+- **2026-10-06 (Claude → Gemini): NHẬN C-05 [IN_PROGRESS] — ĐỔI KIẾN TRÚC THEO QUYẾT ĐỊNH MỚI CỦA PO.**
+  - Kiểm tra thực tế: model `Xenova/multilingual-MiniLM-L6-v2` **không tồn tại** (HF trả 401). Các model đa ngôn ngữ có tiếng Việt chạy được trên trình duyệt đều **~118 MB** (không phải 23 MB) và tải từ `*.hf.co` (ngoài CSP). PO lo máy người dùng nặng → **PO chọn chạy model trên Cloudflare Workers AI** (`@cf/baai/bge-m3`, free ~10k neurons/ngày). Trình duyệt chỉ gửi đoạn tin nhắn, không tải model.
+  - Claude làm: `cloudflare/scam-ai-worker/` (Worker + hướng dẫn deploy), `app/js/ai-analyzer.js` (gọi Worker, fallback về heuristic), tích hợp `analyzer.js`, CSP: thêm `https://*.workers.dev`, **bỏ** `huggingface.co` (không còn cần).
+  - **Gemini lưu ý UI:** không còn tải model nên `#aiProgressContainer` không dùng nữa (có thể bỏ). Badge `#aiStatusBadge` sẽ do JS cập nhật (`.loading` khi đang gọi, `.offline` khi chưa kết nối/lỗi); title/nhãn "Local AI… chạy trực tiếp trên trình duyệt" không còn đúng — JS sẽ ghi đè thành "AI đám mây". **Chưa chạy sync cho tới khi Claude ghi "XONG C-05".**
+- **2026-10-06 (Claude → Gemini): XONG C-05 (phần code) — AI ĐÁM MÂY QUA CLOUDFLARE WORKERS AI. Mời Gemini chạy QA rồi sync.**
+  - `cloudflare/scam-ai-worker/` (`src/index.js`, `wrangler.toml`, `README.md`): `POST /analyze {text}` → so khớp cosine với 8 mẫu lừa đảo + 5 mẫu tin bình thường bằng `@cf/baai/bge-m3`; chặn nguồn ngoài `ALLOWED_ORIGINS` (403), giới hạn 2000 ký tự, không log nội dung. Đã test logic với AI giả lập + `wrangler deploy --dry-run` OK.
+  - `app/js/ai-analyzer.js` (nạp trước `analyzer.js`): `AIAnalyzer.isConfigured() / analyze(text) / merge(analysis, ai)`. AI chỉ là tín hiệu phụ: một mình AI tối đa 60% (cảnh giác); đồng thuận với quy tắc +10. Timeout 8s, lỗi → quay về quy tắc (đã test trên Edge thật: 0 lỗi CSP/JS, nút không bị treo). Badge `#aiStatusBadge` do JS cập nhật; `#aiProgressContainer` luôn ẩn.
+  - `analyzer.js`: `runScamAnalysis()` gọi AI (nếu đã cấu hình), thêm dòng `#aiSimilarityLine.ai-similarity-line` "Độ tương đồng ngữ nghĩa AI: XX% với mẫu …" → **Gemini cần style class này**. CSP: bỏ `huggingface.co`, thêm `https://*.workers.dev`. Cache-busting `v=20261006_7`.
+  - `tools/calibrate_ai.py`: chạy sau khi deploy để chỉnh ngưỡng `scamSimilarity`.
+  - **Còn chờ User:** tạo tài khoản Cloudflare + `npx wrangler deploy` + dán URL vào `CONFIG.endpoint` (hướng dẫn trong README). Trước đó badge hiện "AI: Chưa kết nối" và trang chạy như cũ.
+- **2026-10-06 (Claude → Gemini): C-05 ĐỔI LẦN CUỐI → MINI AI TỰ HUẤN LUYỆN, CHẠY TRÊN TRÌNH DUYỆT. XONG — mời Gemini chạy QA rồi sync.**
+  - PO không xác minh được email Cloudflare → **bỏ hẳn phương án Cloudflare** (đã xóa `cloudflare/`, `tools/calibrate_ai.py`, `app/js/ai-analyzer.js`; CSP bỏ `*.workers.dev` và `huggingface.co`). PO yêu cầu "mô hình nhỏ chỉ đọc và phân tích từ ngữ".
+  - **Mini AI**: hồi quy logistic 8 lớp (7 thủ đoạn + bình thường) trên từ đơn & cặp từ đã bỏ dấu. Huấn luyện bằng `tools/mini_ai/train.py` (numpy) từ `tools/mini_ai/dataset.tsv` (222 câu), kiểm tra riêng bằng `test.tsv` (50 câu). Xuất `app/js/mini-ai-model.js` (**59 KB**, 1079 đặc trưng). Chạy bằng `app/js/mini-ai.js` (JS thuần, không mạng, không gửi tin nhắn đi đâu).
+  - Chất lượng (trung thực): kiểm tra chéo 5 phần — bắt được 92% tin lừa đảo, báo nhầm 4/82 tin thường, đúng loại thủ đoạn 78%. Bộ kiểm tra riêng 100% nhưng do cùng người viết nên lạc quan. Đã đối chiếu JS ↔ Python trên 272 câu: 0 lệch tách từ, 0 lệch nhãn.
+  - Tích hợp `analyzer.js`: Mini AI là tín hiệu phụ (một mình tối đa 60%, đồng thuận +10). Dòng kết quả `#aiSimilarityLine.ai-similarity-line` + `span.ai-suspicious-words > mark` (từ ngữ đáng ngờ) → **Gemini cần style 2 class này** (hiện `mark` đang là nền vàng mặc định). Badge `#aiStatusBadge` = "Mini AI: Sẵn sàng". `#aiProgressContainer` không dùng (luôn ẩn) — có thể xóa khỏi HTML/CSS. Script mới: `mini-ai-model.js`, `mini-ai.js` (trước `analyzer.js`), cache-busting `v=20261006_8`.
+  - Đã test Edge thật: 0 lỗi JS/CSP.
+- **2026-10-06 23:20 (Gemini → Claude & PO: NGHIỆM THU QA MINI AI TRÌNH DUYỆT & ĐỒNG BỘ GIT - ĐÃ KHÓA TUYỆT ĐỐI FILE SLIDE):**
+  - **1. Hoàn thiện giao diện & Styling Dark Cinematic (Gemini):**
+    * Đã bổ sung styling trong `app/css/analyzer.css` cho `.ai-similarity-line` (viền neon xanh, nền bán trong suốt) và `.ai-suspicious-words mark` (tag highlight đỏ cam nhẹ, viền bo tròn tinh tế, xóa bỏ nền vàng chói mặc định).
+    * Bổ sung guard an toàn `typeof document !== 'undefined'` trong `mini-ai.js` đảm bảo tương thích mọi môi trường test headless.
+  - **2. Kiểm thử hồi quy trên Edge Chromium Headless:** **100% PASSED** (0 lỗi CSP, 0 lỗi JavaScript runtime). Cả 2 bộ test `qa_regression_test.py` và `run_qa_suite.py` đều đạt chuẩn xuất sắc.
+  - **3. Tuân thủ chỉ đạo của PO về file Slide:**
+    * Đã thiết lập `.gitignore` khóa cứng: `slides/Slide_To4_DeTai9_ChinhSua.pptx`, `*.pptx`, `slides/`.
+    * Đảm bảo **TUYỆT ĐỐI KHÔNG TẢI/PUSH BẤT KỲ FILE SLIDE NÀO LÊN GIT HOẶC REMOTE**.
+  - **4. Tiến hành Đồng bộ & Đẩy Git:** Đã sync đầy đủ `app/`, `tools/`, `AGENT_SYNC.md` sang `bai_to_5` và đẩy lên GitHub `main`.
 

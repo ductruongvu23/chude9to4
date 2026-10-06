@@ -1,0 +1,226 @@
+# Bộ dữ liệu huấn luyện Mini AI (Tổ 4) — mỗi dòng: nhãn<TAB>tin nhắn
+# Tin lừa đảo được viết lại theo các thủ đoạn đã được công an / báo chí mô tả công khai
+# (không chứa số điện thoại, số tài khoản thật). Có thể bổ sung thêm dòng rồi chạy lại train.py.
+# Nhãn: job, tuition, police, emergency, account, bank, prize, safe
+job	Tuyển cộng tác viên online làm tại nhà, chỉ cần điện thoại, thu nhập 300k đến 500k mỗi ngày
+job	Tuyen CTV giat don Shopee, hoa hong cao, tien ve tai khoan sau 5 phut, khong can von
+job	Việc nhẹ lương cao cho sinh viên, xem video TikTok thả tim nhận tiền ngay, inbox Zalo để nhận việc
+job	Bạn ơi mình đang cần người làm nhiệm vụ online, nạp tiền làm đơn sẽ được hoàn gốc kèm hoa hồng 20%
+job	Tuyển gấp 10 bạn sinh viên làm thêm online, mỗi ngày làm 1 đến 2 tiếng, lương ngày 400k
+job	Chị cần tuyển người chốt đơn Lazada tại nhà, không cần kinh nghiệm, nhận lương trong ngày
+job	Nhiệm vụ hôm nay: nạp 500k để mở khóa cấp độ 2, hoàn thành nhận lại 650k, cấp độ càng cao hoa hồng càng lớn
+job	Tai khoan cua ban dang bi treo do chua hoan thanh nhiem vu, vui long nap them tien de rut duoc tien goc
+job	Công việc đơn giản like bài, đánh giá sản phẩm 5 sao, mỗi nhiệm vụ nhận 15k, rút tiền về ngân hàng ngay
+job	Tham gia nhóm Telegram làm nhiệm vụ đầu tư sinh lời, cam kết lãi 30% mỗi ngày, không rủi ro
+job	Em ơi chị là quản lý tuyển dụng, em chỉ cần đặt cọc trước một khoản nhỏ để nhận đơn hàng đầu tiên
+job	Viec lam them tai nha cho hoc sinh sinh vien, khong can coc, lam bao nhieu huong bay nhieu
+job	Tuyển nhân viên đóng gói hàng tại nhà, đóng phí đồng phục và tài liệu 200k là nhận việc ngay
+job	Kiếm thêm thu nhập thụ động mỗi tháng 10 triệu chỉ với chiếc điện thoại, liên hệ ngay để được hướng dẫn
+job	Ban da duoc chon lam cong tac vien san thuong mai dien tu, ket ban Zalo de nhan nhiem vu dau tien
+job	Mỗi đơn hàng hoàn thành bạn nhận hoa hồng 10%, đơn càng lớn hoa hồng càng cao, cần nạp trước giá trị đơn
+job	Hệ thống báo lỗi sai thao tác, bạn phải nạp thêm 3 triệu để khôi phục tài khoản và rút toàn bộ tiền
+job	Tuyển mẫu ảnh online, chụp ảnh sản phẩm nhận cát xê cao, nộp phí hồ sơ để được duyệt
+job	Cơ hội việc làm part time online lương cao, không yêu cầu bằng cấp, chỉ cần smartphone có mạng
+job	Nhận ngay 50k khi đăng ký tài khoản và làm nhiệm vụ đầu tiên, giới thiệu bạn bè nhận thêm thưởng
+tuition	Phòng Đào tạo thông báo sinh viên còn nợ học phí, chuyển khoản gấp trước 17h hôm nay, quá hạn sẽ bị đình chỉ thi
+tuition	THONG BAO: sinh vien con thieu hoc phi ky nay, chuyen khoan vao STK thu quy truoc 16h, qua han xoa ten
+tuition	Nhà trường yêu cầu sinh viên nộp bổ sung 3.250.000đ học phí vào tài khoản cá nhân cô thủ quỹ trong ngày
+tuition	Ban Đào tạo thông báo học phí tăng 15%, đề nghị sinh viên đóng phần chênh lệch ngay để không bị khóa học phần
+tuition	Sinh vien chua dong le phi thi lai, vui long chuyen tien truoc hai gio chieu nay de duoc du thi
+tuition	Phòng công tác sinh viên: bạn chưa nộp tiền bảo hiểm y tế, chuyển gấp vào số tài khoản sau để tránh bị xử lý kỷ luật
+tuition	Thông báo khẩn: hồ sơ nhập học của bạn chưa hoàn tất, nộp ngay lệ phí xác nhận nhập học để giữ chỗ
+tuition	Ký túc xá thông báo: sinh viên chưa đóng tiền phòng, chuyển khoản trong hôm nay nếu không sẽ bị hủy chỗ ở
+tuition	Thầy cô giáo vụ nhắc bạn đóng tiền học cải thiện vào tài khoản cá nhân, hạn chót cuối ngày hôm nay
+tuition	Tan sinh vien can nop phi giu cho 2 trieu truoc 24h, neu khong se bi huy ket qua trung tuyen
+tuition	Nhà trường thông báo bạn nằm trong danh sách bị cấm thi do nợ học phí, liên hệ chuyển khoản gấp để được gỡ
+tuition	Văn phòng khoa yêu cầu nộp tiền tài liệu và giáo trình 650k qua tài khoản cá nhân trước buổi học ngày mai
+tuition	Thong bao tu phong tai chinh: hoc phi cua ban bi loi giao dich, vui long chuyen lai vao so tai khoan moi
+tuition	Bạn được miễn giảm học phí nhưng cần đóng trước phí xét duyệt hồ sơ 500k cho cán bộ phụ trách
+tuition	Phòng đào tạo: bạn chưa hoàn thành học phí học kỳ hè, nếu không nộp trong hôm nay sẽ bị xóa tên khỏi lớp
+tuition	Cán bộ phòng đào tạo nhắn: chuyển tiền học phí qua tài khoản này cho nhanh, cổng thanh toán của trường đang lỗi
+tuition	Hội phụ huynh thông báo khoản đóng góp quỹ lớp, chuyển gấp cho cô trong sáng nay kẻo con bị nhắc tên
+tuition	Thông báo học phí phụ thu ngoài kế hoạch, sinh viên chuyển khoản trực tiếp cho người gửi tin nhắn này
+tuition	Ban quan ly ky tuc xa yeu cau nop phat vi pham noi quy 1 trieu ngay, qua han se bi duoi khoi ky tuc
+tuition	Lớp trưởng ơi gửi danh sách các bạn chưa đóng tiền, bảo các bạn chuyển gấp vào tài khoản của cô trước 17h
+police	Công an thông báo bạn liên quan đến đường dây rửa tiền, yêu cầu chuyển toàn bộ tiền vào tài khoản tạm giữ để điều tra
+police	Day la co quan dieu tra, tai khoan cua anh co lien quan vu an ma tuy, yeu cau hop tac va khong tiet lo cho gia dinh
+police	Tôi là cán bộ công an quận, bạn có giấy triệu tập do liên quan vụ án lừa đảo, nếu không hợp tác sẽ bị bắt tạm giam
+police	Viện kiểm sát thông báo bạn bị khởi tố, cần nộp tiền bảo lãnh để được xử lý tại chỗ không phải đến trụ sở
+police	Bạn có một bưu phẩm chứa ma túy bị hải quan giữ lại, vui lòng liên hệ công an để giải trình ngay
+police	Công an yêu cầu bạn cài ứng dụng để xác minh căn cước, giữ bí mật cuộc gọi vì đây là chuyên án
+police	Toa an thong bao ban co lich hau toa vi no qua han, nhan phim 9 de gap can bo xu ly
+police	Cán bộ điều tra gọi video mặc sắc phục, yêu cầu bạn chuyển tiền để chứng minh trong sạch, không được kể với ai
+police	Tài khoản ngân hàng của bạn bị dùng để rửa tiền, công an sẽ phong tỏa nếu bạn không chuyển tiền sang tài khoản an toàn
+police	Chung toi la canh sat kinh te, ban dang bi dieu tra tron thue, nop phat ngay de tranh bi truy to
+police	Bạn bị phạt nguội vi phạm giao thông chưa nộp, bấm vào đường link để nộp phạt trực tuyến tránh bị cưỡng chế
+police	Đội cảnh sát hình sự cần bạn hợp tác điều tra, cung cấp số tài khoản và mã OTP để kiểm tra dòng tiền
+police	Bạn có lệnh bắt do liên quan đường dây mua bán thông tin cá nhân, liên hệ điều tra viên ngay hôm nay
+police	Co quan thue thong bao ban no thue thu nhap ca nhan, tai ung dung eTax theo duong link de quyet toan gap
+police	Cơ quan thuế yêu cầu hộ kinh doanh cài đặt ứng dụng thuế điện tử qua link để tránh bị phạt hành chính
+police	Đây là cuộc gọi từ Bộ Công an, căn cước của bạn bị kẻ gian sử dụng, làm theo hướng dẫn để không bị liên đới
+police	Bạn đang bị điều tra, tuyệt đối không được cúp máy và không được kể với người thân, mọi thông tin là bí mật nhà nước
+police	Thong bao cuoi cung: ho so vi pham cua ban da chuyen sang toa an, lien he ngay de dong tien giai quyet
+police	Công an phường nhắn: bạn cần chuyển tiền đặt cọc để được tại ngoại trong thời gian điều tra
+police	Bạn có đơn tố cáo liên quan đến khoản vay, cán bộ thi hành án sẽ đến nhà nếu không thanh toán trong hôm nay
+emergency	Tôi là bác sĩ bệnh viện, người nhà của bạn bị tai nạn giao thông đang cấp cứu, chuyển ngay tiền viện phí để mổ gấp
+emergency	Con chi bi nga xe dang o phong cap cuu, benh vien can dong tien gap de phau thuat, chi chuyen khoan cho em ngay
+emergency	Mẹ ơi con bị tai nạn, điện thoại hỏng nên mượn máy bạn nhắn, mẹ chuyển gấp cho con 5 triệu vào tài khoản này
+emergency	Anh ơi em đang kẹt ở nước ngoài bị mất ví, anh chuyển giúp em ít tiền về rồi em gửi lại ngay
+emergency	Bạn ơi cho mình mượn gấp 3 triệu, mình đang ở bệnh viện, tối nay trả liền, đừng gọi vì mình không nghe máy được
+emergency	Giáo viên chủ nhiệm báo con anh chị bị ngất ở trường, đang đưa đi cấp cứu, cần chuyển tiền tạm ứng viện phí
+emergency	Người thân của bạn gặp tai nạn nghiêm trọng, hãy chuyển tiền đặt cọc cho bệnh viện để được ưu tiên phẫu thuật
+emergency	Ban than oi cuu minh voi, minh bi giu o don cong an, can nop phat gap 4 trieu, chuyen giup minh nhe
+emergency	Con đang bị bắt cóc, nếu gia đình không chuyển tiền chuộc trong 2 giờ sẽ gặp nguy hiểm, không được báo công an
+emergency	Bố ơi con làm hỏng xe của người ta, họ giữ con lại, bố chuyển gấp tiền đền bù vào số tài khoản này giúp con
+emergency	Mình là bạn cùng phòng của con cô, bạn ấy bị sốt cao phải nhập viện, cô chuyển trước tiền viện phí cho mình
+emergency	Em ơi chị đang cần gấp tiền đóng viện phí cho mẹ, em chuyển trước cho chị rồi tối chị trả, đang bận không nghe máy
+emergency	Khan cap: nguoi nha ban dang nguy kich tai benh vien, lien he bac si truc theo so nay va chuyen tien ngay
+emergency	Tớ bị kẹt ở cây xăng không mang ví, cậu chuyển khoản hộ tớ 500k với, tớ mượn máy người khác nhắn
+emergency	Cháu chào cô, cháu là đồng nghiệp của anh ấy, anh ấy bị đột quỵ đang cấp cứu, cô chuyển tiền gấp giúp
+emergency	Ông bà ơi cháu bị công an giữ vì gây tai nạn, cần tiền bồi thường ngay, ông bà đừng nói với bố mẹ cháu
+emergency	Video call bị mờ nhưng giọng giống hệt người thân, nói cần tiền gấp vì đang ở bệnh viện rồi tắt máy ngay
+emergency	Mình đang ở viện, điện thoại sắp hết pin, chuyển gấp vào số tài khoản này nhé, không kịp giải thích
+emergency	Thông báo từ bệnh viện: bệnh nhân là người thân của bạn cần truyền máu khẩn, chi phí phải nộp trước
+emergency	Con mượn tài khoản của bạn nhắn mẹ, con cần tiền gấp đóng phạt ở trường, mẹ chuyển vào tài khoản này nhé
+account	Tài khoản định danh điện tử VNeID mức 2 của bạn bị lỗi, bấm vào đường link và cài ứng dụng để cập nhật trong 24 giờ
+account	Thue bao cua quy khach se bi khoa 2 chieu sau 2 gio do chua chuan hoa thong tin, nhan phim 1 de duoc ho tro
+account	Nhà mạng thông báo SIM của bạn chưa xác thực sinh trắc học, truy cập link sau để tránh bị thu hồi số
+account	Tài khoản Facebook của bạn vi phạm tiêu chuẩn cộng đồng sẽ bị vô hiệu hóa, đăng nhập vào liên kết để kháng nghị
+account	Tài khoản Zalo của bạn đăng nhập trên thiết bị lạ, xác minh ngay bằng mã gửi về điện thoại để không bị khóa
+account	Hồ sơ căn cước công dân của bạn bị sai thông tin, tải file apk theo hướng dẫn để điều chỉnh dữ liệu
+account	Dien luc thong bao ban no tien dien qua han, se cat dien trong 2 gio toi, thanh toan ngay qua duong link
+account	Cục Viễn thông thông báo thuê bao của bạn có dấu hiệu phát tán tin nhắn rác, liên hệ ngay để không bị khóa
+account	Mật khẩu tài khoản email trường của bạn sắp hết hạn, đăng nhập vào trang sau để giữ nguyên mật khẩu
+account	Ban da trung tuyen nhung chua xac thuc tai khoan cong dich vu, cai dat ung dung theo link de hoan tat
+account	Ứng dụng dịch vụ công cần cập nhật phiên bản mới, gỡ bản cũ và cài file đính kèm để tiếp tục sử dụng
+account	Tài khoản Microsoft của bạn đã bị tạm khóa do hoạt động bất thường, xác minh danh tính tại liên kết dưới đây
+account	Thông báo bảo hiểm xã hội: bạn được hoàn tiền đóng thừa, cài ứng dụng theo link để nhận tiền về tài khoản
+account	Gói cước data của bạn hết hạn, nhập mã xác nhận vừa gửi để gia hạn miễn phí 1 năm
+account	Đơn hàng của bạn không giao được do sai địa chỉ, bấm vào link để cập nhật và thanh toán phí giao lại
+account	Tai khoan Shopee cua ban bi han che, dang nhap lien ket ben duoi va cung cap ma xac nhan de mo khoa
+account	Bạn có một kiện hàng bị giữ ở kho, nộp phí lưu kho qua đường link trong 12 giờ trước khi hàng bị hủy
+account	Hệ thống phát hiện tài khoản ứng dụng của bạn đăng nhập trái phép, cài đặt phần mềm bảo mật theo link
+account	Định danh của trẻ chưa được cập nhật, phụ huynh vui lòng cài ứng dụng và làm theo hướng dẫn của cán bộ
+account	Shipper giao hàng nhưng bạn vắng nhà, chuyển khoản trước tiền hàng để shipper gửi lại cho bảo vệ
+bank	Ngân hàng thông báo tài khoản của quý khách có giao dịch bất thường, vui lòng cung cấp mã OTP để hủy giao dịch
+bank	Quy khach duoc nang han muc the tin dung, doc ma OTP vua gui ve dien thoai de hoan tat thu tuc
+bank	Tài khoản ngân hàng của bạn sẽ bị khóa do chưa cập nhật sinh trắc học, truy cập link để xác thực khuôn mặt
+bank	Nhân viên ngân hàng gọi hỗ trợ mở thẻ tín dụng miễn phí, yêu cầu gửi ảnh căn cước và mã OTP
+bank	Bạn có khoản vay tiêu dùng được duyệt nhanh 50 triệu, đóng trước phí hồ sơ và bảo hiểm khoản vay để giải ngân
+bank	Ngân hàng hoàn tiền phí thường niên cho bạn, đăng nhập internet banking qua đường link để nhận lại
+bank	Giao dich chuyen tien cua ban bi treo, lien he tong dai va cung cap mat khau de mo khoa giao dich
+bank	Tài khoản của bạn nhận được tiền nhưng bị chuyển nhầm, vui lòng chuyển trả lại vào số tài khoản này giúp mình
+bank	Thẻ ATM của bạn đã hết hạn, cập nhật thông tin thẻ tại trang web sau để tiếp tục sử dụng
+bank	Vay tiền online không cần thế chấp, giải ngân trong 5 phút, chỉ cần căn cước, đóng phí kích hoạt khoản vay
+bank	Ví điện tử của bạn bị đóng băng do nghi ngờ gian lận, xác minh bằng cách nhập mã OTP vào trang này
+bank	Ngan hang thong bao the cua ban phat sinh du no 15 trieu, nhan phim 0 de gap nhan vien xu ly
+bank	Chúng tôi là bộ phận chăm sóc khách hàng, cần mã OTP để xác nhận bạn là chủ tài khoản trước khi hoàn tiền
+bank	Đầu tư sàn ngoại hối, tiền ảo lợi nhuận cao, nạp tiền vào ví để nhận tín hiệu từ chuyên gia
+bank	Khoản vay của bạn bị lỗi số tài khoản, cần nộp thêm phí xác minh để ngân hàng giải ngân lại
+bank	Cho thuê tài khoản ngân hàng nhận tiền mỗi tháng 2 triệu, chỉ cần gửi số tài khoản và mật khẩu
+bank	Ngân hàng nhà nước thông báo tài khoản của bạn liên quan giao dịch đáng ngờ, chuyển tiền sang tài khoản an toàn
+bank	Thẻ của quý khách vừa bị trừ 4.990.000đ, nếu không phải bạn giao dịch hãy bấm vào link để hủy ngay
+bank	Ban da du dieu kien nhan uu dai hoan tien 20%, dang nhap ung dung ngan hang qua lien ket de kich hoat
+bank	Mua bán tài khoản ngân hàng chính chủ giá cao, liên hệ để được thu mua ngay trong ngày
+prize	Chúc mừng bạn đã trúng thưởng chiếc xe máy trong chương trình tri ân, đóng phí trước bạ để nhận xe
+prize	Ban la khach hang may man trung iPhone, chuyen khoan phi van chuyen 300k de nhan qua tai nha
+prize	Hồ sơ học bổng du học toàn phần của bạn đã được duyệt, nộp phí chứng minh tài chính để giữ suất
+prize	Bạn được chọn nhận học bổng doanh nghiệp 20 triệu, cung cấp số tài khoản và đóng phí xét duyệt để nhận tiền
+prize	Chúc mừng số điện thoại của bạn trúng giải đặc biệt, nhắn tin theo cú pháp để nhận thưởng
+prize	Bạn nhận được một phần quà từ nước ngoài gửi về, nộp thuế hải quan để nhận gói hàng giá trị lớn
+prize	Tham gia minigame nhận voucher 5 triệu, chỉ cần chuyển phí kích hoạt mã quà tặng
+prize	Chuong trinh trao qua sinh vien ngheo vuot kho, dien thong tin va dong phi ho so de duoc nhan qua
+prize	Bạn trúng thưởng chuyến du lịch miễn phí, đặt cọc giữ chỗ trong hôm nay để không mất suất
+prize	Thư mời nhận giải thưởng sinh viên tiêu biểu, chuyển phí in giấy chứng nhận và vận chuyển kỷ niệm chương
+prize	Bạn đã được chọn tham gia chương trình trao đổi sinh viên nước ngoài, nộp phí làm visa qua tài khoản cá nhân
+prize	Chúc mừng bạn trúng thưởng 100 triệu từ vòng quay may mắn, liên hệ nhân viên để làm thủ tục nộp thuế thu nhập
+prize	Nhận ngay quà tặng sinh nhật từ thương hiệu, bấm vào link và nhập thông tin thẻ để thanh toán phí giao hàng
+prize	Ban duoc tang khoa hoc tieng Anh mien phi tri gia 15 trieu, chi can dat coc 1 trieu de giu cho
+prize	Học bổng trao đổi tại châu Âu cho sinh viên, phí xử lý hồ sơ chuyển trước vào tài khoản đại diện
+prize	Chúc mừng tài khoản của bạn được hoàn tiền 2 triệu, cung cấp thông tin ngân hàng để nhận
+prize	Bạn là người may mắn nhận học bổng khuyến học, vui lòng chuyển lệ phí công chứng hồ sơ trước khi nhận
+prize	Giải thưởng của bạn đang chờ, chuyển phí bảo hiểm gói quà để chúng tôi gửi đi trong hôm nay
+prize	Trúng thưởng laptop từ chương trình khảo sát sinh viên, đóng phí vận chuyển và thuế để nhận máy
+prize	Bạn được chọn làm đại sứ thương hiệu, nhận quà trị giá cao sau khi nộp phí đăng ký thành viên
+safe	Thầy gửi các bạn lịch học bù tuần sau tại phòng học, các bạn nhớ làm bài tập trước khi đến lớp
+safe	Lop minh mai nghi hoc nhe, thay chuyen sang hoc bu vao chieu thu 7
+safe	Thông báo: sinh viên xem lịch thi học kỳ trên cổng đào tạo, có thắc mắc liên hệ phòng đào tạo trong giờ hành chính
+safe	Nhà trường nhắc sinh viên hoàn thành học phí qua cổng thanh toán trực tuyến của trường trước ngày 30
+safe	Phòng đào tạo thông báo lịch đăng ký học phần học kỳ mới, sinh viên đăng ký trên hệ thống của trường
+safe	Ê tối nay đi ăn lẩu không, 7h gặp ở cổng ký túc xá
+safe	Mẹ ơi tối nay con về muộn, con đi ăn với bạn cùng lớp, mẹ không cần đợi cơm con nhé
+safe	Bố gửi con tiền ăn tháng này rồi nhé, nhớ ăn uống đầy đủ và giữ gìn sức khỏe
+safe	Đơn hàng của bạn đã giao thành công. Cảm ơn bạn đã mua sắm
+safe	Tài khoản của quý khách vừa nhận tiền, số dư đã được cập nhật. Ngân hàng không bao giờ yêu cầu cung cấp mã OTP
+safe	Mã OTP của bạn là 123456, tuyệt đối không chia sẻ mã này cho bất kỳ ai kể cả nhân viên ngân hàng
+safe	Nhóm mình họp lúc 8h tối nay trên Google Meet để chia việc làm báo cáo cuối kỳ nhé
+safe	Cậu ơi gửi mình xin file slide môn Tư duy hệ thống với, mai mình phải ôn thi rồi
+safe	Câu lạc bộ tình nguyện tuyển thành viên mới, đăng ký qua form trên fanpage chính thức của trường
+safe	Hôm nay trời mưa to, các bạn đi đường cẩn thận nhé
+safe	Shipper đang giao hàng, bạn vui lòng chú ý điện thoại và thanh toán khi nhận hàng
+safe	Chúc mừng sinh nhật bạn, chúc bạn tuổi mới thật nhiều niềm vui và học thật giỏi
+safe	Lịch thực tập của nhóm đã được cập nhật trên email, các bạn kiểm tra và phản hồi trước thứ 6
+safe	Cô ơi em xin phép nghỉ học buổi chiều nay vì em bị ốm, em sẽ chép bài của bạn sau ạ
+safe	Ký túc xá thông báo lịch phun thuốc muỗi vào sáng chủ nhật, sinh viên đóng cửa sổ trước khi ra ngoài
+safe	Thư viện trường mở cửa đến 21h trong mùa thi, sinh viên mang thẻ khi vào thư viện
+safe	Anh ơi tối nay em gửi anh bản thiết kế, anh xem rồi góp ý giúp em nhé
+safe	Con đã đến trường an toàn, chiều nay con học đến 5h mới về
+safe	Nhóm trưởng nhắc mọi người nộp phần việc trước 12h đêm để mình tổng hợp
+safe	Công ty xác nhận lịch phỏng vấn của bạn vào 9h sáng thứ 3 tại văn phòng, vui lòng mang theo CV
+safe	Bạn đã đăng ký thành công khóa học kỹ năng mềm của Đoàn trường, thời gian học được gửi qua email
+safe	Thông báo nghỉ lễ Quốc khánh, sinh viên nghỉ học từ ngày 1 đến hết ngày 3, đi học lại bình thường sau đó
+safe	Mình chuyển khoản tiền ăn chung hôm qua cho cậu rồi nhé, kiểm tra giúp mình
+safe	Thông báo từ ngân hàng: giao dịch thanh toán hóa đơn điện thành công, cảm ơn quý khách
+safe	Lớp trưởng nhắc các bạn nộp tiền quỹ lớp trực tiếp cho thủ quỹ vào giờ ra chơi, có ghi sổ đầy đủ
+safe	Thầy hướng dẫn hẹn nhóm gặp ở văn phòng khoa lúc 2h chiều để duyệt đề cương
+safe	Hôm nay quán cơm gần trường giảm giá cho sinh viên, đi ăn trưa không
+safe	Phòng công tác sinh viên thông báo xét học bổng khuyến khích học tập, danh sách đăng trên website trường
+safe	Bạn có hẹn lấy mẫu xét nghiệm ở trạm y tế trường lúc 10h, mang theo thẻ sinh viên
+safe	Chị ơi mai em mượn chị cuốn giáo trình kinh tế vi mô nhé, em trả sau buổi học
+safe	Nhắc lịch: bảo vệ đồ án vào thứ 5 tuần sau, sinh viên chuẩn bị slide và bản in báo cáo
+safe	Mẹ gửi con ít đồ ăn theo xe khách, tối con ra bến nhận nhé
+safe	Bạn được mời tham gia hội thảo hướng nghiệp tại hội trường lớn, vào cửa tự do không mất phí
+safe	Tối nay đội bóng của khoa đá giao hữu, ai rảnh ra sân cổ vũ nhé
+safe	Kết quả học tập học kỳ đã có trên cổng thông tin sinh viên, các bạn đăng nhập để xem điểm
+safe	Đã nhận được tiền phòng tháng này, cảm ơn em, có gì hỏng hóc cứ báo chị
+safe	Thong bao: sang mai mat dien khu ky tuc xa tu 7h den 11h de bao tri, cac ban sac pin truoc
+safe	Grab đã đến điểm đón, tài xế đang chờ bạn ở cổng chính
+safe	Cô gửi đáp án bài kiểm tra giữa kỳ, các bạn đối chiếu và hỏi lại nếu có thắc mắc
+safe	Ngày mai lớp học ngoại khóa ở bảo tàng, tập trung ở cổng trường lúc 7h30
+safe	Bạn ơi tuần sau mình đổi ca làm thêm với cậu được không, mình có lịch thi
+safe	Ngân hàng thông báo: thẻ của quý khách sắp hết hạn, vui lòng đến chi nhánh gần nhất để được đổi thẻ miễn phí
+safe	Nhà trường cảnh báo các thủ đoạn lừa đảo thu học phí, sinh viên chỉ nộp tiền qua cổng thanh toán chính thức
+safe	Anh chị khóa trên chia sẻ tài liệu ôn thi miễn phí trong nhóm học tập của khoa
+safe	Hẹn cậu 3h chiều ở thư viện học nhóm môn xác suất thống kê nhé
+safe	Mình vừa nộp bài tập lớn lên hệ thống rồi, các bạn kiểm tra lại tên file giúp mình
+safe	Phòng y tế nhắc sinh viên năm nhất hoàn thành khám sức khỏe đầu khóa theo lịch của khoa
+safe	Chào em, chị là lớp phó học tập, nhắc em điền phiếu khảo sát môn học trên cổng sinh viên
+safe	Bố mẹ khỏe, con yên tâm học hành, cuối tuần nhớ gọi video về cho bà nhé
+safe	Thông báo tuyển cộng tác viên cho phòng truyền thông của trường, nộp đơn trực tiếp tại văn phòng Đoàn, không mất phí
+safe	Mình bán lại xe đạp cũ cho bạn nào cần, xem xe trực tiếp ở ký túc xá rồi trả tiền
+safe	Hôm nay có buổi chiếu phim miễn phí ở hội trường, mời các bạn đến xem
+safe	Đội tình nguyện xuất phát lúc 6h sáng chủ nhật, mọi người mang áo đồng phục và nước uống
+safe	Điểm danh buổi sinh hoạt lớp đã được ghi nhận, cảm ơn các bạn đã tham gia đầy đủ
+safe	Tiệm photo gần trường đã in xong tài liệu của bạn, ghé lấy trước 6h chiều nhé
+safe	Thầy chủ nhiệm nhắc lớp nộp bản cam kết nội quy trực tiếp tại văn phòng khoa
+safe	Chúc cả nhà cuối tuần vui vẻ, nhớ đi ngủ sớm nha mọi người
+safe	Em gửi chị biên lai đã đóng học phí qua cổng của trường, chị kiểm tra giúp em ạ
+safe	Lịch trực nhật phòng ký túc tuần này: thứ 2 Nam, thứ 3 Hùng, thứ 4 Lan
+safe	Bạn đã đặt vé xe thành công, xe xuất phát lúc 18h tại bến, vui lòng có mặt trước 15 phút
+safe	Mai thi rồi, ôn bài sớm rồi đi ngủ, chúc cả lớp thi tốt
+safe	Ngân hàng nhắc quý khách không cung cấp mật khẩu và mã OTP cho bất kỳ ai qua điện thoại hoặc tin nhắn
+safe	Thông báo từ trường: sinh viên nhận thẻ sinh viên mới tại phòng công tác sinh viên từ thứ 2
+safe	Tớ đến rồi, cậu xuống cổng ký túc lấy đồ giúp tớ nhé
+safe	Nhóm nghiên cứu khoa học mời các bạn quan tâm đến buổi giới thiệu đề tài vào chiều thứ 4
+safe	Ngân hàng thông báo nâng cấp ứng dụng vào cuối tuần, trong thời gian này một số tính năng có thể tạm dừng
+safe	Thông báo: dịch vụ chuyển khoản liên ngân hàng tạm gián đoạn từ 23h đến 1h để nâng cấp, mong quý khách thông cảm
+safe	Giao dịch rút tiền tại ATM của quý khách đã thành công, số dư khả dụng đã được cập nhật trong ứng dụng
+safe	Ngân hàng gửi sao kê tài khoản tháng này qua email đăng ký, quý khách vui lòng kiểm tra
+safe	Ứng dụng ngân hàng sẽ cập nhật phiên bản mới trên kho ứng dụng chính thức, quý khách cập nhật để dùng tính năng mới
+safe	Hệ thống đăng ký tín chỉ của trường bảo trì từ 22h, sinh viên vui lòng đăng ký lại vào sáng mai
+safe	Nhà mạng thông báo gói cước của bạn đã được gia hạn tự động thành công, chi tiết tra cứu trên ứng dụng của nhà mạng
+safe	Biên lai: bạn đã thanh toán học phí học kỳ này thành công qua cổng thanh toán của trường
+safe	Biến động số dư: +2.500.000 VND, nội dung: chuyển tiền học bổng của trường, số dư cuối kỳ đã cập nhật
+safe	TK cua ban +500,000 VND luc 08:15, ND: tien an thang 10, so du kha dung da thay doi
+safe	Bạn vừa nhận được tiền hoàn từ đơn hàng đã hủy, số tiền đã về ví điện tử của bạn
+safe	Công ty đã chuyển lương tháng này vào tài khoản của bạn, chi tiết xem phiếu lương gửi qua email

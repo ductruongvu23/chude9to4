@@ -130,7 +130,7 @@ if not changes:
     print("    ℹ️ Không có thay đổi mới nào cần commit. Trạng thái Git đã sạch!")
 else:
     now_str = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    subprocess.run(['git', '-C', ROOT_4, 'add', 'app', 'tools', 'AGENT_SYNC.md', 'CLAUDE.md', 'sync.bat', 'index.html'], check=True)
+    subprocess.run(['git', '-C', ROOT_4, 'add', 'app', 'tools', 'AGENT_SYNC.md', 'CLAUDE.md', 'sync.bat', 'index.html', '.gitignore'], check=True)
     commit_msg = f"sync: automated QA verified & synced [{now_str}]"
     subprocess.run(['git', '-C', ROOT_4, 'commit', '-m', commit_msg], check=True)
     push_res = subprocess.run(['git', '-C', ROOT_4, 'push', 'origin', 'main'], capture_output=True, text=True, encoding='utf-8')

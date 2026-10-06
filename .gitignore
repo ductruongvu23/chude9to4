@@ -1,0 +1,4 @@
+# Khóa tuyệt đối không bao giờ tải file slide chỉnh sửa lên git theo yêu cầu PO
+slides/Slide_To4_DeTai9_ChinhSua.pptx
+*.pptx
+slides/

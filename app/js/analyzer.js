@@ -258,13 +258,24 @@ function runScamAnalysis() {
   }
 
   setTimeout(() => {
-    const analysis = analyzeMessageContext(rawText);
-    lastAnalyzedResult = analysis;
-    renderAnalysisResult(analysis);
+    try {
+      let analysis = analyzeMessageContext(rawText);
 
-    if (runBtn) {
-      runBtn.disabled = false;
-      runBtn.innerHTML = '🔍 Phân Tích Mức Độ Rủi Ro';
+      // Mini AI (chạy ngay trên máy) đọc từ ngữ trong tin nhắn; lỗi thì giữ nguyên kết quả quy tắc
+      if (typeof MiniAI !== 'undefined' && MiniAI.isReady()) {
+        analysis = MiniAI.merge(analysis, MiniAI.analyze(rawText));
+        analysis.advice = adviceForScore(analysis.score);
+      }
+
+      lastAnalyzedResult = analysis;
+      renderAnalysisResult(analysis);
+    } catch (err) {
+      console.error('[Analyzer] Lỗi phân tích:', err);
+    } finally {
+      if (runBtn) {
+        runBtn.disabled = false;
+        runBtn.innerHTML = '🔍 Phân Tích Mức Độ Rủi Ro';
+      }
     }
 
     const resultsContainer = document.getElementById('analyzerResultsContainer');
@@ -272,6 +283,17 @@ function runScamAnalysis() {
       resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   }, 350);
+}
+
+// Lời khuyên 1 dòng theo điểm rủi ro
+function adviceForScore(score) {
+  if (score >= 70) {
+    return "🛑 TUYỆT ĐỐI KHÔNG CHUYỂN TIỀN, không bấm vào đường link lạ và gọi hotline chính thức của đơn vị để kiểm chứng.";
+  }
+  if (score >= 35) {
+    return "⚠️ CẢNH GIÁC: Tin nhắn có dấu hiệu thúc ép bất thường. Hãy liên hệ trực tiếp người thân hoặc cơ quan liên quan.";
+  }
+  return "Chưa phát hiện rủi ro rõ ràng. Luôn duy trì cảnh giác khi nhận thông báo từ người lạ.";
 }
 
 // Tìm SĐT / email trong tin nhắn (chấp nhận dấu chấm, khoảng trắng, gạch ngang)
@@ -405,12 +427,7 @@ function analyzeMessageContext(text) {
   }
 
   // Lời khuyên 1-2 dòng
-  let advice = "Chưa phát hiện rủi ro rõ ràng. Luôn duy trì cảnh giác khi nhận thông báo từ người lạ.";
-  if (score >= 70) {
-    advice = "🛑 TUYỆT ĐỐI KHÔNG CHUYỂN TIỀN, không bấm vào đường link lạ và gọi hotline chính thức của đơn vị để kiểm chứng.";
-  } else if (score >= 35) {
-    advice = "⚠️ CẢNH GIÁC: Tin nhắn có dấu hiệu thúc ép bất thường. Hãy liên hệ trực tiếp người thân hoặc cơ quan liên quan.";
-  }
+  const advice = adviceForScore(score);
 
   return {
     score,
@@ -478,6 +495,14 @@ function renderAnalysisResult(result) {
         <div style="font-size: 0.9rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px;">
           📌 Dạng thủ đoạn: <span style="color: ${isDanger ? 'var(--accent-danger)' : (isWarning ? 'var(--accent-warning)' : 'var(--accent-primary)')};">${escapeHtml(result.category)}</span>
         </div>
+        ${result.ai ? `
+        <div class="ai-similarity-line" id="aiSimilarityLine">
+          🧠 Mini AI: <strong>${result.ai.percent}%</strong> khả năng lừa đảo${result.ai.looksSafe
+            ? ' (giống tin nhắn bình thường)'
+            : ` (gần nhất với "${escapeHtml(result.ai.labelName)}")`}${result.ai.words.length
+            ? `<br><span class="ai-suspicious-words">Từ ngữ đáng ngờ: ${result.ai.words.map(w => `<mark>${escapeHtml(w)}</mark>`).join(' ')}</span>`
+            : ''}
+        </div>` : ''}
         
         <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 6px;">
           Các dấu hiệu nhận biết phát hiện được:
