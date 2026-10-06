@@ -41,7 +41,7 @@ test_html_content = """<!DOCTYPE html>
     // Task G-01: Mock window.fetch BEFORE FirebaseService loads
     const originalFetch = window.fetch;
     window.fetch = async function(url, options) {
-      if (typeof url === 'string' && url.includes('script.google.com')) {
+      if (typeof url === 'string' && (url.includes('script.google.com') || url.includes('/api/reports'))) {
         return {
           ok: true,
           json: async () => ({ success: true, reports: [] }),

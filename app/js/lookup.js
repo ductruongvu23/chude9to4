@@ -279,7 +279,7 @@ async function triggerReportIncrement() {
   let updatedScore = Math.min(99, Math.max(currentScore + 5, 45)); // Tăng +5% nguy cơ
   let newIncrement = newReportCount * 5;
 
-  // 2. Gửi vào Google Sheets qua FirebaseService
+  // 2. Gửi đồng bộ lên Cloud Database qua FirebaseService
   //    (submitReport tự ghi LocalReportRegistry - không gọi thêm ở đây để tránh đếm trùng 2 lần)
   try {
     await FirebaseService.submitReport({

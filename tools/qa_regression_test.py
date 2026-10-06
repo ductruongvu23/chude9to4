@@ -99,8 +99,8 @@ interactive_html = """<!DOCTYPE html>
     // Guarantees test submits NEVER touch or pollute production Google Sheets!
     const originalFetch = window.fetch;
     window.fetch = async function(url, options) {
-      if (typeof url === 'string' && url.includes('script.google.com')) {
-        console.log('[QA Mock] Intercepted fetch to Google Sheets:', options ? options.method : 'GET');
+      if (typeof url === 'string' && (url.includes('script.google.com') || url.includes('/api/reports'))) {
+        console.log('[QA Mock] Intercepted fetch to backend:', options ? options.method : 'GET');
         return {
           ok: true,
           json: async () => ({ success: true, result: 'mocked_ok' }),
