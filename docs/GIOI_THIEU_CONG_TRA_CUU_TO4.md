@@ -58,9 +58,9 @@ Theo nguyên lý của nhà khoa học hệ thống **Donella H. Meadows** (*"Th
 * **Xử lý đa phương thức (Multimodal):** Cho phép copy-paste đoạn tin nhắn văn bản hoặc tải ảnh chụp màn hình tin nhắn (Zalo/SMS/Telegram).
 * **Triết lý "Human-in-the-loop":** AI không phán quyết thay con người mà cung cấp bảng điểm rủi ro, phân tích chi tiết các dấu hiệu khả nghi và đưa ra bảng danh mục tự kiểm tra (Checklist phản xạ an toàn), kích hoạt tư duy phản biện của chính sinh viên.
 
-### 📋 3. Hệ thống Tiếp nhận báo cáo & Cơ sở dữ liệu SQL chuẩn hóa
-* **Cấp mã Ticket ID tự động:** Khi sinh viên gửi phản ánh kèm chứng cứ, hệ thống tự động sinh mã định danh duy nhất (ví dụ: `TK-2026-4091`) để theo dõi tình trạng xử lý và hỗ trợ hồ sơ làm việc với Cơ quan Công an.
-* **CSDL SQL vi phạm (`scam_phone_database.sql`):** Toàn bộ dữ liệu được quản lý dưới dạng cấu trúc cơ sở dữ liệu quan hệ chuẩn, bao gồm thông tin số điện thoại, nhà mạng, loại hình thủ đoạn, cấp độ rủi ro, nguồn xác thực và bằng chứng kèm theo.
+### 📋 3. Hệ thống Tiếp nhận báo cáo & Cơ sở dữ liệu cảnh báo có nguồn
+* **Cấp mã Ticket ID tự động:** Khi sinh viên gửi phản ánh kèm chứng cứ, hệ thống tự động sinh mã định danh duy nhất (dạng `HS-TDHT-XXXXXX`, ví dụ: `HS-TDHT-7K2M9Q`) để theo dõi tình trạng xử lý và hỗ trợ hồ sơ làm việc với Cơ quan Công an.
+* **CSDL cảnh báo có nguồn (`app/js/storage.js`):** Danh sách số điện thoại, đầu số và email đã bị cảnh báo công khai — mỗi mục kèm nguồn kiểm chứng (Công an, báo chí chính thống) và ngày công bố. Báo cáo của cộng đồng được lưu trên Google Sheets (qua `api/reports.js`) và chỉ là tín hiệu tham khảo, không phải kết luận.
 * **Sổ tiếp nhận trực tuyến:** Hiển thị danh sách các cảnh báo mới nhất từ cộng đồng sinh viên, biến mỗi nạn nhân tiềm năng thành một "mắt xích cảm biến" bảo vệ toàn trường.
 
 ### 🚨 4. Sổ tay Quy trình "Giờ Vàng" 15-30 phút đầu khi bị lừa

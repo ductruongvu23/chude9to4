@@ -323,14 +323,32 @@ const SYSTEM_SEED_REPORTS = [
 // Dùng chung cho tra cứu, đếm báo cáo và lưu thống kê để mọi định dạng
 // (+84 912..., 0912.xxx, 84912xxx) đều quy về cùng một khóa.
 // ===================================================================
+// Thoát ký tự HTML trước khi chèn dữ liệu vào innerHTML.
+// Dùng chung cho lookup.js, intake.js, analyzer.js (storage.js nạp đầu tiên).
+// null / undefined -> ''; số 0 vẫn hiển thị "0".
+function escapeHtml(text) {
+  if (text == null) return '';
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 function normalizeTarget(target) {
-  const raw = String(target == null ? '' : target).trim().toLowerCase();
+  // NFKC: đổi chữ số / ký tự toàn độ rộng (bàn phím IME, copy từ ảnh) về dạng thường
+  const raw = String(target == null ? '' : target).normalize('NFKC').trim().toLowerCase();
   // Email: chỉ bỏ khoảng trắng, giữ nguyên dấu chấm / gạch ngang (thuộc địa chỉ)
   if (raw.includes('@')) return raw.replace(/\s+/g, '');
-  let t = raw.replace(/[\s.\-()]/g, '');
-  if (t.startsWith('+84')) t = '0' + t.slice(3);
-  else if (t.startsWith('0084')) t = '0' + t.slice(4);
-  else if (/^84\d{9}$/.test(t)) t = '0' + t.slice(2);
+  let t = raw.replace(/[\s.\-_/()]/g, '');
+  // Mã quốc gia VN (+84 / 0084 / 84) -> 0. "84" không dấu + chỉ nhận khi phần sau đúng dạng
+  // di động (9 số, đầu 3/5/7/8/9) hoặc số bàn (10 số, đầu 2). Bỏ số 0 thừa kiểu "+84 (0) 912...".
+  let national = null;
+  if (t.startsWith('+84')) national = t.slice(3);
+  else if (t.startsWith('0084')) national = t.slice(4);
+  else if (/^840?([35789]\d{8}|2\d{9})$/.test(t)) national = t.slice(2);
+  if (national !== null) t = '0' + national.replace(/^0/, '');
   return t;
 }
 

@@ -1,8 +1,14 @@
 """
 TOOLS/SYNC_AGENT.PY - TỰ ĐỘNG HÓA KIỂM THỬ, ĐỒNG BỘ & ĐẨY GIT (GEMINI & CLAUDE)
 Cách dùng:
-    python tools/sync_agent.py
+    python tools/sync_agent.py            # kiểm thử -> (đạt) đồng bộ bai_to_5 -> commit & push
+    python tools/sync_agent.py --prune    # như trên + HỎI trước khi xóa tệp thừa ở bai_to_5
     hoặc bấm đúp vào file sync.bat ở thư mục gốc
+
+An toàn:
+- Chỉ đồng bộ / commit / push khi kiểm thử ĐẠT (trình duyệt + test đơn vị).
+- Chỉ git add các đường dẫn có chủ đích (SYNC_PATHS), không add -A toàn bộ repo.
+- Không tự xóa tệp ở bai_to_5: chỉ liệt kê; xóa khi chạy --prune và gõ "y" xác nhận.
 """
 
 import http.server
@@ -23,6 +29,16 @@ if sys.stdout.encoding != 'utf-8':
 
 ROOT_4 = r'c:\Users\VDT\Documents\bai_to_4'
 ROOT_5 = r'c:\Users\VDT\Documents\bai_to_5'
+
+# Các đường dẫn (tương đối với ROOT_4) được phép đồng bộ sang bai_to_5 và git add.
+# Thêm thư mục / tệp mới vào đây có chủ đích - tệp nằm ngoài danh sách sẽ không bị đẩy lên Git.
+SYNC_PATHS = [
+    'app', 'api', 'tools', 'docs', 'assets',
+    'AGENT_SYNC.md', 'CLAUDE.md', 'README.md',
+    'index.html', 'vercel.json', '.gitignore', 'sync.bat',
+]
+SKIP_NAMES = ('.git', '__pycache__', '.tempmediaStorage')
+PRUNE = '--prune' in sys.argv[1:]
 
 print("=" * 65)
 print("🚀 HỆ THỐNG TỰ ĐỘNG HÓA KIỂM THỬ & ĐỒNG BỘ DỰ ÁN (TỔ 4)")
@@ -91,48 +107,84 @@ else:
     else:
         print(f"    ⚠️ CẢNH BÁO KIỂM THỬ: CSP: {len(csp_errors)}, JS: {len(js_errors)}, DOM OK: {has_input and has_form and has_stats and has_receipt_btn}")
 
+# Test đơn vị (normalizeTarget, RiskEngine) - chạy bằng Node, không cần mạng
+unit_test = os.path.join(ROOT_4, 'tools', 'tests', 'unit_test.js')
+if os.path.exists(unit_test):
+    node_exe = shutil.which('node')
+    if not node_exe:
+        print("    ❌ Không tìm thấy Node.js để chạy test đơn vị -> coi là KHÔNG ĐẠT.")
+        qa_passed = False
+    else:
+        ut = subprocess.run([node_exe, unit_test], cwd=ROOT_4, capture_output=True, text=True, encoding='utf-8', errors='replace')
+        for line in (ut.stdout.strip() or ut.stderr.strip()).splitlines():
+            print("    " + line)
+        if ut.returncode != 0:
+            qa_passed = False
+
 try:
     server.server_close()
 except Exception:
     pass
 
 # -------------------------------------------------------------
-# BƯỚC 3: ĐỒNG BỘ TỰ ĐỘNG SANG BAI_TO_5
+# BƯỚC 3: ĐỒNG BỘ SANG BAI_TO_5 (CHỈ KHI KIỂM THỬ ĐẠT)
 # -------------------------------------------------------------
-print("[*] 3/4. Đang đồng bộ tệp sang thư mục bai_to_5...")
-try:
-    # 3.1 Dọn các tệp trong ROOT_5 không còn tồn tại trong ROOT_4
-    for root, dirs, files in os.walk(ROOT_5, topdown=False):
-        rel_path = os.path.relpath(root, ROOT_5)
-        target_r4 = ROOT_4 if rel_path == '.' else os.path.join(ROOT_4, rel_path)
-        for f in files:
-            if f.endswith('.pyc'):
-                try: os.remove(os.path.join(root, f))
-                except Exception: pass
-                continue
-            if not os.path.exists(os.path.join(target_r4, f)):
-                try: os.remove(os.path.join(root, f))
-                except Exception: pass
-        for d in dirs:
-            if d in ('.git', '__pycache__', '.tempmediaStorage'):
-                continue
-            if not os.path.exists(os.path.join(target_r4, d)):
-                try: shutil.rmtree(os.path.join(root, d))
-                except Exception: pass
-
-    # 3.2 Sao chép toàn bộ tệp từ ROOT_4 sang ROOT_5
-    for item in os.listdir(ROOT_4):
-        if item in ('.git', '__pycache__', '.tempmediaStorage'):
+def stale_files_in_root5():
+    """Tệp / thư mục trong các đường dẫn đồng bộ của bai_to_5 không còn ở bai_to_4."""
+    stale = []
+    for rel in SYNC_PATHS:
+        dst = os.path.join(ROOT_5, rel)
+        if not os.path.isdir(dst):
             continue
-        s = os.path.join(ROOT_4, item)
-        d = os.path.join(ROOT_5, item)
-        if os.path.isdir(s):
-            shutil.copytree(s, d, dirs_exist_ok=True)
-        else:
-            shutil.copy2(s, d)
-    print("    ✅ Đã đồng bộ 100% tệp sang bai_to_5!")
-except Exception as e:
-    print(f"    ⚠️ Lỗi đồng bộ sang bai_to_5: {e}")
+        for root, dirs, files in os.walk(dst):
+            dirs[:] = [d for d in dirs if d not in SKIP_NAMES]
+            src_root = os.path.join(ROOT_4, os.path.relpath(root, ROOT_5))
+            for name in dirs + files:
+                if name.endswith('.pyc'):
+                    continue
+                if not os.path.exists(os.path.join(src_root, name)):
+                    stale.append(os.path.join(root, name))
+            # Không đi sâu vào thư mục đã bị liệt kê là thừa
+            dirs[:] = [d for d in dirs if os.path.exists(os.path.join(src_root, d))]
+    return stale
+
+
+if not qa_passed:
+    print("[*] 3/4. BỎ QUA đồng bộ bai_to_5 vì kiểm thử chưa đạt.")
+else:
+    print("[*] 3/4. Đang đồng bộ tệp sang thư mục bai_to_5...")
+    try:
+        os.makedirs(ROOT_5, exist_ok=True)
+        for rel in SYNC_PATHS:
+            src = os.path.join(ROOT_4, rel)
+            dst = os.path.join(ROOT_5, rel)
+            if os.path.isdir(src):
+                shutil.copytree(src, dst, dirs_exist_ok=True,
+                                ignore=shutil.ignore_patterns(*SKIP_NAMES, '*.pyc'))
+            elif os.path.isfile(src):
+                shutil.copy2(src, dst)
+        print("    ✅ Đã đồng bộ các tệp trong SYNC_PATHS sang bai_to_5!")
+
+        stale = stale_files_in_root5()
+        if stale:
+            print(f"    ℹ️ bai_to_5 có {len(stale)} tệp/thư mục không còn ở bai_to_4 (KHÔNG tự xóa):")
+            for pth in stale:
+                print(f"       - {os.path.relpath(pth, ROOT_5)}")
+            if PRUNE:
+                answer = input("    ❓ Xóa các mục trên khỏi bai_to_5? Gõ 'y' để xác nhận: ").strip().lower()
+                if answer == 'y':
+                    for pth in stale:
+                        if os.path.isdir(pth):
+                            shutil.rmtree(pth)
+                        elif os.path.exists(pth):
+                            os.remove(pth)
+                    print("    🗑️ Đã xóa theo xác nhận.")
+                else:
+                    print("    ↩️ Giữ nguyên, không xóa gì.")
+            else:
+                print("    👉 Muốn dọn: chạy lại với --prune (sẽ hỏi xác nhận trước khi xóa).")
+    except Exception as e:
+        print(f"    ⚠️ Lỗi đồng bộ sang bai_to_5: {e}")
 
 # -------------------------------------------------------------
 # BƯỚC 4: GIT COMMIT & PUSH TỰ ĐỘNG (CHỈ KHI KIỂM THỬ ĐẠT 100%)
@@ -143,14 +195,28 @@ if not qa_passed:
     print("    👉 Vui lòng sửa lỗi kiểm thử ở trên trước khi đẩy code lên Git.")
     sys.exit(1)
 
-status_res = subprocess.run(['git', '-C', ROOT_4, 'status', '--porcelain'], capture_output=True, text=True, encoding='utf-8')
-changes = status_res.stdout.strip()
+def git(*args):
+    return subprocess.run(['git', '-C', ROOT_4, *args], capture_output=True, text=True, encoding='utf-8')
 
-if not changes:
-    print("    ℹ️ Không có thay đổi mới nào cần commit. Trạng thái Git đã sạch!")
+
+# Chỉ add các đường dẫn có chủ đích: đang tồn tại, hoặc đã từng được Git theo dõi (để ghi nhận việc xóa)
+tracked = git('ls-files').stdout.splitlines()
+add_paths = [p for p in SYNC_PATHS
+             if os.path.exists(os.path.join(ROOT_4, p))
+             or any(t == p or t.startswith(p + '/') for t in tracked)]
+subprocess.run(['git', '-C', ROOT_4, 'add', '-A', '--', *add_paths], check=True)
+
+# Cảnh báo tệp mới nằm ngoài danh sách (không add)
+outside = [l[3:] for l in git('status', '--porcelain').stdout.splitlines() if l.startswith('?? ')]
+if outside:
+    print("    ℹ️ Tệp mới NGOÀI danh sách SYNC_PATHS (không đưa lên Git):")
+    for f in outside:
+        print(f"       - {f}")
+
+if git('diff', '--cached', '--quiet').returncode == 0:
+    print("    ℹ️ Không có thay đổi mới nào cần commit trong SYNC_PATHS.")
 else:
     now_str = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    subprocess.run(['git', '-C', ROOT_4, 'add', '-A'], check=True)
     commit_msg = f"sync: automated QA verified & synced [{now_str}]"
     subprocess.run(['git', '-C', ROOT_4, 'commit', '-m', commit_msg], check=True)
     push_res = subprocess.run(['git', '-C', ROOT_4, 'push', 'origin', 'main'], capture_output=True, text=True, encoding='utf-8')

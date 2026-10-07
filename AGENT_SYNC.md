@@ -102,6 +102,12 @@
   - Đã chạy kiểm thử tự động trên Edge headless: **0 lỗi CSP, 0 lỗi JS, 100% PASSED**.
 
 
+- [x] **Task C-06: Sửa URL proxy `api/reports.js`** (ký tự `S` → `Y`), ưu tiên biến môi trường `SHEETS_BACKEND_URL`.
+- [x] **Task C-07: Kiểm chứng `normalizeTarget()`** (SĐT bàn / di động / +84 / 84 / dấu chấm-gạch), sửa nếu lỗi, thêm test Node đơn vị cho `normalizeTarget` + `RiskEngine`.
+- [x] **Task C-08: Siết `tools/sync_agent.py`**: bỏ `git add -A`, chỉ commit/push khi `qa_passed`, bỏ tự xóa file ở `bai_to_5`.
+- [x] **Task C-09: Header bảo mật `vercel.json`** + thu hẹp CORS `api/reports.js` theo env `ALLOWED_ORIGIN`.
+- [x] **Task C-10: Dọn nợ kỹ thuật**: gộp `escapeHtml`, sửa `escapeHtml(0)`, tên gọi gây hiểu nhầm (nếu rủi ro thấp), docs nhắc `scam_phone_database.sql`.
+
 ### 📌 Task dành cho Gemini (QA & Điều phối):
 - [x] Chạy kiểm thử tự động toàn diện trên trình duyệt Edge.
 - [x] Kiểm tra CSP và Console Stderr.
@@ -385,3 +391,18 @@
     * Cập nhật `git add -A` để tự động nhận diện tất cả thay đổi bao gồm tệp đã xóa.
   - **4. Kiểm thử Hồi quy Tự động:** **100% PASSED** trên Edge Chromium Headless (0 lỗi CSP, 0 lỗi JS runtime).
   - **5. Đồng bộ & Git:** Đã sync sang `bai_to_5` và đẩy lên GitHub `main`.
+- **2026-10-07 (Claude): ĐANG LÀM C-06 → C-10 [IN_PROGRESS]** — sửa `api/reports.js`, `vercel.json`, `tools/sync_agent.py`, `app/js/storage.js`, `lookup.js`, `intake.js`, thêm `tools/tests/`. **Gemini vui lòng KHÔNG chạy sync_agent.py cho tới khi Claude ghi "XONG C-06 → C-10".**
+- **2026-10-07 (Claude → Gemini): XONG C-06 → C-10. Mời Gemini chạy QA rồi sync (`python tools/sync_agent.py`).**
+  - **C-06/C-09 `api/reports.js`:** URL dự phòng sai 1 ký tự (`…byaSe5…` → `…byaYe5…`, proxy trước đây luôn 502); ưu tiên env `SHEETS_BACKEND_URL`. CORS: mặc định chỉ cùng tên miền, thêm tên miền qua env `ALLOWED_ORIGIN` (phẩy ngăn cách), origin lạ → 403; GET chỉ cho `action=getAll`; giới hạn body 8 KB, timeout 12 s. `vercel.json`: thêm header `frame-ancestors 'none'`, `X-Frame-Options: DENY`, `nosniff`, `Referrer-Policy`.
+  - **C-07 `normalizeTarget()`:** 3 lỗi thật — `+84 (0) 912…` → `00912…`; `84` + số bàn 10 chữ số không đổi về `02…`; dấu `_` `/` và chữ số toàn độ rộng không được chuẩn hóa. Đã sửa. Test mới `node tools/tests/unit_test.js` (42 ca: normalizeTarget, escapeHtml, RiskEngine), bản cũ sai 7 ca.
+  - **C-08 `sync_agent.py`:** chỉ đồng bộ bai_to_5 / commit / push khi QA đạt (QA nay gồm cả test đơn vị); `git add` theo danh sách `SYNC_PATHS`, không `-A`; không tự xóa ở bai_to_5 — chỉ liệt kê, xóa khi chạy `--prune` và gõ `y`. **C-10:** gộp `escapeHtml` vào `storage.js`, `escapeHtml(0)` → `"0"`; sửa docs (bỏ `scam_phone_database.sql`, mã hồ sơ `HS-TDHT-`). Giữ tên `FirebaseService` (QA của Gemini dùng; đổi tên rủi ro hơn lợi ích). Cache-busting JS `v=20261007_2`. Cả 2 bộ QA của Gemini: PASSED.
+- **2026-10-07 16:30 (Gemini → Claude & PO: NGHIỆM THU QA TEST #03 CHO C-06 → C-10 — TOÀN BỘ 100% PASSED):**
+  - **1. Kiểm thử đơn vị (Unit Tests):** Chạy `node tools/tests/unit_test.js` -> **42/42 tests ĐẠT** (xác thực toàn diện `normalizeTarget`, `escapeHtml(0)`, `RiskEngine` số bàn, số di động, đầu số quốc tế, tên miền nhái).
+  - **2. Kiểm thử hồi quy Edge Headless (`tools/qa_regression_test.py`):** **100% ĐẠT** -> 0 lỗi CSP, 0 lỗi JavaScript runtime, Hero stats cập nhật chuẩn, nút tải biên nhận ẩn/hiện đúng chu trình, hàng đợi ngoại tuyến hoạt động trơn tru.
+  - **3. Bộ kiểm thử tổng hợp (`tools/run_qa_suite.py`):** **6/6 tests ĐẠT** (FirebaseService mock dữ liệu an toàn, mã hồ sơ crypto chuẩn `HS-TDHT-`, chống Formula Injection, Rate Limiting 30s, tra cứu bộ nhớ đệm < 1ms).
+  - **4. Rà soát an toàn mã nguồn:**
+    * `api/reports.js`: Khắc phục URL bị gõ sai ký tự, siết CORS qua `ALLOWED_ORIGIN`, giới hạn payload 8KB, timeout 12s, whitelist hành động GET `getAll`, xử lý an toàn không văng lỗi 502 mập mờ khi upstream trả về trang HTML.
+    * `vercel.json`: Bổ sung đầy đủ header bảo mật (`frame-ancestors 'none'`, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`).
+    * `storage.js`: Chuẩn hóa triệt để số điện thoại bàn 11 số (đầu 02), ký tự NFKC và số có định dạng đặc biệt; gộp `escapeHtml` duy nhất hỗ trợ hiển thị giá trị số `0`.
+    * `sync_agent.py`: Khóa an toàn tiến trình sync/commit, chạy kèm unit test Node.js, không tự xóa file ở `bai_to_5` trừ khi có cờ xác nhận `--prune`.
+  - **5. Trạng thái:** Nghiệm thu **ĐẠT TOÀN BỘ (PASSED 100%)**. Tuân thủ chỉ đạo của PO: **CHƯA commit, CHƯA push, KHÔNG chạy `sync_agent.py`**, giữ nguyên workspace để PO kiểm tra.
