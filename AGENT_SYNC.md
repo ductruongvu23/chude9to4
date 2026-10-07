@@ -369,3 +369,19 @@
     * Về các màu cứng còn lại trong `lookup.js` / `firebase-service.js` (`#ef4444`, `#10b981`, `#f59e0b`): đây là các màu chuẩn quốc tế cho trạng thái đèn tín hiệu (đỏ - xanh - cam), độ tương phản trên cả nền sáng lẫn nền tối đều đạt chuẩn dễ đọc, thống nhất giữ nguyên để duy trì tính ổn định cao nhất.
   - **2. Chạy Kiểm thử Hồi quy Tự động:** **100% PASSED** (0 lỗi CSP, 0 lỗi JS, 100% khớp dữ liệu).
   - **3. Tiến hành Đồng bộ & Đẩy Git:** Đã sync đầy đủ sang `bai_to_5` và đẩy lên GitHub `main`.
+- **2026-10-07 (Claude): DỌN FILE RÁC theo yêu cầu PO. XONG — Gemini chạy QA rồi sync giúp.**
+  - `tools/mini_ai/` chỉ còn 3 file huấn luyện: `train.py`, `dataset.tsv`, `test.tsv`. Xóa `__pycache__/*.pyc` (lỡ bị commit) và thêm `__pycache__/`, `*.pyc` vào `.gitignore`.
+  - Xóa bản trùng ở gốc: `scam_phone_database.sql`, `firestore.rules` (giống hệt bản trong `app/`). Xóa `tools/qa_browser_test.py` (bản test cũ, không còn script nào gọi). Không đụng `slides/`, `assets/`, `docs/`.
+  - Đợt 2 (PO cho phép xóa mọi file không cần, trừ `.md` và file huấn luyện): xóa `app/firestore.rules` (không còn dùng Firebase), `app/database/scam_phone_database.sql` (chứa số không có nguồn, code không dùng), `tools/export_slides.py` (thay bằng `export_slides_editable.py`, đã sửa README), 10 ảnh trong `assets/images/` không file nào dùng (giữ `qr_web_app.png` — docs dùng). Giữ nguyên `slides/` (không có trên Git), các file `.bat`, `api/`, `vercel.json`, tools QA.
+- **2026-10-07 12:35 (Gemini → Claude & PO: NGHIỆM THU DỌN RÁC, XÓA TOÀN BỘ FILE TẮT MÁY & ĐỒNG BỘ TOÀN BỘ REPO):**
+  - **1. Nghiệm thu đợt dọn rác của Claude:**
+    * Xác nhận các file rác (SQL cũ, rules cũ, ảnh không sử dụng, test trùng, cache `.pyc`) đã được loại bỏ sạch sẽ khỏi cây thư mục.
+    * Đã kiểm tra `.gitignore`: duy trì chặn `__pycache__/`, `*.pyc`, `slides/`, `*.pptx`.
+  - **2. Xóa toàn bộ file tắt máy theo chỉ đạo trực tiếp của PO:**
+    * Đã xóa sạch 3 file script: `tat_may.bat`, `sync_va_tat_may.bat`, `huy_tat_may.bat` khỏi cả `bai_to_4` và `bai_to_5`.
+    * Chỉ giữ lại duy nhất file [`sync.bat`](file:///c:/Users/VDT/Documents/bai_to_4/sync.bat) phục vụ nhu cầu kiểm thử và đồng bộ dự án an toàn.
+  - **3. Nâng cấp `tools/sync_agent.py`:**
+    * Bổ sung cơ chế tự động dọn sạch các file/thư mục rác bên `bai_to_5` khi bên `bai_to_4` đã xóa, đảm bảo 2 thư mục luôn đồng nhất 100%.
+    * Cập nhật `git add -A` để tự động nhận diện tất cả thay đổi bao gồm tệp đã xóa.
+  - **4. Kiểm thử Hồi quy Tự động:** **100% PASSED** trên Edge Chromium Headless (0 lỗi CSP, 0 lỗi JS runtime).
+  - **5. Đồng bộ & Git:** Đã sync sang `bai_to_5` và đẩy lên GitHub `main`.

@@ -2,3 +2,7 @@
 slides/Slide_To4_DeTai9_ChinhSua.pptx
 *.pptx
 slides/
+
+# File rác Python
+__pycache__/
+*.pyc

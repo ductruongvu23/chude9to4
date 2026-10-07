@@ -101,6 +101,26 @@ except Exception:
 # -------------------------------------------------------------
 print("[*] 3/4. Đang đồng bộ tệp sang thư mục bai_to_5...")
 try:
+    # 3.1 Dọn các tệp trong ROOT_5 không còn tồn tại trong ROOT_4
+    for root, dirs, files in os.walk(ROOT_5, topdown=False):
+        rel_path = os.path.relpath(root, ROOT_5)
+        target_r4 = ROOT_4 if rel_path == '.' else os.path.join(ROOT_4, rel_path)
+        for f in files:
+            if f.endswith('.pyc'):
+                try: os.remove(os.path.join(root, f))
+                except Exception: pass
+                continue
+            if not os.path.exists(os.path.join(target_r4, f)):
+                try: os.remove(os.path.join(root, f))
+                except Exception: pass
+        for d in dirs:
+            if d in ('.git', '__pycache__', '.tempmediaStorage'):
+                continue
+            if not os.path.exists(os.path.join(target_r4, d)):
+                try: shutil.rmtree(os.path.join(root, d))
+                except Exception: pass
+
+    # 3.2 Sao chép toàn bộ tệp từ ROOT_4 sang ROOT_5
     for item in os.listdir(ROOT_4):
         if item in ('.git', '__pycache__', '.tempmediaStorage'):
             continue
@@ -130,7 +150,7 @@ if not changes:
     print("    ℹ️ Không có thay đổi mới nào cần commit. Trạng thái Git đã sạch!")
 else:
     now_str = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    subprocess.run(['git', '-C', ROOT_4, 'add', 'app', 'tools', 'AGENT_SYNC.md', 'CLAUDE.md', 'sync.bat', 'index.html', '.gitignore', 'api', 'vercel.json'], check=True)
+    subprocess.run(['git', '-C', ROOT_4, 'add', '-A'], check=True)
     commit_msg = f"sync: automated QA verified & synced [{now_str}]"
     subprocess.run(['git', '-C', ROOT_4, 'commit', '-m', commit_msg], check=True)
     push_res = subprocess.run(['git', '-C', ROOT_4, 'push', 'origin', 'main'], capture_output=True, text=True, encoding='utf-8')

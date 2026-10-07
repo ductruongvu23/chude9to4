@@ -12,7 +12,7 @@ Mở [`index.html`](index.html) (trang chủ) để truy cập nhanh cả hai s�
 1. **Slide thuyết trình — Bản 4 Modern Cyber Defense (14 slide, 16:9)**:
    - Trình chiếu: [`slides/index.html`](slides/index.html) — phím ← → chuyển slide, **F** toàn màn hình, **P** ghi chú người nói + đồng hồ.
    - Tải về: [`slides/Slide_To4_DeTai9.pdf`](slides/Slide_To4_DeTai9.pdf) • [`slides/Slide_To4_DeTai9.pptx`](slides/Slide_To4_DeTai9.pptx) (PowerPoint 13.333 × 7.5 in, kèm ghi chú người nói, mở được trên PowerPoint / Google Slides / Canva).
-   - Sau khi sửa nội dung slide, xuất lại PDF + PPTX bằng: `python tools/export_slides.py` (cần Microsoft Edge, `python-pptx`, `Pillow`).
+   - Sau khi sửa nội dung slide, xuất lại PPTX chỉnh sửa được bằng: `python tools/export_slides_editable.py` (cần Microsoft Edge, `python-pptx`, `Pillow`).
 
 2. **Cổng Tra Cứu & Tiếp Nhận Phản Ánh Lừa Đảo (Web App)**:
    - Thư mục: [`app/`](app/) (mở [`app/index.html`](app/index.html)) • Online: [https://chude9to4.vercel.app/app/index.html](https://chude9to4.vercel.app/app/index.html)
